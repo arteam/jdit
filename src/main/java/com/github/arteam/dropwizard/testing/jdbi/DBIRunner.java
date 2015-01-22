@@ -14,6 +14,8 @@ import org.junit.runners.model.Statement;
  */
 public class DBIRunner extends BlockJUnit4ClassRunner {
 
+    private DBIContext dbiContext;
+
     public DBIRunner(Class<?> klass) throws InitializationError {
         super(klass);
     }
@@ -33,8 +35,12 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
             @Override
             public void evaluate() throws Throwable {
                 // TODO Create database, DBI and handle, migrate populate schema
-                statement.evaluate();
-                // TODO Cleanup handle
+                dbiContext = new DBIContext();
+                try {
+                    statement.evaluate();
+                }  finally {
+                    dbiContext.close();
+                }
             }
         };
     }
