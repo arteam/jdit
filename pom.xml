@@ -10,6 +10,14 @@
 
     <name>Dropwizard JDBI Test Helpers</name>
 
+    <build>
+        <testResources>
+            <testResource>
+                <directory>src/test/resource</directory>
+            </testResource>
+        </testResources>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>io.dropwizard</groupId>
