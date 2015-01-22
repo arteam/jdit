@@ -14,6 +14,8 @@ import org.junit.runners.model.Statement;
  */
 public class DBIRunner extends BlockJUnit4ClassRunner {
 
+    private static SchemaMigration schemaMigration = new SchemaMigration();
+
     private DBIContext dbiContext;
 
     public DBIRunner(Class<?> klass) throws InitializationError {
@@ -36,6 +38,7 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
             public void evaluate() throws Throwable {
                 // TODO Create database, DBI and handle, migrate populate schema
                 dbiContext = new DBIContext();
+                schemaMigration.migrate(dbiContext.getHandle());
                 try {
                     statement.evaluate();
                 }  finally {
