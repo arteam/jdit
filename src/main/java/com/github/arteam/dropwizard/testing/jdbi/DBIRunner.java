@@ -37,11 +37,11 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
     }
 
     private void injectTestObjects(Object test) throws IllegalAccessException {
-        Field[] fields = test.getClass().getDeclaredFields();
+        Field[] fields = test.getClass().getFields();
         if (fields == null) {
             return;
         }
-        for (Field field : test.getClass().getDeclaredFields()) {
+        for (Field field : fields) {
             Annotation[] annotations = field.getAnnotations();
             if (annotations == null) {
                 continue;
