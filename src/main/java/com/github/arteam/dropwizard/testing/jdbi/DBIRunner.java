@@ -6,6 +6,10 @@ import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+
 /**
  * Date: 1/22/15
  * Time: 8:55 PM
@@ -25,8 +29,31 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
     @Override
     protected Object createTest() throws Exception {
         Object test = super.createTest();
-        // TODO inject DBI, Handle
+        injectTestObjects(test);
+
         return test;
+    }
+
+    private void injectTestObjects(Object test) throws IllegalAccessException {
+        Field[] fields = test.getClass().getDeclaredFields();
+        if (fields == null) {
+            return;
+        }
+        for (Field field : test.getClass().getDeclaredFields()) {
+            Annotation[] annotations = field.getAnnotations();
+            if (annotations == null) {
+                continue;
+            }
+            for (Annotation annotation : annotations) {
+                if (annotation.annotationType() == DBIHandle.class) {
+                    if (Modifier.isStatic(field.getModifiers())) {
+                        throw new IllegalArgumentException("Unable inject DBI Handle to static field");
+                    }
+                    field.setAccessible(true);
+                    field.set(test, dbiContext.getHandle());
+                }
+            }
+        }
     }
 
     @Override
@@ -41,7 +68,7 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
                 schemaMigration.migrate(dbiContext.getHandle());
                 try {
                     statement.evaluate();
-                }  finally {
+                } finally {
                     dbiContext.close();
                 }
             }

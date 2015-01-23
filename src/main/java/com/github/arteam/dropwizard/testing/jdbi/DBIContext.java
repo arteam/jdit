@@ -33,7 +33,7 @@ public class DBIContext {
         handle = dbi.open();
     }
 
-    public DBI createDBI() {
+    private DBI createDBI() {
         DBI dbi = new DBI("jdbc:hsqldb:mem:DbTest-" + System.currentTimeMillis(), "sa", "");
 
         dbi.setSQLLog(new LogbackLog(LOG, Level.INFO));
