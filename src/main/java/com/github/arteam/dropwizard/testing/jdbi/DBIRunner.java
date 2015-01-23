@@ -5,6 +5,8 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
+import org.skife.jdbi.v2.DBI;
+import org.skife.jdbi.v2.Handle;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -46,11 +48,26 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
             }
             for (Annotation annotation : annotations) {
                 if (annotation.annotationType() == DBIHandle.class) {
+                    if (!field.getGenericType().equals(Handle.class)) {
+                        throw new IllegalArgumentException("Unable inject a DBI handle to a " +
+                                "field with type " + field.getGenericType());
+                    }
                     if (Modifier.isStatic(field.getModifiers())) {
-                        throw new IllegalArgumentException("Unable inject DBI Handle to static field");
+                        throw new IllegalArgumentException("Unable inject a DBI Handle to a static field");
                     }
                     field.setAccessible(true);
                     field.set(test, dbiContext.getHandle());
+                }
+                if (annotation.annotationType() == DBIInstance.class) {
+                    if (!field.getGenericType().equals(DBI.class)) {
+                        throw new IllegalArgumentException("Unable inject a DBI instance to " +
+                                "a field with type " + field.getGenericType());
+                    }
+                    if (Modifier.isStatic(field.getModifiers())) {
+                        throw new IllegalArgumentException("Unable inject a DBI instance to a static field");
+                    }
+                    field.setAccessible(true);
+                    field.set(test, dbiContext.getDbi());
                 }
             }
         }

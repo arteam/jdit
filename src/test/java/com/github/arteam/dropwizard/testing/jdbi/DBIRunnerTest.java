@@ -3,7 +3,16 @@ package com.github.arteam.dropwizard.testing.jdbi;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
+import org.skife.jdbi.v2.StatementContext;
+import org.skife.jdbi.v2.tweak.HandleCallback;
+import org.skife.jdbi.v2.tweak.ResultSetMapper;
+import org.skife.jdbi.v2.util.StringMapper;
+
+import javax.management.monitor.StringMonitor;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Date: 1/22/15
@@ -16,6 +25,9 @@ public class DBIRunnerTest {
 
     @DBIHandle
     Handle handle;
+
+    @DBIInstance
+    DBI dbi;
 
     private final String helloDBI = "Hello DBI!";
 
@@ -30,5 +42,15 @@ public class DBIRunnerTest {
         int amount = handle.insert("insert into players(first_name, last_name, birth_date, weight, height)" +
                 " values ('Vladimir','Tarasenko', '1991-08-05 00:00:00', 84, 99)");
         Assert.assertEquals(amount, 1);
+
+        String initials = dbi.withHandle(new HandleCallback<String>() {
+            @Override
+            public String withHandle(Handle handle) throws Exception {
+                return handle.createQuery("select first_name || ' ' || last_name from players")
+                        .map(StringMapper.FIRST)
+                        .first();
+            }
+        });
+        System.out.println(initials);
     }
 }
