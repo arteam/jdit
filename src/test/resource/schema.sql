@@ -1,4 +1,8 @@
-create table persons(
-  name varchar(64),
-  email varchar(64)
+create table players(
+    id bigint not null identity,
+    first_name varchar(128) not null,
+    last_name varchar(128) not null,
+    birth_date timestamp not null,
+    weight int null,
+    height int null
 );
