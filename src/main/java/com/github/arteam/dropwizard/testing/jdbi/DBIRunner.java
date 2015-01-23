@@ -47,7 +47,7 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
                 continue;
             }
             for (Annotation annotation : annotations) {
-                if (annotation.annotationType() == DBIHandle.class) {
+                if (annotation.annotationType().equals(DBIHandle.class)) {
                     if (!field.getGenericType().equals(Handle.class)) {
                         throw new IllegalArgumentException("Unable inject a DBI handle to a " +
                                 "field with type " + field.getGenericType());
@@ -58,7 +58,7 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
                     field.setAccessible(true);
                     field.set(test, dbiContext.getHandle());
                 }
-                if (annotation.annotationType() == DBIInstance.class) {
+                if (annotation.annotationType().equals(DBIInstance.class)) {
                     if (!field.getGenericType().equals(DBI.class)) {
                         throw new IllegalArgumentException("Unable inject a DBI instance to " +
                                 "a field with type " + field.getGenericType());
