@@ -25,15 +25,10 @@ public class DBIContext {
 
     public static final Logger LOG = (Logger) LoggerFactory.getLogger(DBI.class);
 
-    private DBI dbi;
-    private Handle handle;
-
-    public DBIContext() {
-        dbi = createDBI();
-        handle = dbi.open();
+    private DBIContext() {
     }
 
-    private DBI createDBI() {
+    public static DBI createDBI() {
         DBI dbi = new DBI("jdbc:hsqldb:mem:DbTest-" + System.currentTimeMillis(), "sa", "");
 
         dbi.setSQLLog(new LogbackLog(LOG, Level.INFO));
@@ -45,18 +40,6 @@ public class DBIContext {
         dbi.registerArgumentFactory(new JodaDateTimeArgumentFactory());
         dbi.registerMapper(new JodaDateTimeMapper());
         return dbi;
-    }
-
-    public void close() {
-        handle.close();
-    }
-
-    public DBI getDbi() {
-        return dbi;
-    }
-
-    public Handle getHandle() {
-        return handle;
     }
 }
 
