@@ -7,6 +7,7 @@ import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
+import org.skife.jdbi.v2.tweak.HandleCallback;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -22,7 +23,8 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
 
     private static SchemaMigration schemaMigration = new SchemaMigration();
 
-    private DBIContext dbiContext;
+    private DBI dbi;
+    private Handle handle;
 
     public DBIRunner(Class<?> klass) throws InitializationError {
         super(klass);
@@ -37,7 +39,7 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
     }
 
     private void injectTestObjects(Object test) throws IllegalAccessException {
-        Field[] fields = test.getClass().getFields();
+        Field[] fields = test.getClass().getDeclaredFields();
         if (fields == null) {
             return;
         }
@@ -56,7 +58,7 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
                         throw new IllegalArgumentException("Unable inject a DBI Handle to a static field");
                     }
                     field.setAccessible(true);
-                    field.set(test, dbiContext.getHandle());
+                    field.set(test, handle);
                 }
                 if (annotation.annotationType().equals(DBIInstance.class)) {
                     if (!field.getGenericType().equals(DBI.class)) {
@@ -67,7 +69,7 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
                         throw new IllegalArgumentException("Unable inject a DBI instance to a static field");
                     }
                     field.setAccessible(true);
-                    field.set(test, dbiContext.getDbi());
+                    field.set(test, dbi);
                 }
             }
         }
@@ -75,18 +77,18 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
 
     @Override
     protected Statement classBlock(RunNotifier notifier) {
-        final Class<?> testClass = getTestClass().getJavaClass();
         final Statement statement = super.classBlock(notifier);
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                // TODO Create database, DBI and handle, migrate populate schema
-                dbiContext = new DBIContext();
-                schemaMigration.migrate(dbiContext.getHandle());
+                // TODO Create database, DBI, migrate populate schema
+                dbi = DBIContext.createDBI();
+                handle = dbi.open();
                 try {
+                    schemaMigration.migrate(handle);
                     statement.evaluate();
                 } finally {
-                    dbiContext.close();
+                    handle.close();
                 }
             }
         };
@@ -99,8 +101,13 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
             @Override
             public void evaluate() throws Throwable {
                 // TODO Load data from method annotations
-                statement.evaluate();
-                // TODO Cleanup database
+                handle.begin();
+                try {
+                    statement.evaluate();
+                } finally {
+                    // TODO Rollback transaction
+                    handle.rollback();
+                }
             }
         };
     }

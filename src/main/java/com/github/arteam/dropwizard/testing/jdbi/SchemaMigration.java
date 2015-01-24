@@ -6,7 +6,7 @@ class SchemaMigration {
 
     private static final String SCHEMA_LOCATION = "schema.sql";
 
-    public void migrate(Handle handle) {
-        handle.createScript(SCHEMA_LOCATION).execute();
+    public int[] migrate(Handle handle) {
+        return handle.createScript(SCHEMA_LOCATION).execute();
     }
 }
