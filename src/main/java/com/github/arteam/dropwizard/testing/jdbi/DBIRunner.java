@@ -10,8 +10,11 @@ import org.skife.jdbi.v2.Handle;
 import org.skife.jdbi.v2.tweak.HandleCallback;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 
 /**
  * Date: 1/22/15
@@ -70,6 +73,63 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
                     }
                     field.setAccessible(true);
                     field.set(test, dbi);
+                }
+                if (annotation.annotationType().equals(TestedDBIDao.class)) {
+                    if (Modifier.isStatic(field.getModifiers())) {
+                        throw new IllegalArgumentException("Unable inject a DBI DAO to a static field");
+                    }
+
+                    Object dbiDao;
+
+                    Constructor<?> defaultConstructor = null;
+                    Constructor<?> constructorWithParameters = null;
+                    Constructor<?>[] constructors = field.getType().getDeclaredConstructors();
+                    for (Constructor<?> constructor : constructors) {
+                        Class<?>[] parameterTypes = constructor.getParameterTypes();
+                        if (parameterTypes.length == 1 && parameterTypes[0].equals(DBI.class)) {
+                            constructorWithParameters = constructor;
+                        } else if (parameterTypes.length == 0) {
+                            defaultConstructor = constructor;
+                        }
+                    }
+                    if (constructorWithParameters != null) {
+                        constructorWithParameters.setAccessible(true);
+                        try {
+                            dbiDao = constructorWithParameters.newInstance(dbi);
+                        } catch (Exception e) {
+                            throw new RuntimeException("Unable to create an instance of class '"
+                                    + field.getClass() + "'", e);
+                        }
+                    } else if (defaultConstructor != null) {
+                        defaultConstructor.setAccessible(true);
+                        try {
+                            dbiDao = defaultConstructor.newInstance();
+                        } catch (Exception e) {
+                            throw new RuntimeException("Unable to create an instance of class '"
+                                    + field.getClass() + "'", e);
+                        }
+                        Field[] classFields = field.getType().getDeclaredFields();
+                        boolean dbiIsSet = false;
+                        if (classFields != null) {
+                            for (Field classField : classFields) {
+                                if (classField.getType().equals(DBI.class)) {
+                                    classField.setAccessible(true);
+                                    classField.set(dbiDao, dbi);
+                                    dbiIsSet = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!dbiIsSet) {
+                            throw new IllegalStateException("Unable find a field with type DBI");
+                        }
+                    } else {
+                        throw new IllegalStateException("Unable find a constructor for class '"
+                                + field.getDeclaringClass() + "'");
+                    }
+
+                    field.setAccessible(true);
+                    field.set(test, dbiDao);
                 }
             }
         }
