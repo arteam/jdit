@@ -8,10 +8,11 @@ import java.lang.annotation.Target;
 /**
  * Date: 1/25/15
  * Time: 6:50 PM
+ * Inject a DBI DAO (class with DBI field) to a test
  *
  * @author Artem Prigoda
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface TestedDBIDao {
+public @interface TestedDao {
 }
