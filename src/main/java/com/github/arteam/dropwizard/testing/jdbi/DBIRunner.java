@@ -7,14 +7,11 @@ import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
-import org.skife.jdbi.v2.tweak.HandleCallback;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
 
 /**
  * Date: 1/22/15
@@ -55,7 +52,7 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
                     handleDbiHandle(test, field);
                 } else if (annotation.annotationType().equals(DBIInstance.class)) {
                     handleDbiInstance(test, field);
-                } else if (annotation.annotationType().equals(TestedDBIDao.class)) {
+                } else if (annotation.annotationType().equals(TestedDao.class)) {
                     handleDbiDao(test, field);
                 } else if (annotation.annotationType().equals(TestedSqlObject.class)) {
                     handleDbiSqlObject(test, field);
