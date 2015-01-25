@@ -81,7 +81,6 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                // TODO Create database, DBI, migrate populate schema
                 dbi = DBIContext.createDBI();
                 handle = dbi.open();
                 try {
@@ -101,12 +100,10 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
             @Override
             public void evaluate() throws Throwable {
                 // TODO Load data from method annotations
-                handle.begin();
                 try {
                     statement.evaluate();
                 } finally {
-                    // TODO Rollback transaction
-                    handle.rollback();
+                    handle.execute("TRUNCATE SCHEMA public AND COMMIT");
                 }
             }
         };
