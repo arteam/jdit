@@ -45,7 +45,7 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
 
                 injector = new TestObjectsInjector(dbi, handle);
                 try {
-                    schemaMigration.migrate(handle);
+                    schemaMigration.migrateSchema(handle);
                     statement.evaluate();
                 } finally {
                     handle.close();
@@ -60,7 +60,11 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                // TODO Load data from method annotations
+                DataSet dataSet = method.getAnnotation(DataSet.class);
+                if (dataSet != null) {
+                    String scriptLocation = dataSet.value();
+                    schemaMigration.executeScript(handle, scriptLocation);
+                }
                 try {
                     statement.evaluate();
                 } finally {
