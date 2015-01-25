@@ -57,6 +57,8 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
                     handleDbiInstance(test, field);
                 } else if (annotation.annotationType().equals(TestedDBIDao.class)) {
                     handleDbiDao(test, field);
+                } else if (annotation.annotationType().equals(TestedSqlObject.class)) {
+                    handleDbiSqlObject(test, field);
                 }
             }
         }
@@ -84,6 +86,18 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
         }
         field.setAccessible(true);
         field.set(test, dbi);
+    }
+
+    private void handleDbiSqlObject(Object test, Field field) throws IllegalAccessException {
+        if (!field.getType().isInterface()) {
+            throw new IllegalArgumentException("Unable inject a DBI SQL object to a field with type '"
+                    + field.getType() + "'");
+        }
+        if (Modifier.isStatic(field.getModifiers())) {
+            throw new IllegalArgumentException("Unable inject a DBI sql object to a static field");
+        }
+        field.setAccessible(true);
+        field.set(test, dbi.onDemand(field.getType()));
     }
 
     private void handleDbiDao(Object test, Field field) throws IllegalAccessException {
