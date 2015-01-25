@@ -3,16 +3,9 @@ package com.github.arteam.dropwizard.testing.jdbi;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
-import org.skife.jdbi.v2.StatementContext;
-import org.skife.jdbi.v2.tweak.HandleCallback;
-import org.skife.jdbi.v2.tweak.ResultSetMapper;
 import org.skife.jdbi.v2.util.StringMapper;
 
-import javax.management.monitor.StringMonitor;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -28,7 +21,7 @@ public class DBIDaoTest {
     @DBIHandle
     Handle handle;
 
-    @TestedDBIDao
+    @TestedDao
     PlayerDao playerDao;
 
     private final String helloDBI = "Hello DBI!";
