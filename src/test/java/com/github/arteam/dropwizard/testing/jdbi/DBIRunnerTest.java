@@ -13,6 +13,7 @@ import org.skife.jdbi.v2.util.StringMapper;
 import javax.management.monitor.StringMonitor;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -27,6 +28,9 @@ public class DBIRunnerTest {
     @DBIHandle
     Handle handle;
 
+    @TestedDBIDao
+    PlayerDao playerDao;
+
     private final String helloDBI = "Hello DBI!";
 
     @Test
@@ -35,11 +39,11 @@ public class DBIRunnerTest {
     }
 
     @Test
-    public void testHelloDBI() {
+    public void testHelloDBI() throws Exception {
         System.out.println(helloDBI);
-        int amount = handle.insert("insert into players(first_name, last_name, birth_date, weight, height)" +
-                " values ('Vladimir','Tarasenko', '1991-08-05 00:00:00', 84, 99)");
-        Assert.assertEquals(amount, 1);
+        Long playerId = playerDao.createPlayer("Vladimir", "Tarasenko", new SimpleDateFormat("yyyy-MM-dd HH:mm:SS")
+                .parse("1991-08-05 00:00:00"), 84, 99);
+        System.out.println(playerId);
 
         String initials = handle.createQuery("select first_name || ' ' || last_name from players")
                 .map(StringMapper.FIRST)
@@ -51,9 +55,7 @@ public class DBIRunnerTest {
 
     @Test
     public void testGetInitials() {
-        List<String> lastNames = handle.createQuery("select last_name from players")
-                .map(StringMapper.FIRST)
-                .list();
+        List<String> lastNames = playerDao.getLastNames();
         System.out.println(lastNames);
         Assert.assertTrue(lastNames.isEmpty());
     }
