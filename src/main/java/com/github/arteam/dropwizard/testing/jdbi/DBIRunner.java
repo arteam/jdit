@@ -17,7 +17,7 @@ import org.skife.jdbi.v2.Handle;
  */
 public class DBIRunner extends BlockJUnit4ClassRunner {
 
-    private static SchemaMigration schemaMigration = new SchemaMigration();
+    private static DataMigration dataMigration = new DataMigration();
 
     private DBI dbi;
     private Handle handle;
@@ -46,7 +46,7 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
 
                 injector = new TestObjectsInjector(dbi, handle);
                 try {
-                    schemaMigration.migrateSchema(handle);
+                    dataMigration.migrateSchema(handle);
                     statement.evaluate();
                 } finally {
                     handle.close();
@@ -64,7 +64,7 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
                 DataSet dataSet = method.getAnnotation(DataSet.class);
                 if (dataSet != null) {
                     String scriptLocation = dataSet.value();
-                    schemaMigration.executeScript(handle, scriptLocation);
+                    dataMigration.executeScript(handle, scriptLocation);
                 }
                 try {
                     statement.evaluate();
