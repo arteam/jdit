@@ -27,16 +27,8 @@ public class DBIDaoTest {
     @TestedDao
     PlayerDao playerDao;
 
-    private final String helloDBI = "Hello DBI!";
-
-    @Test
-    public void testHelloWorld() {
-        System.out.println("Hello world!");
-    }
-
     @Test
     public void testInsert() throws Exception {
-        System.out.println(helloDBI);
         Long playerId = playerDao.createPlayer("Vladimir", "Tarasenko", new SimpleDateFormat("yyyy-MM-dd HH:mm:SS")
                 .parse("1991-08-05 00:00:00"), 84, 99);
         System.out.println(playerId);
