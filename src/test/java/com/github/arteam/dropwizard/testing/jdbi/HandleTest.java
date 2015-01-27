@@ -21,16 +21,8 @@ public class HandleTest {
     @DBIHandle
     Handle handle;
 
-    private final String helloDBI = "Hello DBI!";
-
-    @Test
-    public void testHelloWorld() {
-        System.out.println("Hello world!");
-    }
-
     @Test
     public void testInsert() {
-        System.out.println(helloDBI);
         int amount = handle.insert("insert into players(first_name, last_name, birth_date, weight, height)" +
                 " values ('Vladimir','Tarasenko', '1991-08-05 00:00:00', 84, 99)");
         Assert.assertEquals(amount, 1);
@@ -41,7 +33,6 @@ public class HandleTest {
         System.out.println(initials);
         Assert.assertEquals(initials, "Vladimir Tarasenko");
     }
-
 
     @Test
     public void testGetInitials() {
