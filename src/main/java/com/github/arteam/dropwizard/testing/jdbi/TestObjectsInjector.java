@@ -1,5 +1,9 @@
 package com.github.arteam.dropwizard.testing.jdbi;
 
+import com.github.arteam.dropwizard.testing.jdbi.annotations.DBIHandle;
+import com.github.arteam.dropwizard.testing.jdbi.annotations.DBIInstance;
+import com.github.arteam.dropwizard.testing.jdbi.annotations.TestedDao;
+import com.github.arteam.dropwizard.testing.jdbi.annotations.TestedSqlObject;
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
 

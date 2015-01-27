@@ -1,5 +1,7 @@
 package com.github.arteam.dropwizard.testing.jdbi;
 
+import com.github.arteam.dropwizard.testing.jdbi.annotations.DBIHandle;
+import com.github.arteam.dropwizard.testing.jdbi.annotations.TestedSqlObject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
