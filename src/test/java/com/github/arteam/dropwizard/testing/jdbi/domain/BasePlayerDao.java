@@ -1,4 +1,4 @@
-package com.github.arteam.dropwizard.testing.jdbi;
+package com.github.arteam.dropwizard.testing.jdbi.domain;
 
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
@@ -9,17 +9,17 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Date: 1/25/15
- * Time: 6:33 PM
+ * Date: 1/27/15
+ * Time: 11:03 PM
  *
  * @author Artem Prigoda
  */
-public class PlayerDao {
+public abstract class BasePlayerDao {
 
-    private DBI dbi;
+    public abstract DBI dbi();
 
     public Long createPlayer(String firstName, String lastName, Date birthDate, int height, int weight) {
-        Handle handle = dbi.open();
+        Handle handle = dbi().open();
         try {
             return handle.createStatement("insert into players(first_name, last_name, birth_date, weight, height) values" +
                     "(:first_name, :last_name, :birth_date, :weight, :height)")
@@ -36,7 +36,7 @@ public class PlayerDao {
     }
 
     public List<String> getLastNames() {
-        Handle handle = dbi.open();
+        Handle handle = dbi().open();
         try {
             return handle.createQuery("select last_name from players")
                     .map(StringMapper.FIRST)

@@ -1,4 +1,4 @@
-package com.github.arteam.dropwizard.testing.jdbi;
+package com.github.arteam.dropwizard.testing.jdbi.domain;
 
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.GetGeneratedKeys;
