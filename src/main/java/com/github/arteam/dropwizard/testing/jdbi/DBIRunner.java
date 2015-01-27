@@ -1,5 +1,6 @@
 package com.github.arteam.dropwizard.testing.jdbi;
 
+import com.github.arteam.dropwizard.testing.jdbi.annotations.DataSet;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;

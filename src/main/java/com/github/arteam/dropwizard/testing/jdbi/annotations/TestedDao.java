@@ -1,4 +1,4 @@
-package com.github.arteam.dropwizard.testing.jdbi;
+package com.github.arteam.dropwizard.testing.jdbi.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
