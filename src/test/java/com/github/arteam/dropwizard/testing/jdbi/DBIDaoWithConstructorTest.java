@@ -2,7 +2,7 @@ package com.github.arteam.dropwizard.testing.jdbi;
 
 import com.github.arteam.dropwizard.testing.jdbi.annotations.DBIHandle;
 import com.github.arteam.dropwizard.testing.jdbi.annotations.TestedDao;
-import com.github.arteam.dropwizard.testing.jdbi.domain.PlayerDao;
+import com.github.arteam.dropwizard.testing.jdbi.domain.PlayerDaoWithConstructor;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,24 +19,16 @@ import java.util.List;
  * @author Artem Prigoda
  */
 @RunWith(DBIRunner.class)
-public class DBIDaoTest {
+public class DBIDaoWithConstructorTest {
 
     @DBIHandle
     Handle handle;
 
     @TestedDao
-    PlayerDao playerDao;
-
-    private final String helloDBI = "Hello DBI!";
-
-    @Test
-    public void testHelloWorld() {
-        System.out.println("Hello world!");
-    }
+    PlayerDaoWithConstructor playerDao;
 
     @Test
     public void testInsert() throws Exception {
-        System.out.println(helloDBI);
         Long playerId = playerDao.createPlayer("Vladimir", "Tarasenko", new SimpleDateFormat("yyyy-MM-dd HH:mm:SS")
                 .parse("1991-08-05 00:00:00"), 84, 99);
         System.out.println(playerId);
@@ -47,7 +39,6 @@ public class DBIDaoTest {
         System.out.println(initials);
         Assert.assertEquals(initials, "Vladimir Tarasenko");
     }
-
 
     @Test
     public void testGetInitials() {
