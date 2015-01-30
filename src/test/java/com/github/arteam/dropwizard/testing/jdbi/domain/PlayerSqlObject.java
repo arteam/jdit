@@ -25,4 +25,10 @@ public interface PlayerSqlObject {
 
     @SqlQuery("select last_name from players")
     List<String> getLastNames();
+
+    @SqlQuery("select count(*) from players where year(birth_date) = :year")
+    int getAmountPlayersBornInYear(@Bind("year") int year);
+
+    @SqlQuery("select year(birth_date) from players")
+    public List<Integer> getBornYears();
 }
