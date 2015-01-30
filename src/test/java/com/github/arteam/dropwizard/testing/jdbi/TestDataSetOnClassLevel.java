@@ -3,12 +3,14 @@ package com.github.arteam.dropwizard.testing.jdbi;
 import com.github.arteam.dropwizard.testing.jdbi.annotations.DataSet;
 import com.github.arteam.dropwizard.testing.jdbi.annotations.TestedSqlObject;
 import com.github.arteam.dropwizard.testing.jdbi.domain.PlayerSqlObject;
+import com.google.common.collect.ImmutableSet;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Date: 1/22/15
@@ -32,11 +34,31 @@ public class TestDataSetOnClassLevel {
 
     @Test
     @DataSet("playerDao/getAmountPlayersBornInYear.sql")
-    public void testGetAmountPlayersBornInYear(){
-        List<Integer> bornYears = playerDao.getBornYears();
-        System.out.println("Born years: " + bornYears);
+    public void testGetInitialsForMultiplyPlayers(){
+        List<String> lastNames = playerDao.getLastNames();
+        System.out.println(lastNames);
+        Assert.assertEquals(lastNames, Arrays.asList("Ellis", "Seguin", "Tarasenko", "Tavares"));
+    }
 
+    @Test
+    @DataSet("playerDao/getAmountPlayersBornInYear.sql")
+    public void testGetAmountPlayersBornInYear() {
         int amount = playerDao.getAmountPlayersBornInYear(1991);
         Assert.assertEquals(amount, 2);
+    }
+
+    @Test
+    @DataSet("playerDao/getAmountPlayersBornInYear.sql")
+    public void testBornYearsForMultiplyPlayers() {
+        Set<Integer> bornYears = playerDao.getBornYears();
+        System.out.println(bornYears);
+        Assert.assertEquals(bornYears, ImmutableSet.of(1990, 1991, 1992));
+    }
+
+    @Test
+    public void testBornYearsForSinglePlayer() {
+        Set<Integer> bornYears = playerDao.getBornYears();
+        System.out.println(bornYears);
+        Assert.assertEquals(bornYears, ImmutableSet.of(1991));
     }
 }
