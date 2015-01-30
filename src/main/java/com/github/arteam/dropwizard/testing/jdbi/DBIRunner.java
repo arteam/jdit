@@ -24,8 +24,11 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
 
     private TestObjectsInjector injector;
 
+    private DataSet classLevelDataSet;
+
     public DBIRunner(Class<?> klass) throws InitializationError {
         super(klass);
+        classLevelDataSet = klass.getAnnotation(DataSet.class);
     }
 
     @Override
@@ -61,9 +64,10 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                DataSet dataSet = method.getAnnotation(DataSet.class);
-                if (dataSet != null) {
-                    String scriptLocation = dataSet.value();
+                DataSet methodDataSet = method.getAnnotation(DataSet.class);
+                DataSet actualDataSet = methodDataSet != null ? methodDataSet : classLevelDataSet;
+                if (actualDataSet != null) {
+                    String scriptLocation = actualDataSet.value();
                     dataMigration.executeScript(handle, scriptLocation);
                 }
                 try {
