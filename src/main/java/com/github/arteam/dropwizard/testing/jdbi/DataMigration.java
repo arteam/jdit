@@ -6,11 +6,21 @@ class DataMigration {
 
     private static final String SCHEMA_LOCATION = "schema.sql";
 
-    public int[] migrateSchema(Handle handle) {
-        return executeScript(handle, SCHEMA_LOCATION);
+    private final Handle handle;
+
+    DataMigration(Handle handle) {
+        this.handle = handle;
     }
 
-    public int[] executeScript(Handle handle, String scriptLocation){
+    public int[] migrateSchema() {
+        return executeScript(SCHEMA_LOCATION);
+    }
+
+    public int[] executeScript(String scriptLocation) {
         return handle.createScript(scriptLocation).execute();
+    }
+
+    public void sweepData() {
+        handle.execute("TRUNCATE SCHEMA public AND COMMIT");
     }
 }
