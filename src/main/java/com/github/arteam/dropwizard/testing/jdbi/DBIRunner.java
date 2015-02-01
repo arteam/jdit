@@ -1,6 +1,5 @@
 package com.github.arteam.dropwizard.testing.jdbi;
 
-import com.github.arteam.dropwizard.testing.jdbi.annotations.DataSet;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
@@ -17,18 +16,12 @@ import org.skife.jdbi.v2.Handle;
  */
 public class DBIRunner extends BlockJUnit4ClassRunner {
 
-    private static DataMigration dataMigration = new DataMigration();
-
-    private DBI dbi;
-    private Handle handle;
-
+    private DataMigration dataMigration;
     private TestObjectsInjector injector;
-
-    private DataSet classLevelDataSet;
+    private DataSetInjector dataSetInjector;
 
     public DBIRunner(Class<?> klass) throws InitializationError {
         super(klass);
-        classLevelDataSet = klass.getAnnotation(DataSet.class);
     }
 
     @Override
@@ -44,12 +37,14 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                dbi = DBIContext.createDBI();
-                handle = dbi.open();
+                DBI dbi = DBIContext.createDBI();
+                Handle handle = dbi.open();
 
                 injector = new TestObjectsInjector(dbi, handle);
+                dataMigration = new DataMigration(handle);
+                dataSetInjector = new DataSetInjector(dataMigration);
                 try {
-                    dataMigration.migrateSchema(handle);
+                    dataMigration.migrateSchema();
                     statement.evaluate();
                 } finally {
                     handle.close();
@@ -64,16 +59,11 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                DataSet methodDataSet = method.getAnnotation(DataSet.class);
-                DataSet actualDataSet = methodDataSet != null ? methodDataSet : classLevelDataSet;
-                if (actualDataSet != null) {
-                    String scriptLocation = actualDataSet.value();
-                    dataMigration.executeScript(handle, scriptLocation);
-                }
                 try {
+                    dataSetInjector.injectData(method.getMethod());
                     statement.evaluate();
                 } finally {
-                    handle.execute("TRUNCATE SCHEMA public AND COMMIT");
+                    dataMigration.sweepData();
                 }
             }
         };
