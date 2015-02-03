@@ -28,44 +28,62 @@ import java.util.Properties;
 public class DBIContext {
 
     public static final Logger LOG = (Logger) LoggerFactory.getLogger(DBI.class);
+
     private static final String PROPERTIES_LOCATION = "/jdbi-testing.properties";
-    private static DBI dbi;
+    private static final String DEFAULT_SCHEMA_LOCATION = "schema.sql";
+    private static final Holder INSTANCE = new Holder();
 
-    private DBIContext() {
-    }
+    private static class Holder {
 
-    private static DBI createDBI() {
-        Properties properties = new Properties();
-        try (InputStream stream = DBIContext.class.getResourceAsStream(PROPERTIES_LOCATION)) {
-            properties.load(stream);
-        } catch (IOException e) {
-            throw new IllegalStateException("Unable load properties from " + PROPERTIES_LOCATION, e);
+        private DBI dbi;
+        private Properties properties;
+
+        private Holder() {
+            properties = loadProperties();
+            dbi = createDBI();
+            migrateSchema();
         }
 
-        DBI dbi = new DBI(properties.getProperty("db.url"), properties.getProperty("db.username"),
-                properties.getProperty("db.password"));
+        private Properties loadProperties() {
+            Properties properties = new Properties();
+            try (InputStream stream = DBIContext.class.getResourceAsStream(PROPERTIES_LOCATION)) {
+                properties.load(stream);
+            } catch (IOException e) {
+                throw new IllegalStateException("Unable load properties from " + PROPERTIES_LOCATION, e);
+            }
+            return properties;
+        }
 
-        dbi.setSQLLog(new LogbackLog(LOG, Level.INFO));
-        dbi.setStatementRewriter(new NamePrependingStatementRewriter(new ColonPrefixNamedParamStatementRewriter()));
-        dbi.registerArgumentFactory(new OptionalArgumentFactory(null));
-        dbi.registerContainerFactory(new ImmutableListContainerFactory());
-        dbi.registerContainerFactory(new ImmutableSetContainerFactory());
-        dbi.registerContainerFactory(new OptionalContainerFactory());
-        dbi.registerArgumentFactory(new JodaDateTimeArgumentFactory());
-        dbi.registerMapper(new JodaDateTimeMapper());
-        return dbi;
-    }
+        private DBI createDBI() {
+            DBI dbi = new DBI(properties.getProperty("db.url"), properties.getProperty("db.username"),
+                    properties.getProperty("db.password"));
 
-    public static synchronized DBI getDBI() {
-        if (dbi == null) {
-            dbi = createDBI();
-            try (Handle h = dbi.open()) {
-                new DataMigration(h).migrateSchema();
+            dbi.setSQLLog(new LogbackLog(LOG, Level.INFO));
+            dbi.setStatementRewriter(new NamePrependingStatementRewriter(new ColonPrefixNamedParamStatementRewriter()));
+            dbi.registerArgumentFactory(new OptionalArgumentFactory(null));
+            dbi.registerContainerFactory(new ImmutableListContainerFactory());
+            dbi.registerContainerFactory(new ImmutableSetContainerFactory());
+            dbi.registerContainerFactory(new OptionalContainerFactory());
+            dbi.registerArgumentFactory(new JodaDateTimeArgumentFactory());
+            dbi.registerMapper(new JodaDateTimeMapper());
+            return dbi;
+        }
+
+        public void migrateSchema() {
+            String property = properties.getProperty("schema.migration.enabled");
+            if (property == null || Boolean.parseBoolean(property)) {
+                try (Handle handle = dbi.open()) {
+                    String schemaLocation = properties.getProperty("schema.migration.location");
+                    if (schemaLocation == null) {
+                        schemaLocation = DEFAULT_SCHEMA_LOCATION;
+                    }
+                    new DataMigration(handle).executeScript(schemaLocation);
+                }
             }
         }
-        return dbi;
     }
 
-
+    public static DBI getDBI() {
+        return INSTANCE.dbi;
+    }
 }
-
