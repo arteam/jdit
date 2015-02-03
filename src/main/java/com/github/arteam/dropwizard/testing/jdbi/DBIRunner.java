@@ -37,14 +37,13 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                DBI dbi = DBIContext.createDBI();
+                DBI dbi = DBIContext.getDBI();
                 Handle handle = dbi.open();
 
                 injector = new TestObjectsInjector(dbi, handle);
                 dataMigration = new DataMigration(handle);
                 dataSetInjector = new DataSetInjector(dataMigration);
                 try {
-                    dataMigration.migrateSchema();
                     statement.evaluate();
                 } finally {
                     handle.close();
