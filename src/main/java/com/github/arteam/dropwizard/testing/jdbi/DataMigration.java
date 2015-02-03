@@ -15,6 +15,6 @@ class DataMigration {
     }
 
     public void sweepData() {
-        handle.execute("TRUNCATE SCHEMA public AND COMMIT");
+        handle.execute("TRUNCATE SCHEMA public RESTART IDENTITY AND COMMIT");
     }
 }
