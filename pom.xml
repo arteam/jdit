@@ -6,7 +6,7 @@
 
     <groupId>com.github.arteam</groupId>
     <artifactId>dropwizard-jdbi-testing</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1-rc1</version>
 
     <name>Dropwizard JDBI Test Helpers</name>
 
