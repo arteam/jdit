@@ -11,7 +11,9 @@ class DataMigration {
     }
 
     public int[] executeScript(String scriptLocation) {
-        return handle.createScript(scriptLocation).execute();
+        String correctLocation = !scriptLocation.startsWith("/") ?
+                scriptLocation : scriptLocation.substring(1);
+        return handle.createScript(correctLocation).execute();
     }
 
     public void sweepData() {

@@ -19,7 +19,7 @@ import java.util.Set;
  * @author Artem Prigoda
  */
 @RunWith(DBIRunner.class)
-@DataSet("playerDao/getInitials.sql")
+@DataSet("/playerDao/getInitials.sql")
 public class TestDataSetOnClassLevel {
 
     @TestedSqlObject
