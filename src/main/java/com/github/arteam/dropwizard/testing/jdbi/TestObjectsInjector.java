@@ -77,7 +77,8 @@ public class TestObjectsInjector {
     }
 
     private void handleDbiSqlObject(Object test, Field field) throws IllegalAccessException {
-        if (!field.getType().isInterface()) {
+        if (!(field.getType().isInterface() ||
+                Modifier.isAbstract(field.getType().getModifiers()))) {
             throw new IllegalArgumentException("Unable inject a DBI SQL object to a field with type '"
                     + field.getType() + "'");
         }
