@@ -3,14 +3,9 @@ package com.github.arteam.dropwizard.testing.jdbi.domain;
 import com.github.arteam.dropwizard.testing.jdbi.domain.entity.Division;
 import com.github.arteam.dropwizard.testing.jdbi.domain.entity.Player;
 import com.github.arteam.dropwizard.testing.jdbi.domain.entity.Team;
-import com.google.common.base.Optional;
-import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.sqlobject.*;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
-import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -19,7 +14,7 @@ import java.util.List;
  *
  * @author Artem Prigoda
  */
-@RegisterMapper(TeamSqlObject.PlayerMapper.class)
+@RegisterMapper(PlayerSqlObject.PlayerMapper.class)
 public abstract class TeamSqlObject {
 
     @CreateSqlObject
@@ -47,11 +42,4 @@ public abstract class TeamSqlObject {
             "where t.name = :team_name")
     public abstract List<Player> getPlayers(@Bind("team_name") String teamName);
 
-    public static class PlayerMapper implements ResultSetMapper<Player> {
-        @Override
-        public Player map(int index, ResultSet r, StatementContext ctx) throws SQLException {
-            return new Player(Optional.of(r.getLong("id")), r.getString("first_name"), r.getString("last_name"),
-                    r.getTimestamp("birth_date"), r.getInt("height"), r.getInt("weight"));
-        }
-    }
 }
