@@ -37,7 +37,7 @@ public class TestDataSetOnClassLevel {
     public void testGetInitialsForMultiplyPlayers(){
         List<String> lastNames = playerDao.getLastNames();
         System.out.println(lastNames);
-        Assert.assertEquals(lastNames, Arrays.asList("Ellis", "Seguin", "Tarasenko", "Tavares"));
+        Assert.assertEquals(lastNames, Arrays.asList("Ellis", "Rattie", "Seguin", "Tarasenko", "Tavares"));
     }
 
     @Test
@@ -52,7 +52,7 @@ public class TestDataSetOnClassLevel {
     public void testBornYearsForMultiplyPlayers() {
         Set<Integer> bornYears = playerDao.getBornYears();
         System.out.println(bornYears);
-        Assert.assertEquals(bornYears, ImmutableSet.of(1990, 1991, 1992));
+        Assert.assertEquals(bornYears, ImmutableSet.of(1990, 1991, 1992, 1993));
     }
 
     @Test
