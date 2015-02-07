@@ -17,10 +17,11 @@ public class Player {
     public final String firstName;
     public final String lastName;
     public final Date birthDate;
-    public final int height;
-    public final int weight;
+    public final Optional<Integer> height;
+    public final Optional<Integer> weight;
 
-    public Player(Optional<Long> id, String firstName, String lastName, Date birthDate, int height, int weight) {
+    public Player(Optional<Long> id, String firstName, String lastName, Date birthDate,
+                  Optional<Integer> height, Optional<Integer> weight) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -30,7 +31,7 @@ public class Player {
     }
 
     public Player(String firstName, String lastName, Date birthDate, int height, int weight) {
-        this(Optional.<Long>absent(), firstName, lastName, birthDate, height, weight);
+        this(Optional.<Long>absent(), firstName, lastName, birthDate, Optional.of(height), Optional.of(weight));
     }
 
     @Override

@@ -33,7 +33,7 @@ public class TestDataSetOnClassLevel {
     }
 
     @Test
-    @DataSet("playerDao/getAmountPlayersBornInYear.sql")
+    @DataSet("playerDao/players.sql")
     public void testGetInitialsForMultiplyPlayers(){
         List<String> lastNames = playerDao.getLastNames();
         System.out.println(lastNames);
@@ -41,14 +41,14 @@ public class TestDataSetOnClassLevel {
     }
 
     @Test
-    @DataSet("playerDao/getAmountPlayersBornInYear.sql")
+    @DataSet("playerDao/players.sql")
     public void testGetAmountPlayersBornInYear() {
         int amount = playerDao.getAmountPlayersBornInYear(1991);
         Assert.assertEquals(amount, 2);
     }
 
     @Test
-    @DataSet("playerDao/getAmountPlayersBornInYear.sql")
+    @DataSet("playerDao/players.sql")
     public void testBornYearsForMultiplyPlayers() {
         Set<Integer> bornYears = playerDao.getBornYears();
         System.out.println(bornYears);
