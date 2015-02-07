@@ -15,6 +15,9 @@ import java.lang.reflect.Modifier;
 /**
  * Date: 1/25/15
  * Time: 11:56 PM
+ * <p/>
+ * Component for injecting test instances (DBI, handles, SQLObjects, DBI DAO)
+ * to the fields with corresponding annotations in the test
  *
  * @author Artem Prigoda
  */
@@ -28,7 +31,14 @@ public class TestObjectsInjector {
         this.handle = handle;
     }
 
-    public void injectTestedObjects(Object test) throws IllegalAccessException {
+    /**
+     * Inject test instances to the test
+     * Search the test instance for field with annotations and inject test objects
+     *
+     * @param test current test
+     * @throws IllegalAccessException reflection error
+     */
+    public void injectTestedInstances(Object test) throws IllegalAccessException {
         Field[] fields = test.getClass().getDeclaredFields();
         if (fields == null) {
             return;
@@ -52,6 +62,13 @@ public class TestObjectsInjector {
         }
     }
 
+    /**
+     * Inject a DBI handle to a field with {@link DBIHandle} annotation
+     *
+     * @param test  current test
+     * @param field current field
+     * @throws IllegalAccessException reflection error
+     */
     private void handleDbiHandle(Object test, Field field) throws IllegalAccessException {
         if (!field.getType().equals(Handle.class)) {
             throw new IllegalArgumentException("Unable inject a DBI handle to a " +
@@ -64,6 +81,13 @@ public class TestObjectsInjector {
         field.set(test, handle);
     }
 
+    /**
+     * Inject a DBI instance to a field with {@link DBIInstance} annotation
+     *
+     * @param test  current test
+     * @param field current field
+     * @throws IllegalAccessException reflection error
+     */
     private void handleDbiInstance(Object test, Field field) throws IllegalAccessException {
         if (!field.getType().equals(DBI.class)) {
             throw new IllegalArgumentException("Unable inject a DBI instance to " +
@@ -76,6 +100,14 @@ public class TestObjectsInjector {
         field.set(test, dbi);
     }
 
+    /**
+     * Create and inject a new DBI SQL Object to a field
+     * with {@link TestedSqlObject} annotation
+     *
+     * @param test  current test
+     * @param field current field
+     * @throws IllegalAccessException reflection error
+     */
     private void handleDbiSqlObject(Object test, Field field) throws IllegalAccessException {
         if (!field.getType().isInterface() && !Modifier.isAbstract(field.getType().getModifiers())) {
             throw new IllegalArgumentException("Unable inject a DBI SQL object to a field with type '"
@@ -88,61 +120,70 @@ public class TestObjectsInjector {
         field.set(test, dbi.onDemand(field.getType()));
     }
 
+    /**
+     * Create a inject a DBI DAO instance to a field
+     * with {@link TestedDao}  annotation
+     * <p/>
+     * The DAO should provide a default constructor or a constructor
+     * that accepts a {@link DBI} as the single parameter
+     *
+     * @param test  current test
+     * @param field current field
+     * @throws IllegalAccessException reflection error
+     */
     private void handleDbiDao(Object test, Field field) throws IllegalAccessException {
         if (Modifier.isStatic(field.getModifiers())) {
             throw new IllegalArgumentException("Unable inject a DBI DAO to a static field");
         }
 
-        Object dbiDao;
+        field.setAccessible(true);
+        field.set(test, createDBIDao(field));
+    }
 
+    private Object createDBIDao(Field field) throws IllegalAccessException {
+        // Find appropriate constructors
         Constructor<?> defaultConstructor = null;
-        Constructor<?> constructorWithParameters = null;
-        Constructor<?>[] constructors = field.getType().getDeclaredConstructors();
-        for (Constructor<?> constructor : constructors) {
+        for (Constructor<?> constructor : field.getType().getDeclaredConstructors()) {
             Class<?>[] parameterTypes = constructor.getParameterTypes();
             if (parameterTypes.length == 1 && parameterTypes[0].equals(DBI.class)) {
-                constructorWithParameters = constructor;
+                // If a constructor with a DBI is provided, just invoke it
+                try {
+                    constructor.setAccessible(true);
+                    return constructor.newInstance(dbi);
+                } catch (Exception e) {
+                    throw new RuntimeException("Unable to create an instance of class '"
+                            + field.getDeclaringClass() + "'", e);
+                }
             } else if (parameterTypes.length == 0) {
                 defaultConstructor = constructor;
             }
         }
-        if (constructorWithParameters != null) {
-            constructorWithParameters.setAccessible(true);
-            try {
-                dbiDao = constructorWithParameters.newInstance(dbi);
-            } catch (Exception e) {
-                throw new RuntimeException("Unable to create an instance of class '"
-                        + field.getClass() + "'", e);
-            }
-        } else if (defaultConstructor != null) {
-            defaultConstructor.setAccessible(true);
-            try {
-                dbiDao = defaultConstructor.newInstance();
-            } catch (Exception e) {
-                throw new RuntimeException("Unable to create an instance of class '"
-                        + field.getClass() + "'", e);
-            }
-            Field[] classFields = field.getType().getDeclaredFields();
-            boolean dbiIsSet = false;
-            if (classFields != null) {
-                for (Field classField : classFields) {
-                    if (classField.getType().equals(DBI.class)) {
-                        classField.setAccessible(true);
-                        classField.set(dbiDao, dbi);
-                        dbiIsSet = true;
-                        break;
-                    }
-                }
-            }
-            if (!dbiIsSet) {
-                throw new IllegalStateException("Unable find a field with type DBI");
-            }
-        } else {
+
+
+        if (defaultConstructor == null) {
+            // No eligible constructor is provided
             throw new IllegalStateException("Unable find a constructor for class '"
                     + field.getDeclaringClass() + "'");
         }
+        // A default constructor is provided.
+        // Invoke it, find a DBI field and set a DBI context to it
+        Object dbiDao;
+        defaultConstructor.setAccessible(true);
+        try {
+            dbiDao = defaultConstructor.newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to create an instance of class '"
+                    + field.getDeclaringClass() + "'", e);
+        }
 
-        field.setAccessible(true);
-        field.set(test, dbiDao);
+        for (Field classField : field.getType().getDeclaredFields()) {
+            if (classField.getType().equals(DBI.class)) {
+                classField.setAccessible(true);
+                classField.set(dbiDao, dbi);
+                return dbiDao;
+            }
+        }
+
+        throw new IllegalStateException("Unable find a field with type DBI");
     }
 }

@@ -27,7 +27,7 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
     @Override
     protected Object createTest() throws Exception {
         Object test = super.createTest();
-        injector.injectTestedObjects(test);
+        injector.injectTestedInstances(test);
         return test;
     }
 
