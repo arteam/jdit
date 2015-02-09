@@ -39,6 +39,7 @@ public class TestObjectsInjector {
      * @throws IllegalAccessException reflection error
      */
     public void injectTestedInstances(Object test) throws IllegalAccessException {
+        // TODO Cache reflection information
         Field[] fields = test.getClass().getDeclaredFields();
         if (fields == null) {
             return;
