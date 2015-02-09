@@ -11,7 +11,17 @@ import org.skife.jdbi.v2.Handle;
 /**
  * Date: 1/22/15
  * Time: 8:55 PM
- *
+ * <p/>
+ * A tests runner that:
+ * <ul>
+ * <li>Injects DBI related tested instances to the tests.
+ * <p/>
+ * Supports {@link Handle}, {@link DBI}, SQLObject and DBI DAO.</li>
+ * <li>Injects data to the DB from a script for a specific
+ * method or a test</li>
+ * <li>Sweeps data from the DB after every tests, so every
+ * test starts with an empty schema</li>
+ * </ul>
  * @author Artem Prigoda
  */
 public class DBIRunner extends BlockJUnit4ClassRunner {
@@ -27,6 +37,7 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
     @Override
     protected Object createTest() throws Exception {
         Object test = super.createTest();
+        // Now we can inject tested instances to the current test
         injector.injectTestedInstances(test);
         return test;
     }
@@ -37,16 +48,13 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
+                // Open a new handle for every testIt affords to avoid creating
+                // a static state that makes tests more independent
                 DBI dbi = DBIContext.getDBI();
-                Handle handle = dbi.open();
-
-                injector = new TestObjectsInjector(dbi, handle);
-                dataMigration = new DataMigration(handle);
-                dataSetInjector = new DataSetInjector(dataMigration);
-                try {
+                try (Handle handle = dbi.open()) {
+                    injector = new TestObjectsInjector(dbi, handle);
+                    dataSetInjector = new DataSetInjector(dataMigration = new DataMigration(handle));
                     statement.evaluate();
-                } finally {
-                    handle.close();
                 }
             }
         };
@@ -62,6 +70,7 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
                     dataSetInjector.injectData(method.getMethod());
                     statement.evaluate();
                 } finally {
+                    // Sweep event if there is an error during injecting data
                     dataMigration.sweepData();
                 }
             }
