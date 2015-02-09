@@ -118,7 +118,7 @@ public class TestObjectsInjector {
             throw new IllegalArgumentException("Unable inject a DBI sql object to a static field");
         }
         field.setAccessible(true);
-        field.set(test, dbi.onDemand(field.getType()));
+        field.set(test, handle.attach(field.getType()));
     }
 
     /**
