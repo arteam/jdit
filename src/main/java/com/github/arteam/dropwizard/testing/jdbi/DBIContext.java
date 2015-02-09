@@ -22,28 +22,46 @@ import java.util.Properties;
 /**
  * Date: 1/18/15
  * Time: 3:11 PM
+ * <p/>
+ * The current database context.
+ * It's responsible for maintaining an active DB with a schema during the run of the tests.
+ * <ul>
+ * <li>The DB is lazily created at the first invocation</li>
+ * <li>A {@link DBI} instance is created according to DB connection params</li>
+ * <li>The instance is configured in similar way as in {@link io.dropwizard.jdbi.DBIFactory}
+ * with some differences (SQL queries at INFO level, no metrics and health checks)
+ * </li>
+ * <li>The database schema is migrated (if enabled)</li>
+ * </ul>
  *
  * @author Artem Prigoda
  */
 public class DBIContext {
 
-    public static final Logger LOG = (Logger) LoggerFactory.getLogger(DBI.class);
-
     private static final String PROPERTIES_LOCATION = "/jdbi-testing.properties";
     private static final String DEFAULT_SCHEMA_LOCATION = "schema.sql";
+
+    private static final Logger LOG = (Logger) LoggerFactory.getLogger(DBI.class);
     private static final Holder INSTANCE = new Holder();
 
+    /**
+     * Holder idiom for creating lazy singletons
+     */
     private static class Holder {
 
         private DBI dbi;
-        private Properties properties;
 
         private Holder() {
-            properties = loadProperties();
-            dbi = createDBI();
-            migrateSchema();
+            Properties properties = loadProperties();
+            dbi = createDBI(properties);
+            migrateSchema(properties);
         }
 
+        /**
+         * Load a properties file from the classpath
+         *
+         * @return DB configuration as {@link Properties}
+         */
         private Properties loadProperties() {
             Properties properties = new Properties();
             try (InputStream stream = DBIContext.class.getResourceAsStream(PROPERTIES_LOCATION)) {
@@ -54,7 +72,14 @@ public class DBIContext {
             return properties;
         }
 
-        private DBI createDBI() {
+        /**
+         * Create and configure a {@link DBI} instance from the properties
+         * The DB is created during the first connection.
+         *
+         * @param properties configuration of DB
+         * @return a new {@link DBI} instance for performing database access
+         */
+        private DBI createDBI(Properties properties) {
             DBI dbi = new DBI(properties.getProperty("db.url"), properties.getProperty("db.username"),
                     properties.getProperty("db.password"));
 
@@ -69,7 +94,12 @@ public class DBIContext {
             return dbi;
         }
 
-        public void migrateSchema() {
+        /**
+         * Migrate the DB schema
+         *
+         * @param properties configuration of schema migration
+         */
+        public void migrateSchema(Properties properties) {
             String property = properties.getProperty("schema.migration.enabled");
             if (property == null || Boolean.parseBoolean(property)) {
                 try (Handle handle = dbi.open()) {
@@ -83,6 +113,11 @@ public class DBIContext {
         }
     }
 
+    /**
+     * Get the current {@link DBI} instance
+     *
+     * @return configured {@link DBI} instance to an active DB
+     */
     public static DBI getDBI() {
         return INSTANCE.dbi;
     }
