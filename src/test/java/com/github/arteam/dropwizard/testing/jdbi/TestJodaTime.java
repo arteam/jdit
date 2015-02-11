@@ -5,6 +5,7 @@ import com.github.arteam.dropwizard.testing.jdbi.annotations.TestedSqlObject;
 import com.github.arteam.dropwizard.testing.jdbi.domain.PlayerSqlObject;
 import com.github.arteam.dropwizard.testing.jdbi.domain.entity.Player;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.junit.Assert;
 import org.junit.Test;
@@ -22,17 +23,28 @@ import java.util.List;
 @DataSet("playerDao/players.sql")
 public class TestJodaTime {
 
+    private static final DateTimeFormatter FMT = ISODateTimeFormat.date().withZoneUTC();
+
     @TestedSqlObject
     PlayerSqlObject playerDao;
 
     @Test
     public void testDateTimeParameter() {
-        DateTime dateTime = ISODateTimeFormat.date().parseDateTime("1991-04-01");
+        DateTime dateTime = FMT.parseDateTime("1991-04-01");
         List<Player> players = playerDao.getPlayersBornAfter(dateTime);
         System.out.println(players);
         Assert.assertEquals(players.size(), 3);
         for (Player player : players) {
             Assert.assertTrue(player.birthDate.after(dateTime.toDate()));
         }
+    }
+
+    @Test
+    public void testJodaTimeResponse() {
+        DateTime birthDate = playerDao.getPlayerBirthDate("Vladimir", "Tarasenko");
+        System.out.println(birthDate);
+        Assert.assertEquals(1991, birthDate.getYear());
+        Assert.assertEquals(8, birthDate.getMonthOfYear());
+        Assert.assertEquals(5, birthDate.getDayOfMonth());
     }
 }
