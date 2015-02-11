@@ -2,6 +2,7 @@ package com.github.arteam.dropwizard.testing.jdbi.domain;
 
 import com.github.arteam.dropwizard.testing.jdbi.domain.entity.Player;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableSet;
 import org.joda.time.DateTime;
 import org.skife.jdbi.v2.SQLStatement;
 import org.skife.jdbi.v2.StatementContext;
@@ -58,6 +59,9 @@ public interface PlayerSqlObject {
 
     @SqlQuery("select * from players where weight=:weight or (:weight is null and weight is null)")
     List<Player> getPlayersByWeight(@Bind("weight") Optional<Integer> weight);
+
+    @SqlQuery("select first_name from players")
+    ImmutableSet<String> getFirstNames();
 
     public static class PlayerBinder implements Binder<Bind, Player> {
 
