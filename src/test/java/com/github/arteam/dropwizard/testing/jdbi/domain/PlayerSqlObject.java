@@ -2,6 +2,7 @@ package com.github.arteam.dropwizard.testing.jdbi.domain;
 
 import com.github.arteam.dropwizard.testing.jdbi.domain.entity.Player;
 import com.google.common.base.Optional;
+import org.joda.time.DateTime;
 import org.skife.jdbi.v2.SQLStatement;
 import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.sqlobject.*;
@@ -41,6 +42,9 @@ public interface PlayerSqlObject {
 
     @SqlQuery("select count(*) from players where year(birth_date) = :year")
     int getAmountPlayersBornInYear(@Bind("year") int year);
+
+    @SqlQuery("select * from players where birth_date > :date")
+    List<Player> getPlayersBornAfter(@Bind("date") DateTime date);
 
     @SqlQuery("select distinct year(birth_date) player_year from players order by player_year")
     Set<Integer> getBornYears();
