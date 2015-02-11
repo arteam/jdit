@@ -42,8 +42,8 @@ public class Player {
                 .add("firstName", firstName)
                 .add("lastName", lastName)
                 .add("birthDate", birthDate)
-                .add("height", height)
-                .add("weight", weight)
+                .add("height", height.orNull())
+                .add("weight", weight.orNull())
                 .toString();
     }
 }
