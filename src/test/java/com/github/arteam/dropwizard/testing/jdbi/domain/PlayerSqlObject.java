@@ -46,6 +46,9 @@ public interface PlayerSqlObject {
     @SqlQuery("select * from players where birth_date > :date")
     List<Player> getPlayersBornAfter(@Bind("date") DateTime date);
 
+    @SqlQuery("select birth_date from players where first_name=:first_name and last_name=:last_name")
+    DateTime getPlayerBirthDate(@Bind("first_name") String firstName, @Bind("last_name") String lastName);
+
     @SqlQuery("select distinct year(birth_date) player_year from players order by player_year")
     Set<Integer> getBornYears();
 
