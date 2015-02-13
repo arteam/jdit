@@ -11,8 +11,6 @@ create table divisions(
   name varchar(32) primary key
 );
 
-insert into divisions values 'PACIFIC', 'CENTRAL', 'METROPOLITAN', 'ATLANTIC';
-
 create table teams(
    id  identity,
    name varchar(128) not null,
