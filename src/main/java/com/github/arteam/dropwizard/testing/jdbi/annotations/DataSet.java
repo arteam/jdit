@@ -8,7 +8,9 @@ import java.lang.annotation.Target;
 /**
  * Date: 1/26/15
  * Time: 12:02 AM
- * Perform a script before a test method
+ * <p/>
+ * Annotation for marking that a data set should be
+ * loaded from a location before the method execution
  *
  * @author Artem Prigoda
  */
@@ -16,5 +18,12 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD, ElementType.TYPE})
 public @interface DataSet {
 
+    /**
+     * Location of the data set file. It should not start with "/".
+     * For example, "dao/players.sql" is the correct way
+     * of defining the file location
+     *
+     * @return the location of the data set file
+     */
     String value();
 }
