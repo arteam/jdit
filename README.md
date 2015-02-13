@@ -30,3 +30,62 @@ It affords to tests to be independent and don't impact to each other.
 * Supports executing of an arbitrary SQL script before every test
 (or set of tests) by specifying an annotation on a test method or
 test class.
+
+## Getting started
+
+### Add a Maven dependency
+
+
+```xml
+<dependency>
+    <groupId>com.github.arteam</groupId>
+    <artifactId>dropwizard-jdbi-testing</artifactId>
+    <version>0.1-rc1</version>
+</dependency>
+```
+
+### Define a simple SQL Object to test
+
+
+````java
+public interface PlayerDao {
+
+    @GetGeneratedKeys
+    @SqlUpdate("insert into players(first_name, last_name, birth_date, weight, height)"
+            + " values (:first_name, :last_name, :birth_date, :weight, :height)")
+    Long createPlayer(@Bind("first_name") String firstName,
+                      @Bind("last_name") String lastName,
+                      @Bind("birth_date") Date birthDate,
+                      @Bind("height") int height, @Bind("weight") int weight);
+
+    @SqlQuery("select last_name from players order by last_name")
+    List<String> getPlayerLastNames();
+
+    @SqlQuery("select count(*) from players where year(birth_date) = :year")
+    int getAmountPlayersBornInYear(@Bind("year") int year);
+
+    @SqlQuery("select * from players where first_name=:first_name and " +
+              "last_name=:last_name")
+    @SingleValueResult
+    Optional<Player> findPlayer(@Bind("first_name") String firstName,
+                                @Bind("last_name") String lastName);
+}
+````
+
+### Create a test resources directory
+
+Create a test resource directory. Say, on a path '*src/test/resources*'.
+
+Set it in Maven as a test resources directory in the *build* section:
+
+````xml
+<build>
+    <testResources>
+        <testResource>
+           <directory>src/test/resources</directory>
+        </testResource>
+    </testResources>
+</build>
+````
+
+### To be continued...
