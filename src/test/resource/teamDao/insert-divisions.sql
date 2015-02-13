@@ -1,0 +1,1 @@
+insert into divisions values 'PACIFIC', 'CENTRAL', 'METROPOLITAN', 'ATLANTIC';

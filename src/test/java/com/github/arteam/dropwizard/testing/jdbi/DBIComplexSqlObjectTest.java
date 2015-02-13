@@ -1,6 +1,6 @@
 package com.github.arteam.dropwizard.testing.jdbi;
 
-import com.github.arteam.dropwizard.testing.jdbi.annotations.DBIHandle;
+import com.github.arteam.dropwizard.testing.jdbi.annotations.DataSet;
 import com.github.arteam.dropwizard.testing.jdbi.annotations.TestedSqlObject;
 import com.github.arteam.dropwizard.testing.jdbi.domain.TeamSqlObject;
 import com.github.arteam.dropwizard.testing.jdbi.domain.entity.Division;
@@ -11,7 +11,6 @@ import org.joda.time.format.ISODateTimeFormat;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.skife.jdbi.v2.Handle;
 
 import java.util.Date;
 import java.util.List;
@@ -23,10 +22,8 @@ import java.util.List;
  * @author Artem Prigoda
  */
 @RunWith(DBIRunner.class)
+@DataSet("teamDao/insert-divisions.sql")
 public class DBIComplexSqlObjectTest {
-
-    @DBIHandle
-    Handle handle;
 
     @TestedSqlObject
     TeamSqlObject teamSqlObject;
