@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.arteam</groupId>
-    <artifactId>dropwizard-jdbi-testing</artifactId>
+    <artifactId>jdit</artifactId>
     <version>0.1-rc1</version>
 
-    <name>Dropwizard JDBI Test Helpers</name>
+    <name>JDBI Dropwizard Integration Testing</name>
 
     <build>
         <plugins>
