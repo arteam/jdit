@@ -1,14 +1,14 @@
-# Dropwizard JDBI Testing
+# JDIT
 
 ## Overview
 
-*Dropwizard JDBI Testing* is a library for simplyfing of integration
+*JDIT* is a library for simplyfing of integration
 testing of [*JDBI*](http://jdbi.org/) data access objects in
 [*Dropwizard*](http://dropwizard.io/) applications.
 
 ## What it does
 
-The library does the following:
+The library does the following things:
 
 * Starts in-memory *[HSQLDB](http://hsqldb.org/)* database;
 * Creates a DBI instance with the same configuration as in 
