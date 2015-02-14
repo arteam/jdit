@@ -33,16 +33,6 @@ test class.
 
 ## Getting started
 
-### Add a Maven dependency
-
-
-```xml
-<dependency>
-    <groupId>com.github.arteam</groupId>
-    <artifactId>dropwizard-jdbi-testing</artifactId>
-    <version>0.1-rc1</version>
-</dependency>
-```
 
 ### Define a simple SQL Object to test
 
@@ -72,11 +62,24 @@ public interface PlayerDao {
 }
 ````
 
+### Add a Maven dependency
+
+
+```xml
+<dependency>
+    <groupId>com.github.arteam</groupId>
+    <artifactId>jdit</artifactId>
+    <version>0.1-rc1</version>
+</dependency>
+```
+
 ### Create a test resources directory
 
-Create a test resource directory. Say, on a path '*src/test/resources*'.
+You need to create a test resource directory to host resource.
+Let it be, say, on path '*src/test/resources*'.
 
-Set it in Maven as a test resources directory in the *build* section:
+Don't forget to set it in Maven as a test resources directory in
+*build* section:
 
 ````xml
 <build>
@@ -88,4 +91,75 @@ Set it in Maven as a test resources directory in the *build* section:
 </build>
 ````
 
-### To be continued...
+### Define a database schema
+
+Add a file with a database schema to your test resources directory.
+By default it's should have name *schema.sql*
+
+````sql
+create table players(
+    id  identity,
+    first_name varchar(128) not null,
+    last_name varchar(128) not null,
+    birth_date date not null,
+    weight int not null,
+    height int not null
+);
+````
+
+### Write a test
+
+````java
+@RunWith(DBIRunner.class)
+public class PlayerDaoTest {
+
+    @TestedSqlObject
+    PlayerDao playerDao;
+
+    @DBIHandle
+    Handle handle;
+
+    @Test
+    public void testCreatePlayer() {
+        Long playerId = playerDao.createPlayer("Vladimir", "Tarasenko", date("1991-12-13"), 184, 90);
+        List<Map<String,Object>> rows = handle.select("select * from players where id=?", playerId);
+        assertFalse(rows.isEmpty());
+
+        Map<String, Object> row = rows.get(0);
+        assertEquals(0, row.get("id"));
+        assertEquals("Vladimir", row.get("first_name"));
+        assertEquals("Tarasenko", row.get("last_name"));
+        assertEquals(date("1991-12-13"), row.get("birth_date"));
+        assertEquals(184, row.get("height"));
+        assertEquals(90, row.get("weight"));
+    }
+
+    private static Date date(String textDate) {
+        return ISODateTimeFormat.date().parseDateTime(textDate).toDate();
+    }
+}
+````
+
+You should see output something like that:
+
+````
+23:57:30.091 [main] INFO  org.skife.jdbi.v2.DBI - Handle [org.skife.jdbi.v2.BasicHandle@18cc8e9] obtained in 783 millis
+23:57:30.157 [main] INFO  org.skife.jdbi.v2.DBI - batch:[[create table players(     id  identity,     first_name varchar(128) not null,     last_name varchar(128) not null,     birth_date date not null,     weight int not null,     height int not null )]] took 3 millis
+23:57:30.158 [main] INFO  org.skife.jdbi.v2.DBI - Handle [org.skife.jdbi.v2.BasicHandle@18cc8e9] released
+23:57:30.159 [main] INFO  org.skife.jdbi.v2.DBI - Handle [org.skife.jdbi.v2.BasicHandle@3dacfa] obtained in 0 millis
+23:57:30.639 [main] INFO  org.skife.jdbi.v2.DBI - statement:[/* PlayerDao.createPlayer */ insert into players(first_name, last_name, birth_date, weight, height) values (?, ?, ?, ?, ?)] took 0 millis
+23:57:30.664 [main] INFO  org.skife.jdbi.v2.DBI - statement:[select * from players where id=?] took 0 millis
+23:57:30.676 [main] INFO  org.skife.jdbi.v2.DBI - statement:[TRUNCATE SCHEMA public RESTART IDENTITY AND COMMIT] took 0 millis
+23:57:30.679 [main] INFO  org.skife.jdbi.v2.DBI - Handle [org.skife.jdbi.v2.BasicHandle@3dacfa] released
+````
+
+Things to notice:
+* Annotation `@RunWith` is crucial.  It makes the test aware of
+a DBI context. Without it nothing will work.
+* Annotation `@TestedSqlObject` is used for marking a tested SQL object
+* Annotation `@DBIHandle` is used for obtaining a reference to a handle
+to the active database for performing queries
+* During a first invocation a schema has been migrated to the database.
+It happens only once for all tests.
+* As you see from the logs, data has been swept from the database after
+completion of the test. But the schema remained.
