@@ -163,3 +163,47 @@ to the active database for performing queries
 It happens only once for all tests.
 * As you see from the logs, data has been swept from the database after
 completion of the test. But the schema remained.
+
+### Load data before a test
+
+Write a SQL DML script that populates the DB with needed data for testing.
+
+Give it a name, say, *playerDao/players.sql* and place it into the test resources
+directory.
+
+````sql
+insert into players(first_name, last_name, birth_date, weight, height)
+values ('Vladimir','Tarasenko', '1991-12-13', 99, 184);
+insert into players(first_name, last_name, birth_date, weight, height)
+values ('Tyler','Seguin', '1992-01-30', 88, 185);
+insert into players(first_name, last_name, birth_date, weight, height)
+values ('Ryan','Ellis', '1991-01-03', 79, 176);
+insert into players(first_name, last_name, birth_date, weight, height)
+values ('John','Tavares', '1990-09-20', 93, 185);
+````
+
+Load this script before the test execution.
+
+````java
+@DataSet("playerDao/players.sql")
+@Test
+public void testGetPlayerListNames(){
+    List<String> playerLastNames = playerDao.getPlayerLastNames();
+    assertEquals(playerLastNames, ImmutableList.of("Ellis", "Seguin", "Tarasenko", "Tavares"));
+}
+````
+
+Annotation `@DataSet` is used for marking a script that should be loaded
+before a test.
+
+If you find that you reuse the same data set for different tests, consider
+to place this annotation on a class level.
+
+````java
+@RunWith(DBIRunner.class)
+@DataSet("playerDao/players.sql")
+public class PlayerDaoTest {
+````
+
+In this mode a script will be loaded for every method in the test.
+Nevertheless, this script can be overridden by a method level annotation.
