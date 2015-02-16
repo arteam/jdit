@@ -10,6 +10,13 @@
 
     <name>JDBI Dropwizard Integration Testing</name>
 
+    <properties>
+        <dropwizard.version>0.8.0-rc2</dropwizard.version>
+        <jdbi.version>2.59</jdbi.version>
+        <hsqldb.version>2.3.2</hsqldb.version>
+        <junit.version>4.12</junit.version>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
@@ -46,7 +53,7 @@
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-jdbi</artifactId>
-            <version>0.8.0-rc2</version>
+            <version>${dropwizard.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.jdbi</groupId>
@@ -58,20 +65,20 @@
         <dependency>
             <groupId>org.jdbi</groupId>
             <artifactId>jdbi</artifactId>
-            <version>2.59</version>
+            <version>${jdbi.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <version>2.3.2</version>
-            <scope>runtime</scope>
+            <scope>${hsqldb.version}</scope>
         </dependency>
 
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junit.version}</version>
         </dependency>
     </dependencies>
 
