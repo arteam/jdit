@@ -207,3 +207,10 @@ public class PlayerDaoTest {
 
 In this mode a script will be loaded for every method in the test.
 Nevertheless, this script can be overridden by a method level annotation.
+
+## Dependencies
+
+* [JDBI](http://jdbi.org/) 2.59
+* [HSQLDB](http://hsqldb.org/) 2.3.2
+* [Dropwizard](http://dropwizard.io/) 0.8-rc2
+* [JUnit](http://junit.org/) 4.12
