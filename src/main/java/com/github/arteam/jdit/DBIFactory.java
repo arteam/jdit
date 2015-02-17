@@ -13,5 +13,11 @@ import java.util.Properties;
  */
 public interface DBIFactory {
 
+    /**
+     * Create a custom DBI instance
+     *
+     * @param properties database properties (url, username, password)
+     * @return a configured DBI instance
+     */
     DBI createDBI(Properties properties);
 }
