@@ -5,6 +5,7 @@ import org.skife.jdbi.v2.Handle;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -26,7 +27,8 @@ import java.util.Properties;
  */
 public class DBIContext {
 
-    private static final String PROPERTIES_LOCATION = "/jdbi-testing.properties";
+    private static final String USER_PROPERTIES_LOCATION = "/jdbi-testing.properties";
+    private static final String DEFAULT_PROPERTIES_LOCATION = "/jdbi-testing-default.properties";
     private static final String DEFAULT_SCHEMA_LOCATION = "schema.sql";
 
     private static final Holder INSTANCE = new Holder();
@@ -51,10 +53,23 @@ public class DBIContext {
          */
         private Properties loadProperties() {
             Properties properties = new Properties();
-            try (InputStream stream = DBIContext.class.getResourceAsStream(PROPERTIES_LOCATION)) {
-                properties.load(stream);
+            Properties userProperties = new Properties();
+            try (InputStream defaultStream = DBIContext.class.getResourceAsStream(DEFAULT_PROPERTIES_LOCATION);
+                 InputStream userStream = DBIContext.class.getResourceAsStream(USER_PROPERTIES_LOCATION)) {
+                if (defaultStream != null) {
+                    properties.load(defaultStream);
+                }
+                if (userStream != null) {
+                    userProperties.load(userStream);
+                }
             } catch (IOException e) {
-                throw new IllegalStateException("Unable load properties from " + PROPERTIES_LOCATION, e);
+                throw new IllegalStateException("Unable load properties", e);
+            }
+            for (Map.Entry<Object, Object> entry : userProperties.entrySet()) {
+                properties.put(entry.getKey(), entry.getValue());
+            }
+            if (properties.isEmpty()) {
+                throw new IllegalStateException("No properties specified for JDBI Testing");
             }
             return properties;
         }
