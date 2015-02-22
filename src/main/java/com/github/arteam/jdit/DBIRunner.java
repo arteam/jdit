@@ -55,7 +55,7 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
                 // Open a new handle for every testIt affords to avoid creating
                 // a static state that makes tests more independent
                 JditProperties jditProperties = klass.getAnnotation(JditProperties.class);
-                DBI dbi = jditProperties != null ? DBIContext.getDBI(jditProperties.value()) : DBIContext.getDBI();
+                DBI dbi = jditProperties != null ? DBIContextFactory.getDBI(jditProperties.value()) : DBIContextFactory.getDBI();
                 try (Handle handle = dbi.open()) {
                     injector = new TestObjectsInjector(dbi, handle);
                     dataSetInjector = new DataSetInjector(dataMigration = new DataMigration(handle));
