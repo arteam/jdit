@@ -2,9 +2,14 @@ package com.github.arteam.jdit;
 
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Properties;
 
@@ -26,6 +31,8 @@ import java.util.Properties;
  * @author Artem Prigoda
  */
 public class DBIContext {
+
+    private static final Logger log = LoggerFactory.getLogger(DBIContext.class);
 
     private static final String USER_PROPERTIES_LOCATION = "/jdit.properties";
     private static final String DEFAULT_PROPERTIES_LOCATION = "/jdit-default.properties";
@@ -98,14 +105,43 @@ public class DBIContext {
          */
         public void migrateSchema(Properties properties) {
             String property = properties.getProperty("schema.migration.enabled");
-            if (property == null || Boolean.parseBoolean(property)) {
-                try (Handle handle = dbi.open()) {
-                    String schemaLocation = properties.getProperty("schema.migration.location");
-                    if (schemaLocation == null) {
-                        schemaLocation = DEFAULT_SCHEMA_LOCATION;
-                    }
-                    new DataMigration(handle).executeScript(schemaLocation);
+            if (property != null && !Boolean.parseBoolean(property)) {
+                return;
+            }
+            try (Handle handle = dbi.open()) {
+                String schemaLocation = properties.getProperty("schema.migration.location");
+                if (schemaLocation == null) {
+                    schemaLocation = DEFAULT_SCHEMA_LOCATION;
                 }
+                DataMigration dataMigration = new DataMigration(handle);
+
+                URL resource = getClass().getClassLoader().getResource(schemaLocation);
+                if (resource == null) {
+                    throw new IllegalArgumentException("File '" + schemaLocation + " is not exist in resources");
+                }
+                File file = new File(resource.getFile());
+                if (file.isFile()) {
+                    dataMigration.executeScript(schemaLocation);
+                } else {
+                    migrateDirectory(dataMigration, file);
+                }
+            }
+        }
+
+        private void migrateDirectory(DataMigration dataMigration, File directory) {
+            String[] childFileNames = directory.list();
+            if (childFileNames == null || childFileNames.length > 0) {
+                log.warn("Directory '" + directory + "' is empty. Migrations are not applied");
+                return;
+            }
+            Arrays.sort(childFileNames);
+            for (String childFileName : childFileNames) {
+                String childFileLocation = directory.getName() + File.separator + childFileName;
+                if (!childFileName.endsWith("sql")) {
+                    log.warn("'" + childFileLocation + "' is not an SQL script. It's ignored");
+                    continue;
+                }
+                dataMigration.executeScript(childFileLocation);
             }
         }
     }
