@@ -39,7 +39,8 @@ public abstract class TeamSqlObject {
     @SqlQuery("select * from players p " +
             "inner join roster r on r.player_id=p.id " +
             "inner join teams t on r.team_id=t.id " +
-            "where t.name = :team_name")
+            "where t.name = :team_name " +
+            "order by p.last_name")
     public abstract List<Player> getPlayers(@Bind("team_name") String teamName);
 
 }

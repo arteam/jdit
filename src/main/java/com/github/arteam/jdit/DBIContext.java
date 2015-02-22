@@ -34,8 +34,8 @@ public class DBIContext {
 
     private static final Logger log = LoggerFactory.getLogger(DBIContext.class);
 
-    private static final String USER_PROPERTIES_LOCATION = "/jdit.properties";
-    private static final String DEFAULT_PROPERTIES_LOCATION = "/jdit-default.properties";
+    private static final String USER_PROPERTIES_LOCATION = "jdit.properties";
+    private static final String DEFAULT_PROPERTIES_LOCATION = "jdit-default.properties";
     private static final String DEFAULT_SCHEMA_LOCATION = "schema.sql";
 
     private static final Holder INSTANCE = new Holder();
@@ -48,7 +48,11 @@ public class DBIContext {
         private DBI dbi;
 
         private Holder() {
-            Properties properties = loadProperties();
+            this(null);
+        }
+
+        private Holder(String customUserPropertiesLocation) {
+            Properties properties = loadProperties(customUserPropertiesLocation);
             dbi = createDBI(properties);
             migrateSchema(properties);
         }
@@ -58,11 +62,13 @@ public class DBIContext {
          *
          * @return DB configuration as {@link Properties}
          */
-        private Properties loadProperties() {
+        private Properties loadProperties(String customUserPropertiesLocation) {
             Properties properties = new Properties();
             Properties userProperties = new Properties();
-            try (InputStream defaultStream = DBIContext.class.getResourceAsStream(DEFAULT_PROPERTIES_LOCATION);
-                 InputStream userStream = DBIContext.class.getResourceAsStream(USER_PROPERTIES_LOCATION)) {
+            String userPropertiesLocations = customUserPropertiesLocation != null ? customUserPropertiesLocation :
+                    USER_PROPERTIES_LOCATION;
+            try (InputStream defaultStream = getClass().getClassLoader().getResourceAsStream(DEFAULT_PROPERTIES_LOCATION);
+                 InputStream userStream = getClass().getClassLoader().getResourceAsStream(userPropertiesLocations)) {
                 if (defaultStream != null) {
                     properties.load(defaultStream);
                 }
@@ -123,20 +129,20 @@ public class DBIContext {
                 if (file.isFile()) {
                     dataMigration.executeScript(schemaLocation);
                 } else {
-                    migrateDirectory(dataMigration, file);
+                    migrateDirectory(dataMigration, file, schemaLocation);
                 }
             }
         }
 
-        private void migrateDirectory(DataMigration dataMigration, File directory) {
+        private void migrateDirectory(DataMigration dataMigration, File directory, String schemaLocation) {
             String[] childFileNames = directory.list();
-            if (childFileNames == null || childFileNames.length > 0) {
+            if (childFileNames == null || childFileNames.length == 0) {
                 log.warn("Directory '" + directory + "' is empty. Migrations are not applied");
                 return;
             }
             Arrays.sort(childFileNames);
             for (String childFileName : childFileNames) {
-                String childFileLocation = directory.getName() + File.separator + childFileName;
+                String childFileLocation = schemaLocation + File.separator + childFileName;
                 if (!childFileName.endsWith("sql")) {
                     log.warn("'" + childFileLocation + "' is not an SQL script. It's ignored");
                     continue;
@@ -153,5 +159,9 @@ public class DBIContext {
      */
     public static DBI getDBI() {
         return INSTANCE.dbi;
+    }
+
+    public static DBI getDBI(String customUserPropertiesLocation) {
+        return new Holder(customUserPropertiesLocation).dbi;
     }
 }

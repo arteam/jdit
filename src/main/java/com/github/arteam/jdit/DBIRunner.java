@@ -1,5 +1,6 @@
 package com.github.arteam.jdit;
 
+import com.github.arteam.jdit.annotations.JditProperties;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
@@ -22,6 +23,7 @@ import org.skife.jdbi.v2.Handle;
  * <li>Sweeps data from the DB after every tests, so every
  * test starts with an empty schema</li>
  * </ul>
+ *
  * @author Artem Prigoda
  */
 public class DBIRunner extends BlockJUnit4ClassRunner {
@@ -29,9 +31,11 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
     private DataMigration dataMigration;
     private TestObjectsInjector injector;
     private DataSetInjector dataSetInjector;
+    private Class<?> klass;
 
     public DBIRunner(Class<?> klass) throws InitializationError {
         super(klass);
+        this.klass = klass;
     }
 
     @Override
@@ -50,7 +54,8 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
             public void evaluate() throws Throwable {
                 // Open a new handle for every testIt affords to avoid creating
                 // a static state that makes tests more independent
-                DBI dbi = DBIContext.getDBI();
+                JditProperties jditProperties = klass.getAnnotation(JditProperties.class);
+                DBI dbi = jditProperties != null ? DBIContext.getDBI(jditProperties.value()) : DBIContext.getDBI();
                 try (Handle handle = dbi.open()) {
                     injector = new TestObjectsInjector(dbi, handle);
                     dataSetInjector = new DataSetInjector(dataMigration = new DataMigration(handle));
