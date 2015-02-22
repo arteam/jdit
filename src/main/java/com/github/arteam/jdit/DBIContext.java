@@ -27,8 +27,8 @@ import java.util.Properties;
  */
 public class DBIContext {
 
-    private static final String USER_PROPERTIES_LOCATION = "/jdbi-testing.properties";
-    private static final String DEFAULT_PROPERTIES_LOCATION = "/jdbi-testing-default.properties";
+    private static final String USER_PROPERTIES_LOCATION = "jdit.properties";
+    private static final String DEFAULT_PROPERTIES_LOCATION = "jdit-default.properties";
     private static final String DEFAULT_SCHEMA_LOCATION = "schema.sql";
 
     private static final Holder INSTANCE = new Holder();
