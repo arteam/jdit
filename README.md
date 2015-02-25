@@ -69,7 +69,7 @@ public interface PlayerDao {
 <dependency>
     <groupId>com.github.arteam</groupId>
     <artifactId>jdit</artifactId>
-    <version>0.1-rc2</version>
+    <version>0.1-rc3</version>
 </dependency>
 ```
 
