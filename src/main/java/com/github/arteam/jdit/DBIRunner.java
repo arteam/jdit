@@ -52,8 +52,8 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                // Open a new handle for every testIt affords to avoid creating
-                // a static state that makes tests more independent
+                // Open a new handle for every test
+                // It affords to avoid creating a static state that makes tests more independent
                 JditProperties jditProperties = klass.getAnnotation(JditProperties.class);
                 DBI dbi = jditProperties != null ? DBIContextFactory.getDBI(jditProperties.value()) : DBIContextFactory.getDBI();
                 try (Handle handle = dbi.open()) {

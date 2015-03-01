@@ -19,11 +19,11 @@ import java.lang.annotation.Target;
 public @interface DataSet {
 
     /**
-     * Location of the data set file. It should not start with "/".
+     * Location of the data set files. It should not start with "/".
      * For example, "dao/players.sql" is the correct way
      * of defining the file location
      *
-     * @return the location of the data set file
+     * @return the location of the data set files
      */
-    String value();
+    String[] value();
 }
