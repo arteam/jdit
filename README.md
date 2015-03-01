@@ -208,6 +208,45 @@ public class PlayerDaoTest {
 In this mode a script will be loaded for every method in the test.
 Nevertheless, this script can be overridden by a method level annotation.
 
+## Configuration
+
+JDIT reads a configuration file the following format:
+
+````properties
+db.url=jdbc:hsqldb:mem:jdbi-testing
+db.username=sa
+db.password=
+
+schema.migration.enabled=true
+schema.migration.location=schema.sql
+
+dbi.factory=com.github.arteam.jdit.DropwizardDBIFactory
+````
+
+* _db.url_ - Database URL;
+* _db.username_ - Database username;
+* _db.password - Database password;
+* _schema.migration.enabled_ - Whether schema migration is enabled;
+* _schema.migration.location_ - Location of the database schema in
+resources;  If it's a directory, then all .sql files in the directory
+are processed as the schema;
+* _dbi.factory_ - Implementation of a factory for creating DBI instances.
+
+If you need to override this configuration, you should place the
+*jdit.properties* file in your test resources directory with needed
+changes.
+
+For example, for overriding the schema location you should create a file
+with following content:
+
+````properties
+schema.migration.location=db/migration
+````
+
+If you need to specify properties for a specific test you can do it
+with the `@JditProperties` annotation on the the test class level.
+
+
 ## Dependencies
 
 * [JDBI](http://jdbi.org/) 2.59
