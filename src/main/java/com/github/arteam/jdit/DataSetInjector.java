@@ -25,9 +25,9 @@ public class DataSetInjector {
 
     /**
      * Inject test data to a method.
-     *
+     * <p/>
      * If the method or class has {@link} DataSet annotation, data
-     * from script from the location specified in the annotation
+     * from the scripts from the locations specified in the annotation
      * will be injected to the DB
      *
      * @param method current method
@@ -37,8 +37,10 @@ public class DataSetInjector {
         DataSet methodDataSet = method.getAnnotation(DataSet.class);
         DataSet actualDataSet = methodDataSet != null ? methodDataSet : classLevelDataSet;
         if (actualDataSet != null) {
-            String scriptLocation = actualDataSet.value();
-            dataMigration.executeScript(scriptLocation);
+            String[] scriptLocations = actualDataSet.value() != null ? actualDataSet.value() : new String[]{};
+            for (String location : scriptLocations) {
+                dataMigration.executeScript(location);
+            }
         }
     }
 

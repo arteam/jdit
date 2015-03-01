@@ -1,5 +1,3 @@
-insert into divisions values 'PACIFIC', 'CENTRAL', 'METROPOLITAN', 'ATLANTIC';
-
 insert into players(id, first_name, last_name, birth_date, weight, height)
   values (18, 'Vladimir','Tarasenko', '1991-08-05', 99, 184);
 insert into players(id, first_name, last_name, birth_date, weight, height)

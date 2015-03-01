@@ -25,7 +25,7 @@ public class TestDirectoryMigration {
     TeamSqlObject teamSqlObject;
 
     @Test
-    @DataSet("teamDao/teams-and-players.sql")
+    @DataSet({"teamDao/insert-divisions.sql", "teamDao/teams-and-players.sql"})
     public void testGetTeamPlayers() {
         List<Player> players = teamSqlObject.getPlayers("St. Louis Blues");
         for (Player player : players) {
