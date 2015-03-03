@@ -27,7 +27,7 @@ current test for performing SQL requests against the database;
 All data changes performed in tests are discarded (but the schema
 remains), so the database is in the clean state before every test.
 It affords to tests to be independent and don't impact to each other.
-* Supports executing of an arbitrary SQL script before every test
+* Supports executing of an arbitrary SQL scripts before every test
 (or set of tests) by specifying an annotation on a test method or
 test class.
 
@@ -210,7 +210,7 @@ Nevertheless, this script can be overridden by a method level annotation.
 
 ## Configuration
 
-JDIT reads a configuration file the following format:
+*JDIT* reads a configuration file of the following format:
 
 ````properties
 db.url=jdbc:hsqldb:mem:jdbi-testing
@@ -225,7 +225,7 @@ dbi.factory=com.github.arteam.jdit.DropwizardDBIFactory
 
 * _db.url_ - Database URL;
 * _db.username_ - Database username;
-* _db.password - Database password;
+* _db.password_ - Database password;
 * _schema.migration.enabled_ - Whether schema migration is enabled;
 * _schema.migration.location_ - Location of the database schema in
 resources;  If it's a directory, then all .sql files in the directory
@@ -251,5 +251,5 @@ with the `@JditProperties` annotation on the the test class level.
 
 * [JDBI](http://jdbi.org/) 2.59
 * [HSQLDB](http://hsqldb.org/) 2.3.2
-* [Dropwizard](http://dropwizard.io/) 0.8-rc2
+* [Dropwizard](http://dropwizard.io/) 0.8-rc5
 * [JUnit](http://junit.org/) 4.12
