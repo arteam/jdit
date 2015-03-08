@@ -102,4 +102,12 @@
         </dependency>
     </dependencies>
 
+    <distributionManagement>
+        <repository>
+            <id>bintray-jdit-arteam-maven</id>
+            <name>bintray-jdit-arteam-maven</name>
+            <url>https://api.bintray.com/maven/arteam/maven/jdit</url>
+        </repository>
+    </distributionManagement>
+
 </project>
