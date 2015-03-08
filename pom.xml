@@ -19,7 +19,7 @@
     </properties>
 
     <scm>
-        <developerConnection>scm:git@github.com:arteam/jdit.git</developerConnection>
+        <developerConnection>scm:git:git@github.com:arteam/jdit.git</developerConnection>
         <url>https://github.com/arteam/jdit.git</url>
         <tag>HEAD</tag>
     </scm>
