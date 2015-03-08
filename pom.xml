@@ -18,6 +18,12 @@
         <junit.version>4.12</junit.version>
     </properties>
 
+    <scm>
+        <developerConnection>scm:git@github.com:arteam/jdit.git</developerConnection>
+        <url>https://github.com/arteam/jdit.git</url>
+        <tag>HEAD</tag>
+    </scm>
+
     <build>
         <plugins>
             <plugin>
