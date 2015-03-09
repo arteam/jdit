@@ -69,7 +69,7 @@ public interface PlayerDao {
 <dependency>
     <groupId>com.github.arteam</groupId>
     <artifactId>jdit</artifactId>
-    <version>0.1-rc3</version>
+    <version>0.1</version>
 </dependency>
 ```
 
@@ -253,3 +253,17 @@ with the `@JditProperties` annotation on the the test class level.
 * [HSQLDB](http://hsqldb.org/) 2.3.2
 * [Dropwizard](http://dropwizard.io/) 0.8-rc5
 * [JUnit](http://junit.org/) 4.12
+
+## Availability
+
+Artifact are available in [JCenter] (https://bintray.com/bintray/jcenter) repository
+
+````xml
+<repositories>
+        <repository>
+            <id>central</id>
+            <name>bintray</name>
+            <url>http://jcenter.bintray.com</url>
+        </repository>
+</repositories>
+````
