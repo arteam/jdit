@@ -251,7 +251,7 @@ with the `@JditProperties` annotation on the the test class level.
 
 * [JDBI](http://jdbi.org/) 2.59
 * [HSQLDB](http://hsqldb.org/) 2.3.2
-* [Dropwizard](http://dropwizard.io/) 0.8-rc5
+* [Dropwizard](http://dropwizard.io/) 0.8.0
 * [JUnit](http://junit.org/) 4.12
 
 ## Availability
