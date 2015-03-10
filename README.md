@@ -246,6 +246,9 @@ schema.migration.location=db/migration
 If you need to specify properties for a specific test you can do it
 with the `@JditProperties` annotation on the the test class level.
 
+## Examples
+
+More examples available in a separate [repository](https://github.com/arteam/jdit-examples).
 
 ## Dependencies
 
