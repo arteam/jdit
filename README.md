@@ -70,6 +70,7 @@ public interface PlayerDao {
     <groupId>com.github.arteam</groupId>
     <artifactId>jdit</artifactId>
     <version>0.1</version>
+    <scope>test</scope>
 </dependency>
 ```
 
