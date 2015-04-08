@@ -18,13 +18,11 @@ class DataMigration {
      *
      * @param scriptLocation script location (without leading slash).
      *                       If one exists, it's trimmed
-     * @return array of amounts of updated rows for each statement
-     *         in the script
      */
-    public int[] executeScript(String scriptLocation) {
+    public void executeScript(String scriptLocation) {
         String correctLocation = !scriptLocation.startsWith("/") ?
                 scriptLocation : scriptLocation.substring(1);
-        return handle.createScript(correctLocation).execute();
+        handle.createScript(correctLocation).executeAsSeparateStatements();
     }
 
     /**
