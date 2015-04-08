@@ -11,7 +11,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <dropwizard.version>0.9.0-SNAPSHOT</dropwizard.version>
-        <jdbi.version>2.59</jdbi.version>
+        <jdbi.version>2.62</jdbi.version>
         <hsqldb.version>2.3.2</hsqldb.version>
         <junit.version>4.12</junit.version>
     </properties>
@@ -71,7 +71,7 @@
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-jdbi</artifactId>
-            <version>0.9.0-SNAPSHOT</version>
+            <version>${dropwizard.version}</version>
             <optional>true</optional>
             <exclusions>
                 <exclusion>
