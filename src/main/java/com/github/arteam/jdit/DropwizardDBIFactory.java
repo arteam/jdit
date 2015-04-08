@@ -2,6 +2,7 @@ package com.github.arteam.jdit;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
+import com.google.common.base.Optional;
 import io.dropwizard.jdbi.ImmutableListContainerFactory;
 import io.dropwizard.jdbi.ImmutableSetContainerFactory;
 import io.dropwizard.jdbi.NamePrependingStatementRewriter;
@@ -15,6 +16,7 @@ import org.skife.jdbi.v2.DBI;
 import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
+import java.util.TimeZone;
 
 /**
  * Date: 2/16/15
@@ -37,7 +39,7 @@ public class DropwizardDBIFactory implements DBIFactory {
         dbi.registerContainerFactory(new ImmutableSetContainerFactory());
         dbi.registerContainerFactory(new OptionalContainerFactory());
         dbi.registerArgumentFactory(new JodaDateTimeArgumentFactory());
-        dbi.registerMapper(new JodaDateTimeMapper());
+        dbi.registerMapper(new JodaDateTimeMapper(Optional.<TimeZone>absent()));
         return dbi;
     }
 }
