@@ -69,7 +69,7 @@ public interface PlayerDao {
 <dependency>
     <groupId>com.github.arteam</groupId>
     <artifactId>jdit</artifactId>
-    <version>0.1</version>
+    <version>0.2</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -255,8 +255,14 @@ More examples available in a separate [repository](https://github.com/arteam/jdi
 
 * [JDBI](http://jdbi.org/) 2.59
 * [HSQLDB](http://hsqldb.org/) 2.3.2
-* [Dropwizard](http://dropwizard.io/) 0.8.0
+* [Dropwizard](http://dropwizard.io/) 0.8.1
 * [JUnit](http://junit.org/) 4.12
+
+## Compatability
+
+Version 0.1 is compatible with [Dropwizard](http://dropwizard.io/) 0.7.1 and 0.8.0
+
+Version 0.2 is compatible with [Dropwizard](http://dropwizard.io/) 0.8.1
 
 ## Availability
 
