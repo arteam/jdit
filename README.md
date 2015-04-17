@@ -264,6 +264,8 @@ Version 0.1 is compatible with [Dropwizard](http://dropwizard.io/) 0.7.1 and 0.8
 
 Version 0.2 is compatible with [Dropwizard](http://dropwizard.io/) 0.8.1
 
+Version 0.3-SNAPSHOT is compatible with [Dropwizard](http://dropwizard.io/) 0.9.0-SNAPSHOT
+
 ## Availability
 
 Artifact are available in [JCenter] (https://bintray.com/bintray/jcenter) repository
