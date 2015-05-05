@@ -23,8 +23,8 @@ import java.lang.reflect.Modifier;
  */
 public class TestObjectsInjector {
 
-    private DBI dbi;
-    private Handle handle;
+    private final DBI dbi;
+    private final Handle handle;
 
     public TestObjectsInjector(DBI dbi, Handle handle) {
         this.dbi = dbi;
