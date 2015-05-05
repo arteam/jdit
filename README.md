@@ -2,7 +2,7 @@
 
 ## Overview
 
-*JDIT* is a library for simplyfing of integration
+*JDIT* is a library for simplifying of integration
 testing of [*JDBI*](http://jdbi.org/) data access objects in
 [*Dropwizard*](http://dropwizard.io/) applications.
 
@@ -12,9 +12,9 @@ The library does the following things:
 
 * Starts in-memory *[HSQLDB](http://hsqldb.org/)* database;
 * Creates a DBI instance with the same configuration as in 
-Dropwizard's `DBIFactory` (support of Guava `Optional`, `ImmutableList`,
-`ImmutableSet`, JodaTime `DateTime`, logging of a SQL Object name);
-* Logs SQL quieres to *Logback* with *INFO* level;
+Dropwizard's `DBIFactory` (support of Guava's `Optional`, `ImmutableList`,
+`ImmutableSet`, JodaTime's `DateTime`, logging of a SQL Object name);
+* Logs SQL queries to *Logback* with *INFO* level;
 * Optionally migrates a user-defined sql schema; 
 * The database and the DBI instance are shared between the tests, so they are
 performed quickly;
@@ -27,7 +27,7 @@ current test for performing SQL requests against the database;
 All data changes performed in tests are discarded (but the schema
 remains), so the database is in the clean state before every test.
 It affords to tests to be independent and don't impact to each other.
-* Supports executing of an arbitrary SQL scripts before every test
+* Supports executing of an arbitrary SQL script before every test
 (or set of tests) by specifying an annotation on a test method or
 test class.
 
@@ -62,7 +62,7 @@ public interface PlayerDao {
 }
 ````
 
-### Add a Maven dependency
+### Add Maven dependency
 
 
 ```xml
@@ -76,11 +76,11 @@ public interface PlayerDao {
 
 ### Create a test resources directory
 
-You need to create a test resource directory to host resource.
-Let it be, say, on path '*src/test/resources*'.
+You need to create a test resource directory to host resources.
+Let it be, say, on the path '*src/test/resources*'.
 
 Don't forget to set it in Maven as a test resources directory in
-*build* section:
+the *build* section:
 
 ````xml
 <build>
@@ -95,7 +95,7 @@ Don't forget to set it in Maven as a test resources directory in
 ### Define a database schema
 
 Add a file with a database schema to your test resources directory.
-By default it's should have name *schema.sql*
+By default it should have name *schema.sql*.
 
 ````sql
 create table players(
@@ -141,29 +141,29 @@ public class PlayerDaoTest {
 }
 ````
 
-You should see output something like that:
+You should see  something like this in output:
 
 ````
-23:57:30.091 [main] INFO  org.skife.jdbi.v2.DBI - Handle [org.skife.jdbi.v2.BasicHandle@18cc8e9] obtained in 783 millis
-23:57:30.157 [main] INFO  org.skife.jdbi.v2.DBI - batch:[[create table players(     id  identity,     first_name varchar(128) not null,     last_name varchar(128) not null,     birth_date date not null,     weight int not null,     height int not null )]] took 3 millis
-23:57:30.158 [main] INFO  org.skife.jdbi.v2.DBI - Handle [org.skife.jdbi.v2.BasicHandle@18cc8e9] released
-23:57:30.159 [main] INFO  org.skife.jdbi.v2.DBI - Handle [org.skife.jdbi.v2.BasicHandle@3dacfa] obtained in 0 millis
-23:57:30.639 [main] INFO  org.skife.jdbi.v2.DBI - statement:[/* PlayerDao.createPlayer */ insert into players(first_name, last_name, birth_date, weight, height) values (?, ?, ?, ?, ?)] took 0 millis
-23:57:30.664 [main] INFO  org.skife.jdbi.v2.DBI - statement:[select * from players where id=?] took 0 millis
-23:57:30.676 [main] INFO  org.skife.jdbi.v2.DBI - statement:[TRUNCATE SCHEMA public RESTART IDENTITY AND COMMIT] took 0 millis
-23:57:30.679 [main] INFO  org.skife.jdbi.v2.DBI - Handle [org.skife.jdbi.v2.BasicHandle@3dacfa] released
+23:57:30.091 [main] INFO  DBI - Handle [org.skife.jdbi.v2.BasicHandle@18cc8e9] obtained in 783 millis
+23:57:30.157 [main] INFO  DBI - batch:[[create table players(     id  identity,     first_name varchar(128) not null,     last_name varchar(128) not null,     birth_date date not null,     weight int not null,     height int not null )]] took 3 millis
+23:57:30.158 [main] INFO  DBI - Handle [org.skife.jdbi.v2.BasicHandle@18cc8e9] released
+23:57:30.159 [main] INFO  DBI - Handle [org.skife.jdbi.v2.BasicHandle@3dacfa] obtained in 0 millis
+23:57:30.639 [main] INFO  DBI - statement:[/* PlayerDao.createPlayer */ insert into players(first_name, last_name, birth_date, weight, height) values (?, ?, ?, ?, ?)] took 0 millis
+23:57:30.664 [main] INFO  DBI - statement:[select * from players where id=?] took 0 millis
+23:57:30.676 [main] INFO  DBI - statement:[TRUNCATE SCHEMA public RESTART IDENTITY AND COMMIT] took 0 millis
+23:57:30.679 [main] INFO  DBI - Handle [org.skife.jdbi.v2.BasicHandle@3dacfa] released
 ````
 
 Things to notice:
 * Annotation `@RunWith` is crucial.  It makes the test aware of
 a DBI context. Without it nothing will work.
-* Annotation `@TestedSqlObject` is used for marking a tested SQL object
+* Annotation `@TestedSqlObject` is used for marking a tested SQL object.
 * Annotation `@DBIHandle` is used for obtaining a reference to a handle
-to the active database for performing queries
-* During a first invocation a schema has been migrated to the database.
+to the active database for performing queries.
+* During a first invocation the schema has been migrated to the database.
 It happens only once for all tests.
-* As you see from the logs, data has been swept from the database after
-completion of the test. But the schema remained.
+* As you see from the logs, data was swept from the database after
+the completion of the test. But the schema wasn't removed.
 
 ### Load data before a test
 
@@ -273,7 +273,7 @@ Artifact are available in [JCenter] (https://bintray.com/bintray/jcenter) reposi
 ````xml
 <repositories>
         <repository>
-            <id>central</id>
+            <id>jcenter</id>
             <name>bintray</name>
             <url>http://jcenter.bintray.com</url>
         </repository>
