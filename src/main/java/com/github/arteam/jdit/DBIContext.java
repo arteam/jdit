@@ -46,10 +46,6 @@ public class DBIContext {
         migrateSchema(properties);
     }
 
-    public static DBI create() {
-        return create(null);
-    }
-
     public static DBI create(String propertiesLocation) {
         return new DBIContext(propertiesLocation).dbi;
     }
