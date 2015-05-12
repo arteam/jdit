@@ -13,11 +13,11 @@ import org.skife.jdbi.v2.Handle;
  * Date: 1/22/15
  * Time: 8:55 PM
  * <p/>
- * A tests runner that:
+ * Tests runner that:
  * <ul>
  * <li>Injects DBI related tested instances to the tests.
- * <p/>
- * Supports {@link Handle}, {@link DBI}, SQLObject and DBI DAO.</li>
+ * <p>Supports {@link Handle}, {@link DBI}, SQLObject and DBI DAO.</p
+ * </li>
  * <li>Injects data to the DB from a script for a specific
  * method or a test</li>
  * <li>Sweeps data from the DB after every tests, so every
