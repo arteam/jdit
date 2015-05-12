@@ -3,13 +3,13 @@ package com.github.arteam.jdit;
 import org.skife.jdbi.v2.Handle;
 
 /**
- * A component that responsible for migrating data in the DB
+ * Component that's responsible for migrating data in the DB
  */
 class DataMigration {
 
     private final Handle handle;
 
-    DataMigration(Handle handle) {
+    public DataMigration(Handle handle) {
         this.handle = handle;
     }
 
@@ -27,7 +27,7 @@ class DataMigration {
 
     /**
      * Sweep data from DB, but don't drop the schema.
-     * Also restart sequences, so tests can rely on its predictability
+     * Also restart sequences, so tests can rely on their predictability
      */
     public void sweepData() {
         handle.execute("TRUNCATE SCHEMA public RESTART IDENTITY AND COMMIT");
