@@ -16,8 +16,8 @@ import java.lang.reflect.Modifier;
  * Date: 1/25/15
  * Time: 11:56 PM
  * <p/>
- * Component for injecting test instances (DBI, handles, SQLObjects, DBI DAO)
- * to the fields with corresponding annotations in the test
+ * Component for injecting test instances (DBI, Handles, SQLObjects, JDBI DAOs)
+ * to the fields with corresponding annotations in the test.
  *
  * @author Artem Prigoda
  */
@@ -32,8 +32,8 @@ public class TestObjectsInjector {
     }
 
     /**
-     * Inject test instances to the test
-     * Search the test instance for field with annotations and inject test objects
+     * Inject test instances to the test.
+     * Search the test instance for field with annotations and inject test objects.
      *
      * @param test current test
      * @throws IllegalAccessException reflection error
@@ -64,7 +64,7 @@ public class TestObjectsInjector {
     }
 
     /**
-     * Inject a DBI handle to a field with {@link DBIHandle} annotation
+     * Inject a DBI handle to a field with {@link DBIHandle} annotation.
      *
      * @param test  current test
      * @param field current field
@@ -83,7 +83,7 @@ public class TestObjectsInjector {
     }
 
     /**
-     * Inject a DBI instance to a field with {@link DBIInstance} annotation
+     * Inject a DBI instance to a field with {@link DBIInstance} annotation.
      *
      * @param test  current test
      * @param field current field
@@ -103,7 +103,7 @@ public class TestObjectsInjector {
 
     /**
      * Create and inject a new DBI SQL Object to a field
-     * with {@link TestedSqlObject} annotation
+     * with {@link TestedSqlObject} annotation.
      *
      * @param test  current test
      * @param field current field
@@ -124,10 +124,9 @@ public class TestObjectsInjector {
 
     /**
      * Create a inject a DBI DAO instance to a field
-     * with {@link TestedDao}  annotation
-     * <p/>
-     * The DAO should provide a default constructor or a constructor
-     * that accepts a {@link DBI} as the single parameter
+     * with {@link TestedDao}  annotation.
+     * <p>The DAO should provide a default constructor or a constructor
+     * that accepts a {@link DBI} as the single parameter<p/>
      *
      * @param test  current test
      * @param field current field
@@ -167,8 +166,9 @@ public class TestObjectsInjector {
             throw new IllegalStateException("Unable find a constructor for class '"
                     + field.getDeclaringClass() + "'");
         }
+
         // A default constructor is provided.
-        // Invoke it, find a DBI field and set a DBI context to it
+        // Invoke it, find a DBI field and set a DBI context to it.
         Object dbiDao;
         defaultConstructor.setAccessible(true);
         try {

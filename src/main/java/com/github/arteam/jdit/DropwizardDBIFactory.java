@@ -21,7 +21,7 @@ import java.util.TimeZone;
 /**
  * Date: 2/16/15
  * Time: 10:50 PM
- * Factory for creating DBI instances as in Dropwizard
+ * Factory for creating DBI instances as well as in Dropwizard
  *
  * @author Artem Prigoda
  */
