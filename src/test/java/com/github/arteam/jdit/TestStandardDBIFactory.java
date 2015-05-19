@@ -4,11 +4,9 @@ import com.github.arteam.jdit.annotations.DBIHandle;
 import com.github.arteam.jdit.annotations.JditProperties;
 import com.github.arteam.jdit.annotations.TestedSqlObject;
 import com.github.arteam.jdit.domain.PlayerSqlObject;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.skife.jdbi.v2.Handle;
-import org.skife.jdbi.v2.util.StringMapper;
 
 import java.text.SimpleDateFormat;
 

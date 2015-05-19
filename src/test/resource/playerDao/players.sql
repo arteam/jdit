@@ -7,4 +7,4 @@ values ('Ryan','Ellis', '1991-01-03', 79, 176);
 insert into players(first_name, last_name, birth_date, weight, height)
 values ('John','Tavares', '1990-09-20', 93, 185);
 insert into players(first_name, last_name, birth_date)
-  values ('Ty','Rattie', '1993-07-11');
+values ('Ty','Rattie', '1993-07-11');
