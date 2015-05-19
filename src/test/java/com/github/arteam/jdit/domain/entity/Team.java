@@ -1,5 +1,6 @@
 package com.github.arteam.jdit.domain.entity;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 
 /**
@@ -24,5 +25,14 @@ public class Team {
         this.name = name;
         this.division = division;
         this.id = Optional.absent();
+    }
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this)
+                .add("id", id)
+                .add("name", name)
+                .add("division", division)
+                .toString();
     }
 }
