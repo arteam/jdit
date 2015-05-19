@@ -1,6 +1,12 @@
 package com.github.arteam.jdit;
 
+import org.skife.jdbi.v2.Binding;
+import org.skife.jdbi.v2.ColonPrefixNamedParamStatementRewriter;
 import org.skife.jdbi.v2.Handle;
+import org.skife.jdbi.v2.StatementContext;
+import org.skife.jdbi.v2.tweak.RewrittenStatement;
+import org.skife.jdbi.v2.tweak.StatementLocator;
+import org.skife.jdbi.v2.tweak.StatementRewriter;
 
 /**
  * Component that's responsible for migrating data in the DB
@@ -31,5 +37,19 @@ class DataMigration {
      */
     public void sweepData() {
         handle.execute("TRUNCATE SCHEMA public RESTART IDENTITY AND COMMIT");
+    }
+
+    public void executeRewrittenScript(String location) {
+        handle.setStatementRewriter(new StatementRewriter() {
+
+            private StatementRewriter statementRewriter = new ColonPrefixNamedParamStatementRewriter();
+
+            @Override
+            public RewrittenStatement rewrite(String sql, Binding params, StatementContext ctx) {
+                String replacedSql = sql.replaceAll("insert into (\\S+)", "insert into expected_$1");
+                return statementRewriter.rewrite(replacedSql, params, ctx);
+            }
+        });
+        handle.createScript(location).executeAsSeparateStatements();
     }
 }

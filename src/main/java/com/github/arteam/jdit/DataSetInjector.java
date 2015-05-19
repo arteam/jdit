@@ -1,6 +1,7 @@
 package com.github.arteam.jdit;
 
 import com.github.arteam.jdit.annotations.DataSet;
+import com.github.arteam.jdit.annotations.ExpectedDataSet;
 
 import java.lang.reflect.Method;
 
@@ -44,4 +45,16 @@ public class DataSetInjector {
         }
     }
 
+    public void injectExpectedData(Method method) {
+        ExpectedDataSet expectedDataSet = method.getAnnotation(ExpectedDataSet.class);
+        if (expectedDataSet != null) {
+            for (String location : notEmpty(expectedDataSet.value())) {
+                dataMigration.executeRewrittenScript(location);
+            }
+        }
+    }
+
+    private static String[] notEmpty(String[] source) {
+        return source != null ? source : new String[]{};
+    }
 }

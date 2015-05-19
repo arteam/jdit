@@ -74,6 +74,7 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
                 try {
                     dataSetInjector.injectData(method.getMethod());
                     statement.evaluate();
+                    dataSetInjector.injectExpectedData(method.getMethod());
                 } finally {
                     // Sweep event if there is an error during injecting data
                     dataMigration.sweepData();

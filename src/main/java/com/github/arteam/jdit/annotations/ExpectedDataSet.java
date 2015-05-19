@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  * @author Artem Prigoda
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target(ElementType.METHOD)
 public @interface ExpectedDataSet {
 
     String[] value();
