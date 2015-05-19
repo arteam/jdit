@@ -63,7 +63,7 @@ public interface PlayerSqlObject {
     @SqlQuery("select first_name from players")
     ImmutableSet<String> getFirstNames();
 
-    public static class PlayerBinder implements Binder<Bind, Player> {
+    class PlayerBinder implements Binder<Bind, Player> {
 
         @Override
         public void bind(SQLStatement<?> q, Bind bind, Player p) {
@@ -75,7 +75,7 @@ public interface PlayerSqlObject {
         }
     }
 
-    public static class PlayerMapper implements ResultSetMapper<Player> {
+    class PlayerMapper implements ResultSetMapper<Player> {
         @Override
         public Player map(int index, ResultSet r, StatementContext ctx) throws SQLException {
             return new Player(Optional.of(r.getLong("id")), r.getString("first_name"), r.getString("last_name"),
