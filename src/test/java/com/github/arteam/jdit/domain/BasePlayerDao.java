@@ -19,8 +19,7 @@ public abstract class BasePlayerDao {
     public abstract DBI dbi();
 
     public Long createPlayer(String firstName, String lastName, Date birthDate, int height, int weight) {
-        Handle handle = dbi().open();
-        try {
+        try (Handle handle = dbi().open()) {
             return handle.createStatement("insert into players(first_name, last_name, birth_date, weight, height) values" +
                     "(:first_name, :last_name, :birth_date, :weight, :height)")
                     .bind("first_name", firstName)
@@ -30,19 +29,14 @@ public abstract class BasePlayerDao {
                     .bind("weight", weight)
                     .executeAndReturnGeneratedKeys(LongMapper.FIRST)
                     .first();
-        } finally {
-            handle.close();
         }
     }
 
     public List<String> getLastNames() {
-        Handle handle = dbi().open();
-        try {
+        try (Handle handle = dbi().open()) {
             return handle.createQuery("select last_name from players")
                     .map(StringMapper.FIRST)
                     .list();
-        } finally {
-            handle.close();
         }
     }
 }
