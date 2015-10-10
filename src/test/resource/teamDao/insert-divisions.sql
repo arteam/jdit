@@ -1,1 +1,1 @@
-insert into divisions values 'PACIFIC', 'CENTRAL', 'METROPOLITAN', 'ATLANTIC';
+insert into divisions(name) values ('PACIFIC'), ('CENTRAL'), ('METROPOLITAN'), ('ATLANTIC');
