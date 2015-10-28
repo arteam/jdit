@@ -4,7 +4,7 @@
 
     <groupId>com.github.arteam</groupId>
     <artifactId>jdit</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.3</version>
 
     <name>JDBI Dropwizard Integration Testing</name>
 
@@ -19,7 +19,7 @@
     <scm>
         <developerConnection>scm:git:git@github.com:arteam/jdit.git</developerConnection>
         <url>https://github.com/arteam/jdit.git</url>
-        <tag>HEAD</tag>
+        <tag>0.3</tag>
     </scm>
 
     <licenses>
