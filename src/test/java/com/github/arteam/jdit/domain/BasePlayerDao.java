@@ -2,8 +2,7 @@ package com.github.arteam.jdit.domain;
 
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
-import org.skife.jdbi.v2.util.LongMapper;
-import org.skife.jdbi.v2.util.StringMapper;
+import org.skife.jdbi.v2.util.LongColumnMapper;
 
 import java.util.Date;
 import java.util.List;
@@ -27,7 +26,7 @@ public abstract class BasePlayerDao {
                     .bind("birth_date", birthDate)
                     .bind("height", height)
                     .bind("weight", weight)
-                    .executeAndReturnGeneratedKeys(LongMapper.FIRST)
+                    .executeAndReturnGeneratedKeys(LongColumnMapper.WRAPPER)
                     .first();
         }
     }
@@ -35,7 +34,7 @@ public abstract class BasePlayerDao {
     public List<String> getLastNames() {
         try (Handle handle = dbi().open()) {
             return handle.createQuery("select last_name from players")
-                    .map(StringMapper.FIRST)
+                    .map(String.class)
                     .list();
         }
     }

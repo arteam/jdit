@@ -5,7 +5,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.skife.jdbi.v2.Handle;
-import org.skife.jdbi.v2.util.StringMapper;
 
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class HandleTest {
         Assert.assertEquals(amount, 1);
 
         String initials = handle.createQuery("select first_name || ' ' || last_name from players")
-                .map(StringMapper.FIRST)
+                .mapTo(String.class)
                 .first();
         System.out.println(initials);
         Assert.assertEquals(initials, "Vladimir Tarasenko");
@@ -37,7 +36,7 @@ public class HandleTest {
     @Test
     public void testGetInitials() {
         List<String> lastNames = handle.createQuery("select last_name from players")
-                .map(StringMapper.FIRST)
+                .mapTo(String.class)
                 .list();
         System.out.println(lastNames);
         Assert.assertTrue(lastNames.isEmpty());
