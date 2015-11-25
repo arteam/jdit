@@ -7,7 +7,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.skife.jdbi.v2.Handle;
-import org.skife.jdbi.v2.util.StringMapper;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -34,7 +33,7 @@ public class DBIDaoTest {
         System.out.println(playerId);
 
         String initials = handle.createQuery("select first_name || ' ' || last_name from players")
-                .map(StringMapper.FIRST)
+                .mapTo(String.class)
                 .first();
         System.out.println(initials);
         Assert.assertEquals(initials, "Vladimir Tarasenko");
