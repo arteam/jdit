@@ -4,3 +4,7 @@ language: java
 jdk:
  - oraclejdk7
  - oraclejdk8
+
+before_script:
+  - psql -c "create user jdit with password 'test'" -U postgres
+  - psql -c "create database jdit_test with owner jdit" -U postgres
