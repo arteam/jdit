@@ -28,7 +28,7 @@ import org.skife.jdbi.v2.Handle;
  */
 public class DBIRunner extends BlockJUnit4ClassRunner {
 
-    private DataMigration dataMigration;
+    private DatabaseMaintenance databaseMaintenance;
     private TestObjectsInjector injector;
     private DataSetInjector dataSetInjector;
     private Class<?> klass;
@@ -58,7 +58,8 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
                 DBI dbi = jditProperties != null ? DBIContextFactory.getDBI(jditProperties.value()) : DBIContextFactory.getDBI();
                 try (Handle handle = dbi.open()) {
                     injector = new TestObjectsInjector(dbi, handle);
-                    dataSetInjector = new DataSetInjector(dataMigration = new DataMigration(handle));
+                    databaseMaintenance = DatabaseMaintenanceFactory.create(handle);
+                    dataSetInjector = new DataSetInjector(new DataMigration(handle));
                     statement.evaluate();
                 }
             }
@@ -76,7 +77,7 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
                     statement.evaluate();
                 } finally {
                     // Sweep event if there is an error during injecting data
-                    dataMigration.sweepData();
+                    databaseMaintenance.sweepData();
                 }
             }
         };
