@@ -41,7 +41,7 @@ public interface PlayerSqlObject {
     @SqlQuery("select last_name from players order by last_name")
     List<String> getLastNames();
 
-    @SqlQuery("select count(*) from players where year(birth_date) = :year")
+    @SqlQuery("select count(*) from players where extract(year from birth_date) = :year")
     int getAmountPlayersBornInYear(@Bind("year") int year);
 
     @SqlQuery("select * from players where birth_date > :date")
@@ -50,14 +50,14 @@ public interface PlayerSqlObject {
     @SqlQuery("select birth_date from players where first_name=:first_name and last_name=:last_name")
     DateTime getPlayerBirthDate(@Bind("first_name") String firstName, @Bind("last_name") String lastName);
 
-    @SqlQuery("select distinct year(birth_date) player_year from players order by player_year")
+    @SqlQuery("select distinct extract(year from birth_date) player_year from players order by player_year")
     Set<Integer> getBornYears();
 
     @SqlQuery("select * from players where first_name=:first_name and last_name=:last_name")
     @SingleValueResult
     Optional<Player> findPlayer(@Bind("first_name") String firstName, @Bind("last_name") String lastName);
 
-    @SqlQuery("select * from players where weight=:weight or (:weight is null and weight is null)")
+    @SqlQuery("select * from players where weight is not distinct from :weight")
     List<Player> getPlayersByWeight(@Bind("weight") Optional<Integer> weight);
 
     @SqlQuery("select first_name from players")
@@ -78,9 +78,12 @@ public interface PlayerSqlObject {
     class PlayerMapper implements ResultSetMapper<Player> {
         @Override
         public Player map(int index, ResultSet r, StatementContext ctx) throws SQLException {
+            int height = r.getInt("height");
+            int weight = r.getInt("weight");
             return new Player(Optional.of(r.getLong("id")), r.getString("first_name"), r.getString("last_name"),
-                    r.getTimestamp("birth_date"), Optional.fromNullable(r.getObject("height", Integer.class)),
-                    Optional.fromNullable(r.getObject("weight", Integer.class)));
+                    r.getTimestamp("birth_date"),
+                    height != 0 ? Optional.of(height) : Optional.<Integer>absent(),
+                    weight != 0 ? Optional.of(weight) : Optional.<Integer>absent());
         }
     }
 }
