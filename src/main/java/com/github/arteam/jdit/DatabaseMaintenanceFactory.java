@@ -16,6 +16,8 @@ import java.sql.SQLException;
 public final class DatabaseMaintenanceFactory {
 
     private static final String POSTGRESQL = "PostgreSQL";
+    private static final String HSQLDB = "HSQL Database Engine";
+    private static final String H2 = "H2";
 
     private DatabaseMaintenanceFactory() {
     }
@@ -25,8 +27,10 @@ public final class DatabaseMaintenanceFactory {
         switch (databaseVendor) {
             case POSTGRESQL:
                 return new PostgresDatabaseMaintenance(handle);
-            case "HSQL Database Engine":
+            case HSQLDB:
                 return new HsqlDatabaseMaintenance(handle);
+            case H2:
+                return new H2DatabaseMaintenance(handle);
             default:
                 throw new UnsupportedOperationException(databaseVendor + " is not supported");
         }
