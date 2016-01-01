@@ -25,6 +25,8 @@ public final class DatabaseMaintenanceFactory {
         switch (databaseVendor) {
             case POSTGRESQL:
                 return new PostgresDatabaseMaintenance(handle);
+            case "HSQL Database Engine":
+                return new HsqlDatabaseMaintenance(handle);
             default:
                 throw new UnsupportedOperationException(databaseVendor + " is not supported");
         }
