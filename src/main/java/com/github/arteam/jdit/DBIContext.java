@@ -109,13 +109,14 @@ public class DBIContext {
             if (schemaLocation == null) {
                 schemaLocation = DEFAULT_SCHEMA_LOCATION;
             }
-            DataMigration dataMigration = new DataMigration(handle);
+            DatabaseMaintenance databaseMaintenance = DatabaseMaintenanceFactory.create(handle);
+            databaseMaintenance.dropTablesAndSequences();
 
+            DataMigration dataMigration = new DataMigration(handle);
             URL resource = getClass().getClassLoader().getResource(schemaLocation);
             if (resource == null) {
                 throw new IllegalArgumentException("File '" + schemaLocation + " is not exist in resources");
             }
-            dataMigration.dropTablesAndSequences();
             File file = new File(resource.getFile());
             if (file.isFile()) {
                 dataMigration.executeScript(schemaLocation);
