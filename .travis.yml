@@ -8,3 +8,7 @@ jdk:
 before_script:
   - psql -c "create user jdit with password 'test'" -U postgres
   - psql -c "create database jdit_test with owner jdit" -U postgres
+  - mysql -u root < setup_mysql_database.sql
+
+services:
+  - mysql
