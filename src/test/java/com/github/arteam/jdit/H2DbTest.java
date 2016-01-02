@@ -25,58 +25,5 @@ import static org.junit.Assert.assertEquals;
  * @author Artem Prigoda
  */
 @JditProperties("jdit-h2-pgs.properties")
-@RunWith(DBIRunner.class)
-public class H2DbTest {
-
-    private static final DateTimeFormatter fmt = ISODateTimeFormat.date().withZoneUTC();
-
-    @TestedSqlObject
-    PlayerSqlObject playerDao;
-
-    @DBIHandle
-    Handle handle;
-
-    @Test
-    @DataSet("playerDao/getInitials.sql")
-    public void testCreatePlayer() {
-        Long playerId = playerDao.createPlayer("Colton", "Parayko", fmt.parseDateTime("1993-05-12").toDate(),
-                196, 102);
-        assertEquals(playerId.longValue(), 2L);
-
-        List<Map<String, Object>> rows = handle.select("select * from players where id=?", 2);
-        assertEquals(rows.size(), 1);
-        Map<String, Object> row = rows.get(0);
-        assertEquals(row.get("id"), 2);
-        assertEquals(row.get("first_name"), "Colton");
-        assertEquals(row.get("last_name"), "Parayko");
-        assertEquals(row.get("weight"), 102);
-        assertEquals(row.get("height"), 196);
-        assertEquals(row.get("birth_date").toString(), "1993-05-12");
-    }
-
-    @Test
-    @DataSet("playerDao/getInitials.sql")
-    public void testCreateAnotherPlayer() {
-        Long playerId = playerDao.createPlayer("Robby", "Fabbri", fmt.parseDateTime("1996-01-22").toDate(),
-                178, 75);
-        assertEquals(playerId.longValue(), 2L);
-
-        List<Map<String, Object>> rows = handle.select("select * from players where id=?", 2);
-        assertEquals(rows.size(), 1);
-        Map<String, Object> row = rows.get(0);
-        assertEquals(row.get("id"), 2);
-        assertEquals(row.get("first_name"), "Robby");
-        assertEquals(row.get("last_name"), "Fabbri");
-        assertEquals(row.get("weight"), 75);
-        assertEquals(row.get("height"), 178);
-        assertEquals(row.get("birth_date").toString(), "1996-01-22");
-    }
-
-    @Test
-    @DataSet("playerDao/getInitials.sql")
-    public void testGetLastNames() {
-        List<String> lastNames = playerDao.getLastNames();
-        assertEquals(lastNames, ImmutableList.of("Tarasenko"));
-    }
-
+public class H2DbTest extends AlternateDatabaseTest {
 }
