@@ -35,7 +35,7 @@ public class PostgresDatabaseMaintenance implements DatabaseMaintenance {
                         "and sequence_catalog = (select current_catalog)")
                         .mapTo(String.class);
                 for (String sequenceName : sequenceNames) {
-                    h.execute(String.format("alter sequence \"%s\" restart with 1", sequenceName));
+                    batch.add(String.format("alter sequence \"%s\" restart with 1", sequenceName));
                 }
                 batch.execute();
             }
