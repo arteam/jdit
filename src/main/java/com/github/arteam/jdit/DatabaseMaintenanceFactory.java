@@ -18,6 +18,7 @@ public final class DatabaseMaintenanceFactory {
     private static final String POSTGRESQL = "PostgreSQL";
     private static final String HSQLDB = "HSQL Database Engine";
     private static final String H2 = "H2";
+    private static final String MYSQL = "MySQL";
 
     private DatabaseMaintenanceFactory() {
     }
@@ -31,6 +32,8 @@ public final class DatabaseMaintenanceFactory {
                 return new HsqlDatabaseMaintenance(handle);
             case H2:
                 return new H2DatabaseMaintenance(handle);
+            case MYSQL:
+                return new MySqlDatabaseMaintenance(handle);
             default:
                 throw new UnsupportedOperationException(databaseVendor + " is not supported");
         }
