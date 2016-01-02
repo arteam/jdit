@@ -5,20 +5,17 @@ import com.github.arteam.jdit.annotations.TestedDao;
 import com.github.arteam.jdit.domain.PlayerDao;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.skife.jdbi.v2.Handle;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 /**
- * Date: 1/22/15
- * Time: 8:57 PM
+ * Date: 1/2/16
+ * Time: 6:48 PM
  *
  * @author Artem Prigoda
  */
-@RunWith(DBIRunner.class)
-public class DBIDaoTest {
+public abstract class AbstractDbiDaoTest {
 
     @DBIHandle
     Handle handle;
@@ -37,13 +34,5 @@ public class DBIDaoTest {
                 .first();
         System.out.println(initials);
         Assert.assertEquals(initials, "Vladimir Tarasenko");
-    }
-
-
-    @Test
-    public void testGetInitials() {
-        List<String> lastNames = playerDao.getLastNames();
-        System.out.println(lastNames);
-        Assert.assertTrue(lastNames.isEmpty());
     }
 }
