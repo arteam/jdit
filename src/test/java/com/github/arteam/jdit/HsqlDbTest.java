@@ -20,27 +20,5 @@ import java.util.List;
  * @author Artem Prigoda
  */
 @JditProperties("jdit-hsqldb-pgs.properties")
-@RunWith(DBIRunner.class)
-public class HsqlDbTest {
-
-    private static final DateTimeFormatter fmt = ISODateTimeFormat.date().withZoneUTC();
-
-    @TestedSqlObject
-    PlayerSqlObject playerDao;
-
-    @Test
-    @DataSet("playerDao/getInitials.sql")
-    public void testCreatePlayer() {
-        Long playerId = playerDao.createPlayer("Colton", "Parayko", fmt.parseDateTime("1993-05-12").toDate(),
-                196, 102);
-        Assert.assertEquals(playerId.longValue(), 2L);
-    }
-
-    @Test
-    @DataSet("playerDao/getInitials.sql")
-    public void testHetLastNames() {
-        List<String> lastNames = playerDao.getLastNames();
-        Assert.assertEquals(lastNames, ImmutableList.of("Tarasenko"));
-    }
-
+public class HsqlDbTest extends AlternateDatabaseTest {
 }
