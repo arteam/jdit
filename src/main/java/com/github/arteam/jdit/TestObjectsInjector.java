@@ -11,6 +11,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Date: 1/25/15
@@ -40,9 +43,15 @@ public class TestObjectsInjector {
      */
     public void injectTestedInstances(Object test) throws IllegalAccessException {
         // TODO Cache reflection information
-        Field[] fields = test.getClass().getDeclaredFields();
-        if (fields == null) {
-            return;
+        List<Field> fields = new ArrayList<>();
+        Class<?> currentTestClass = test.getClass();
+        while (true) {
+            Collections.addAll(fields, currentTestClass.getDeclaredFields());
+            Class<?> superClass = test.getClass().getSuperclass();
+            if (superClass.equals(currentTestClass)) {
+                break;
+            }
+            currentTestClass = superClass;
         }
         for (Field field : fields) {
             Annotation[] annotations = field.getAnnotations();
