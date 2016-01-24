@@ -5,7 +5,7 @@ import org.skife.jdbi.v2.*;
 /**
  * Date: 2/1/16
  * Time: 8:01 PM
- * <p/>
+ * <p>
  * Maintenance operations against a MySQL database
  *
  * @author Artem Prigoda

@@ -8,9 +8,9 @@ import java.util.Properties;
 /**
  * Date: 2/17/15
  * Time: 10:29 PM
- * <p/>
+ * <p>
  * Factory for creating a standard DBI instance from properties
- * <p/>
+ * <p>
  * A single addition is that SQL queries are logged to the console.
  *
  * @author Artem Prigoda

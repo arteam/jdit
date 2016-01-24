@@ -7,7 +7,7 @@ import java.sql.SQLException;
 /**
  * Date: 1/1/16
  * Time: 6:54 PM
- * <p/>
+ * <p>
  * A factory for creating vendor-specific {@link DatabaseMaintenance} instances
  * based on the current database vendor name
  *
