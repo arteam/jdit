@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Date: 1/18/15
  * Time: 3:11 PM
- * <p/>
+ * <p>
  * Factory for creating instances of {@link DBIContext} by properties files,
  * specified by the user.
  *
