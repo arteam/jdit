@@ -1,4 +1,4 @@
-package com.github.arteam.jdit;
+package com.github.arteam.jdit.maintenance;
 
 import org.skife.jdbi.v2.Handle;
 

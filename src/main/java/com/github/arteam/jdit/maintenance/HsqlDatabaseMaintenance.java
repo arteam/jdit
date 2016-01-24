@@ -1,16 +1,16 @@
-package com.github.arteam.jdit;
+package com.github.arteam.jdit.maintenance;
 
 import org.skife.jdbi.v2.Handle;
 
 /**
  * Date: 1/1/16
  * Time: 7:40 PM
- * <p>
+ * <p/>
  * Maintenance operations against HSQLB
  *
  * @author Artem Prigoda
  */
-public class HsqlDatabaseMaintenance implements DatabaseMaintenance {
+class HsqlDatabaseMaintenance implements DatabaseMaintenance {
 
     private final Handle handle;
 

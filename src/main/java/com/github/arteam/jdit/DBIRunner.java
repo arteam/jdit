@@ -1,6 +1,8 @@
 package com.github.arteam.jdit;
 
 import com.github.arteam.jdit.annotations.JditProperties;
+import com.github.arteam.jdit.maintenance.DatabaseMaintenance;
+import com.github.arteam.jdit.maintenance.DatabaseMaintenanceFactory;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
