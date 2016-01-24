@@ -1,4 +1,4 @@
-package com.github.arteam.jdit;
+package com.github.arteam.jdit.maintenance;
 
 import org.skife.jdbi.v2.*;
 
@@ -9,7 +9,7 @@ import org.skife.jdbi.v2.*;
  *
  * @author Artem Prigoda
  */
-public class H2DatabaseMaintenance implements DatabaseMaintenance {
+class H2DatabaseMaintenance implements DatabaseMaintenance {
 
     private final Handle handle;
 

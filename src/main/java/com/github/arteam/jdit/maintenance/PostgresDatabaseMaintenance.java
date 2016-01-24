@@ -1,16 +1,16 @@
-package com.github.arteam.jdit;
+package com.github.arteam.jdit.maintenance;
 
 import org.skife.jdbi.v2.*;
 
 /**
  * Date: 1/1/16
  * Time: 7:05 PM
- * <p>
+ * <p/>
  * Maintenance operations against a PostgreSQL database
  *
  * @author Artem Prigoda
  */
-public class PostgresDatabaseMaintenance implements DatabaseMaintenance {
+class PostgresDatabaseMaintenance implements DatabaseMaintenance {
 
     private Handle handle;
 

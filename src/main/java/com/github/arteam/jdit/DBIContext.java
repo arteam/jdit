@@ -1,5 +1,7 @@
 package com.github.arteam.jdit;
 
+import com.github.arteam.jdit.maintenance.DatabaseMaintenance;
+import com.github.arteam.jdit.maintenance.DatabaseMaintenanceFactory;
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
 import org.slf4j.Logger;

@@ -1,4 +1,4 @@
-package com.github.arteam.jdit;
+package com.github.arteam.jdit.maintenance;
 
 /**
  * Date: 1/1/16
