@@ -75,6 +75,19 @@ public interface PlayerDao {
 </dependency>
 ```
 
+### Setup a database driver
+
+If your test database is different from production, add a test database driver via Maven:
+
+```xml
+<dependency>
+	<groupId>org.hsqldb</groupId>
+	<artifactId>hsqldb</artifactId>
+	<version>2.3.3</version>
+	<scope>test</scope>
+</dependency>
+```
+
 ### Create a test resources directory
 
 You need to create a test resource directory to host resources.
