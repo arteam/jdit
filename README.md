@@ -78,16 +78,16 @@ public interface PlayerDao {
 ### Create a test resources directory
 
 You need to create a test resource directory to host resources.
-Let it be, say, on the path '*src/test/resources*'.
+By default it's '*src/test/resources*'.
 
-Don't forget to set it in Maven as a test resources directory in
-the *build* section:
+If you want to use another directory, don't forget to set it in Maven as 
+a test resources directory in the *build* section:
 
 ````xml
 <build>
     <testResources>
         <testResource>
-           <directory>src/test/resources</directory>
+           <directory>src/custom_test_resources</directory>
         </testResource>
     </testResources>
 </build>
