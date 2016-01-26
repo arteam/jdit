@@ -70,7 +70,7 @@ public interface PlayerDao {
 <dependency>
     <groupId>com.github.arteam</groupId>
     <artifactId>jdit</artifactId>
-    <version>0.4</version>
+    <version>0.4.1</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -267,7 +267,7 @@ Version 0.2 is compatible with [Dropwizard](http://dropwizard.io/) 0.8.1
 
 Version 0.3 is compatible with [Dropwizard](http://dropwizard.io/) 0.9.0
 
-Version 0.4 is compatible with [Dropwizard](http://dropwizard.io/) 0.9.0
+Version 0.4.1 is compatible with [Dropwizard](http://dropwizard.io/) 0.9.0
 
 ## Availability
 
