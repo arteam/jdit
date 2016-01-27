@@ -22,14 +22,17 @@ class PostgresDatabaseMaintenance implements DatabaseMaintenance {
         handle.useTransaction(new TransactionConsumer() {
             @Override
             public void useTransaction(Handle h, TransactionStatus transactionStatus) throws Exception {
-                Query<String> tableNames = h.createQuery("select tablename from pg_tables " +
+                String truncate = h.createQuery("select '" +
+                        "truncate table ' " +
+                        "|| string_agg(quote_ident(tablename), ', ') || " +
+                        "' cascade' " +
+                        "from  pg_tables " +
                         "where tableowner = (select current_user) " +
-                        "and schemaname = 'public'")
-                        .mapTo(String.class);
+                        "and   schemaname = 'public'")
+                        .mapTo(String.class)
+                        .first();
+                h.execute(truncate);
                 Batch batch = h.createBatch();
-                for (String tableName : tableNames) {
-                    batch.add(String.format("truncate table \"%s\" cascade", tableName));
-                }
                 Query<String> sequenceNames = h.createQuery("select sequence_name from information_schema.sequences " +
                         "where sequence_schema='public' " +
                         "and sequence_catalog = (select current_catalog)")
