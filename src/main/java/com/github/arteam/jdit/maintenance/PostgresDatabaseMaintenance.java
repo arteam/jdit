@@ -22,17 +22,25 @@ class PostgresDatabaseMaintenance implements DatabaseMaintenance {
         handle.useTransaction(new TransactionConsumer() {
             @Override
             public void useTransaction(Handle h, TransactionStatus transactionStatus) throws Exception {
-                String truncate = h.createQuery("select '" +
-                        "truncate table ' " +
-                        "|| string_agg(quote_ident(tablename), ', ') || " +
-                        "' cascade' " +
-                        "from  pg_tables " +
-                        "where tableowner = (select current_user) " +
-                        "and   schemaname = 'public'")
-                        .mapTo(String.class)
-                        .first();
-                h.execute(truncate);
                 Batch batch = h.createBatch();
+                Query<String> tableForeignKeys = h.createQuery(
+                        "select 'alter table \"' || relname || '\" drop constraint \"'|| conname ||'\"' " +
+                        "from pg_constraint " +
+                        "inner join pg_class on conrelid=pg_class.oid " +
+                        "inner join pg_namespace on pg_namespace.oid=pg_class.relnamespace " +
+                        "where pg_constraint.contype = 'f' " +
+                        "order by nspname, relname, conname")
+                        .mapTo(String.class);
+                for (String alterTable : tableForeignKeys) {
+                    batch.add(alterTable);
+                }
+                Query<String> tableNames = h.createQuery("select tablename from pg_tables " +
+                        "where tableowner = (select current_user) " +
+                        "and schemaname = 'public'")
+                        .mapTo(String.class);
+                for (String tableName : tableNames) {
+                    batch.add(String.format("delete from \"%s\"", tableName));
+                }
                 Query<String> sequenceNames = h.createQuery("select sequence_name from information_schema.sequences " +
                         "where sequence_schema='public' " +
                         "and sequence_catalog = (select current_catalog)")
@@ -55,5 +63,14 @@ class PostgresDatabaseMaintenance implements DatabaseMaintenance {
                 h.execute(String.format("drop owned by \"%s\"", currentUser));
             }
         });
+    }
+
+    private static class TableForeignKey {
+        private String table;
+        private String foreignKey;
+
+        private TableForeignKey(String table) {
+            this.table = table;
+        }
     }
 }
