@@ -4,7 +4,7 @@
 
     <groupId>com.github.arteam</groupId>
     <artifactId>jdit</artifactId>
-    <version>0.4.1</version>
+    <version>0.4.2-SNAPSHOT</version>
 
     <name>JDBI Dropwizard Integration Testing</name>
 
