@@ -6,7 +6,7 @@ import org.skife.jdbi.v2.Handle;
  * Date: 1/1/16
  * Time: 7:40 PM
  * <p/>
- * Maintenance operations against HSQLB
+ * Maintenance operations for the HSQLDB database
  *
  * @author Artem Prigoda
  */
