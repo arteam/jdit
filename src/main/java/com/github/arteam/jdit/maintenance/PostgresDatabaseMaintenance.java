@@ -64,13 +64,4 @@ class PostgresDatabaseMaintenance implements DatabaseMaintenance {
             }
         });
     }
-
-    private static class TableForeignKey {
-        private String table;
-        private String foreignKey;
-
-        private TableForeignKey(String table) {
-            this.table = table;
-        }
-    }
 }
