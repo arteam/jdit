@@ -27,20 +27,17 @@ class MySqlDatabaseMaintenance implements DatabaseMaintenance {
     }
 
     private void performForEveryTable(final String operation) {
-        handle.useTransaction(new TransactionConsumer() {
-            @Override
-            public void useTransaction(Handle h, TransactionStatus status) throws Exception {
-                Batch batch = h.createBatch();
-                batch.add("set foreign_key_checks=0");
-                Query<String> tableNames = h.createQuery("select table_name from information_schema.tables " +
-                        "where table_schema = (select database())")
-                        .mapTo(String.class);
-                for (String tableName : tableNames) {
-                    batch.add(String.format("%s table `%s`", operation, tableName));
-                }
-                batch.add("set foreign_key_checks=1");
-                batch.execute();
+        handle.useTransaction((h, status) -> {
+            Batch batch = h.createBatch();
+            batch.add("set foreign_key_checks=0");
+            Query<String> tableNames = h.createQuery("select table_name from information_schema.tables " +
+                    "where table_schema = (select database())")
+                    .mapTo(String.class);
+            for (String tableName : tableNames) {
+                batch.add(String.format("%s table `%s`", operation, tableName));
             }
+            batch.add("set foreign_key_checks=1");
+            batch.execute();
         });
     }
 }

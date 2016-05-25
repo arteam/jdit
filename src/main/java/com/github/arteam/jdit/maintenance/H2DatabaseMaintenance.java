@@ -24,26 +24,23 @@ class H2DatabaseMaintenance implements DatabaseMaintenance {
 
     @Override
     public void sweepData() {
-        handle.useTransaction(new TransactionConsumer() {
-            @Override
-            public void useTransaction(Handle h, TransactionStatus status) throws Exception {
-                Batch batch = h.createBatch();
-                batch.add("set referential_integrity false");
+        handle.useTransaction((h, status) -> {
+            Batch batch = h.createBatch();
+            batch.add("set referential_integrity false");
 
-                Query<String> tables = h.createQuery("show tables")
-                        .mapTo(String.class);
-                for (String table : tables) {
-                    batch.add(String.format("truncate table \"%s\"", table));
-                }
-
-                Query<String> sequenceNames = h.createQuery("select sequence_name from information_schema.sequences")
-                        .mapTo(String.class);
-                for (String sequenceName : sequenceNames) {
-                    batch.add(String.format("alter sequence \"%s\" restart with 1", sequenceName));
-                }
-                batch.add("set referential_integrity true");
-                batch.execute();
+            Query<String> tables = h.createQuery("show tables")
+                    .mapTo(String.class);
+            for (String table : tables) {
+                batch.add(String.format("truncate table \"%s\"", table));
             }
+
+            Query<String> sequenceNames = h.createQuery("select sequence_name from information_schema.sequences")
+                    .mapTo(String.class);
+            for (String sequenceName : sequenceNames) {
+                batch.add(String.format("alter sequence \"%s\" restart with 1", sequenceName));
+            }
+            batch.add("set referential_integrity true");
+            batch.execute();
         });
     }
 }
