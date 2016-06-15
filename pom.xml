@@ -10,7 +10,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <dropwizard.version>1.0.0-rc2</dropwizard.version>
+        <dropwizard.version>1.0.0-rc3</dropwizard.version>
         <jdbi.version>2.73</jdbi.version>
         <hsqldb.version>2.3.3</hsqldb.version>
         <postgresql.version>9.4.1207</postgresql.version>
