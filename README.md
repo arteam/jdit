@@ -10,7 +10,7 @@ testing of [*JDBI*](http://jdbi.org/) data access objects in
 
 The library does the following things:
 
-* Supports *[HSQLDB](http://hsqldb.org/)*, *[PostgreSQL](http://www.postgresql.org/)*,
+* Supports *[HSQLDB](http://hsqldb.org/)*, *[PostgreSQL](https://www.postgresql.org/)*,
 *[MySQL](https://www.mysql.com/)*, *[H2](http://h2database.com)* databases;
 * Creates a DBI instance with the same configuration as in 
 Dropwizard's `DBIFactory` (support of Guava's `Optional`, `ImmutableList`,
