@@ -5,7 +5,7 @@ import org.skife.jdbi.v2.*;
 /**
  * Date: 1/1/16
  * Time: 8:11 PM
- * Maintenance operations against the H2 database
+ * Maintenance operations for the H2 database
  *
  * @author Artem Prigoda
  */

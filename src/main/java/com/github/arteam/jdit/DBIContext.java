@@ -52,7 +52,7 @@ public class DBIContext {
     }
 
     /**
-     * Load a properties file from the classpath
+     * Load a properties file from the classpath and merges it with the default properties
      *
      * @return DB configuration as {@link Properties}
      */

@@ -9,11 +9,9 @@ import java.lang.annotation.Target;
  * Date: 1/25/15
  * Time: 10:44 PM
  * <p>
- * Annotation for creating and injecting a DBI SqlObject
- * to the current test.
+ * Annotation for creating and injecting a DBI SqlObject to the current test.
  * <p>
- * A field, which thin annotation marks, should be an
- * interface or an abstract class.
+ * A field, which thin annotation marks, should be an interface or an abstract class.
  *
  * @author Artem Prigoda
  */

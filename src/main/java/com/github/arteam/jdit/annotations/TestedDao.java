@@ -9,9 +9,8 @@ import java.lang.annotation.Target;
  * Date: 1/25/15
  * Time: 6:50 PM
  * <p>
- * Annotation for creating and injecting a DBI DAO (class
- * with a {@link org.skife.jdbi.v2.DBI} field) to the
- * current test.
+ * Annotation for creating and injecting a DBI DAO (class with a {@link org.skife.jdbi.v2.DBI}
+ * field) to the current test.
  *
  * @author Artem Prigoda
  */

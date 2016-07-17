@@ -16,7 +16,7 @@ import java.util.TimeZone;
 /**
  * Date: 2/16/15
  * Time: 10:50 PM
- * Factory for creating DBI instances as well as in Dropwizard
+ * Factory for creating DBI instances with the same configuration as in Dropwizard
  *
  * @author Artem Prigoda
  */
@@ -73,7 +73,6 @@ public class DropwizardDBIFactory implements DBIFactory {
         dbi.registerColumnMapper(new LocalDateTimeMapper());
         dbi.registerColumnMapper(new OffsetDateTimeMapper());
         dbi.registerColumnMapper(new ZonedDateTimeMapper());
-
 
         return dbi;
     }

@@ -6,7 +6,7 @@ import org.skife.jdbi.v2.*;
  * Date: 1/1/16
  * Time: 7:05 PM
  * <p/>
- * Maintenance operations for rhe PostgreSQL database
+ * Maintenance operations for the PostgreSQL database
  *
  * @author Artem Prigoda
  */
