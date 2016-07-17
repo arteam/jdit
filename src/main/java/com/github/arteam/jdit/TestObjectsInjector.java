@@ -24,12 +24,12 @@ import java.util.List;
  *
  * @author Artem Prigoda
  */
-public class TestObjectsInjector {
+class TestObjectsInjector {
 
     private final DBI dbi;
     private final Handle handle;
 
-    public TestObjectsInjector(DBI dbi, Handle handle) {
+    TestObjectsInjector(DBI dbi, Handle handle) {
         this.dbi = dbi;
         this.handle = handle;
     }
@@ -41,7 +41,7 @@ public class TestObjectsInjector {
      * @param test current test
      * @throws IllegalAccessException reflection error
      */
-    public void injectTestedInstances(Object test) throws IllegalAccessException {
+    void injectTestedInstances(Object test) throws IllegalAccessException {
         // TODO Cache reflection information
         List<Field> fields = new ArrayList<>();
         Class<?> currentTestClass = test.getClass();

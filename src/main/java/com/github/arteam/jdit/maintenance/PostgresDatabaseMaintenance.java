@@ -14,7 +14,7 @@ class PostgresDatabaseMaintenance implements DatabaseMaintenance {
 
     private Handle handle;
 
-    public PostgresDatabaseMaintenance(Handle handle) {
+    PostgresDatabaseMaintenance(Handle handle) {
         this.handle = handle;
     }
 

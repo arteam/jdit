@@ -9,7 +9,7 @@ class DataMigration {
 
     private final Handle handle;
 
-    public DataMigration(Handle handle) {
+    DataMigration(Handle handle) {
         this.handle = handle;
     }
 
@@ -19,7 +19,7 @@ class DataMigration {
      * @param scriptLocation script location (without the leading slash).
      *                       If one exists, it's trimmed.
      */
-    public void executeScript(String scriptLocation) {
+    void executeScript(String scriptLocation) {
         String correctLocation = !scriptLocation.startsWith("/") ?
                 scriptLocation : scriptLocation.substring(1);
         handle.createScript(correctLocation).executeAsSeparateStatements();

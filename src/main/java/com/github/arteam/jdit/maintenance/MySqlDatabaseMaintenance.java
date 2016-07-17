@@ -14,7 +14,7 @@ class MySqlDatabaseMaintenance implements DatabaseMaintenance {
 
     private Handle handle;
 
-    public MySqlDatabaseMaintenance(Handle handle) {
+    MySqlDatabaseMaintenance(Handle handle) {
         this.handle = handle;
     }
 
