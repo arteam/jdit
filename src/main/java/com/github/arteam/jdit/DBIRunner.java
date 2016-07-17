@@ -15,7 +15,7 @@ import org.skife.jdbi.v2.Handle;
  * Date: 1/22/15
  * Time: 8:55 PM
  * <p>
- * Tests runner that:
+ * Tests runner which:
  * <ul>
  * <li>Injects DBI related tested instances to the tests.
  * <p>Supports {@link Handle}, {@link DBI}, SQLObject and DBI DAO.
@@ -55,7 +55,7 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
             @Override
             public void evaluate() throws Throwable {
                 // Open a new handle for every test
-                // It affords to avoid creating a static state that makes tests more independent
+                // It affords to avoid creating a static state which makes tests more independent
                 JditProperties jditProperties = klass.getAnnotation(JditProperties.class);
                 DBI dbi = jditProperties != null ? DBIContextFactory.getDBI(jditProperties.value()) : DBIContextFactory.getDBI();
                 try (Handle handle = dbi.open()) {

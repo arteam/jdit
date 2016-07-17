@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
  * Date: 2/1/15
  * Time: 3:24 PM
  * <p>
- * Component that's responsible for injecting test data to methods.
+ * Component which is responsible for injecting test data to methods.
  * It analyzes test methods and classes for the {@link DataSet} annotation
  * and dispatches locations of the data to the {@link DataMigration}
  * component.
@@ -24,13 +24,12 @@ public class DataSetInjector {
     }
 
     /**
-     * Inject test data to a method.
+     * Injects test data to a method.
      * <p>
-     * If the method or class has the  {@link DataSet} annotation, data
-     * from the scripts from the locations, specified in the annotation,
-     * will be injected to the DB
+     * If the method or class has the {@link DataSet} annotation, data from the scripts of the locations,
+     * specified in the annotation, will be injected to the DB
      *
-     * @param method current method
+     * @param method the current method
      */
     public void injectData(Method method) {
         DataSet classLevelDataSet = method.getDeclaringClass().getAnnotation(DataSet.class);
