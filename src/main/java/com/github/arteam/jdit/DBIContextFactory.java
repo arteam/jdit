@@ -28,7 +28,7 @@ public class DBIContextFactory {
         return getDBI(DEFAULT_PROPERTIES_LOCATION);
     }
 
-    public static DBI getDBI(String propertiesLocation) {
+    static DBI getDBI(String propertiesLocation) {
         DBI dbi = CONTEXTS.get(propertiesLocation);
         if (dbi == null) {
             CONTEXTS.put(propertiesLocation, dbi = DBIContext.create(propertiesLocation));

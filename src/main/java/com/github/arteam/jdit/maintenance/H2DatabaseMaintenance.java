@@ -13,7 +13,7 @@ class H2DatabaseMaintenance implements DatabaseMaintenance {
 
     private final Handle handle;
 
-    public H2DatabaseMaintenance(Handle handle) {
+    H2DatabaseMaintenance(Handle handle) {
         this.handle = handle;
     }
 

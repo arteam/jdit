@@ -14,7 +14,7 @@ class HsqlDatabaseMaintenance implements DatabaseMaintenance {
 
     private final Handle handle;
 
-    public HsqlDatabaseMaintenance(Handle handle) {
+    HsqlDatabaseMaintenance(Handle handle) {
         this.handle = handle;
     }
 
