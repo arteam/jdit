@@ -15,11 +15,11 @@ import java.lang.reflect.Method;
  *
  * @author Artem Prigoda
  */
-public class DataSetInjector {
+class DataSetInjector {
 
     private DataMigration dataMigration;
 
-    public DataSetInjector(DataMigration dataMigration) {
+    DataSetInjector(DataMigration dataMigration) {
         this.dataMigration = dataMigration;
     }
 
@@ -31,7 +31,7 @@ public class DataSetInjector {
      *
      * @param method the current method
      */
-    public void injectData(Method method) {
+    void injectData(Method method) {
         DataSet classLevelDataSet = method.getDeclaringClass().getAnnotation(DataSet.class);
         DataSet methodDataSet = method.getAnnotation(DataSet.class);
         DataSet actualDataSet = methodDataSet != null ? methodDataSet : classLevelDataSet;
