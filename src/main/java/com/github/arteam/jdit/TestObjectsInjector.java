@@ -19,7 +19,7 @@ import java.util.List;
  * Date: 1/25/15
  * Time: 11:56 PM
  * <p>
- * Component for injecting test instances (DBI, Handles, SQLObjects, JDBI DAOs)
+ * Component which injects test instances (DBI, Handles, SQLObjects, JDBI DAOs)
  * to the fields with corresponding annotations in the test.
  *
  * @author Artem Prigoda
@@ -132,8 +132,7 @@ public class TestObjectsInjector {
     }
 
     /**
-     * Create a inject a DBI DAO instance to a field
-     * with {@link TestedDao}  annotation.
+     * Create a inject a DBI DAO instance to a field with the {@link TestedDao}  annotation.
      * <p>The DAO should provide a default constructor or a constructor
      * that accepts a {@link DBI} as the single parameter<p>
      *
@@ -168,7 +167,6 @@ public class TestObjectsInjector {
                 defaultConstructor = constructor;
             }
         }
-
 
         if (defaultConstructor == null) {
             // No eligible constructor is provided

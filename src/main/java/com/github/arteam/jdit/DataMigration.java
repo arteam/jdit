@@ -3,7 +3,7 @@ package com.github.arteam.jdit;
 import org.skife.jdbi.v2.*;
 
 /**
- * Component that's responsible for migrating data in the DB
+ * Component which is responsible for migrating data in the DB
  */
 class DataMigration {
 
@@ -14,10 +14,10 @@ class DataMigration {
     }
 
     /**
-     * Execute a script a from a classpath location
+     * Executes a script a from a classpath location
      *
-     * @param scriptLocation script location (without leading slash).
-     *                       If one exists, it's trimmed
+     * @param scriptLocation script location (without the leading slash).
+     *                       If one exists, it's trimmed.
      */
     public void executeScript(String scriptLocation) {
         String correctLocation = !scriptLocation.startsWith("/") ?
