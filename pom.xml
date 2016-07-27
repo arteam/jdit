@@ -17,6 +17,7 @@
         <mysql.version>5.1.39</mysql.version>
         <h2.version>1.4.190</h2.version>
         <junit.version>4.12</junit.version>
+        <stringtemplate.version>3.2.1</stringtemplate.version>
     </properties>
 
     <scm>
@@ -123,6 +124,14 @@
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>stringtemplate</artifactId>
+            <version>${stringtemplate.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <distributionManagement>

@@ -1,0 +1,10 @@
+group Advanced;
+
+getPlayers(isFirstName,isLastName,isSort,sortBy,isSortDesc,isLimit,limit,isOffset, offset) ::= << select * from players
+where 1=1
+<if(isFirstName)>and first_name=:firstName<endif>
+<if(isLastName)>and last_name=:lastName<endif>
+<if(isSort)>order by <sortBy> <if(isSortDesc)>desc<endif><endif>
+<if(isLimit)>limit <limit><endif>
+<if(isOffset)>offset <offset><endif>
+>>
