@@ -268,7 +268,7 @@ More examples available in a separate [repository](https://github.com/arteam/jdi
 ## Dependencies
 
 * [JDBI](http://jdbi.org/) 2.73
-* [Dropwizard](http://dropwizard.io/) 0.9.2
+* [Dropwizard](http://dropwizard.io/) 1.0.0
 * [JUnit](http://junit.org/) 4.12
 
 ## Compatability
