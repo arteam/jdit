@@ -61,8 +61,8 @@ public final class ShortNameStrategy extends DelegatingStatementNameStrategy {
     private final class ShortSqlObjectStrategy implements StatementNameStrategy {
         @Override
         public String getStatementName(StatementContext statementContext) {
-            final Class<?> clazz = statementContext.getSqlObjectType();
-            final Method method = statementContext.getSqlObjectMethod();
+            final Class<?> clazz = statementContext.getExtensionMethod().getType();
+            final Method method = statementContext.getExtensionMethod().getMethod();
             if (clazz != null && method != null) {
                 final String className = clazz.getName();
                 final String statementName = method.getName();

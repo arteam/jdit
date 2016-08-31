@@ -106,8 +106,8 @@ public final class NameStrategies {
 
         @Override
         public String getStatementName(StatementContext statementContext) {
-            final Class<?> clazz = statementContext.getSqlObjectType();
-            final Method method = statementContext.getSqlObjectMethod();
+            final Class<?> clazz = statementContext.getExtensionMethod().getType();
+            final Method method = statementContext.getExtensionMethod().getMethod();
             if (clazz != null) {
                 final String rawSql = statementContext.getRawSql();
 
