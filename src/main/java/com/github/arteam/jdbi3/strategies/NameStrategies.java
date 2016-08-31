@@ -1,5 +1,6 @@
 package com.github.arteam.jdbi3.strategies;
 
+import org.jdbi.v3.core.ExtensionMethod;
 import org.jdbi.v3.core.StatementContext;
 
 import java.lang.reflect.Method;
@@ -106,9 +107,10 @@ public final class NameStrategies {
 
         @Override
         public String getStatementName(StatementContext statementContext) {
-            final Class<?> clazz = statementContext.getExtensionMethod().getType();
-            final Method method = statementContext.getExtensionMethod().getMethod();
-            if (clazz != null) {
+            ExtensionMethod extensionMethod = statementContext.getExtensionMethod();
+            if (extensionMethod != null) {
+                final Class<?> clazz = extensionMethod.getType();
+                final Method method = extensionMethod.getMethod();
                 final String rawSql = statementContext.getRawSql();
 
                 final String group = clazz.getPackage().getName();
