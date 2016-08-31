@@ -1,4 +1,4 @@
-package com.codahale.metrics.jdbi3.strategies;
+package com.github.arteam.jdbi3.strategies;
 
 public class BasicSqlNameStrategy extends DelegatingStatementNameStrategy {
     public BasicSqlNameStrategy() {

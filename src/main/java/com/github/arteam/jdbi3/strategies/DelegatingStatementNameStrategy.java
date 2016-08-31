@@ -1,4 +1,4 @@
-package com.codahale.metrics.jdbi3.strategies;
+package com.github.arteam.jdbi3.strategies;
 
 import org.jdbi.v3.core.StatementContext;
 

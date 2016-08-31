@@ -1,4 +1,4 @@
-package com.codahale.metrics.jdbi3.strategies;
+package com.github.arteam.jdbi3.strategies;
 
 /**
  * Very simple strategy, can be used with any JDBI loader to build basic statistics.
