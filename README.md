@@ -1,6 +1,6 @@
 # JDIT
 [![Build Status](https://travis-ci.org/arteam/jdit.svg?branch=master)](https://travis-ci.org/arteam/jdit)
-[![Bintray](https://img.shields.io/bintray/v/arteam/maven/jdit.svg?maxAge=2592000)]()
+[![Download](https://api.bintray.com/packages/arteam/maven/jdit/images/download.svg) ](https://bintray.com/arteam/maven/jdit/_latestVersion)
 
 ## Overview
 
