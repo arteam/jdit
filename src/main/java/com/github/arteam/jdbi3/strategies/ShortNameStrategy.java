@@ -1,7 +1,5 @@
 package com.github.arteam.jdbi3.strategies;
 
-import org.jdbi.v3.core.StatementContext;
-
 import java.lang.reflect.Method;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -13,75 +11,60 @@ import static com.codahale.metrics.MetricRegistry.name;
  * by class name and method; a shortening strategy is applied to make the JMX output nicer.
  */
 public final class ShortNameStrategy extends DelegatingStatementNameStrategy {
-    private final ConcurrentMap<String, String> shortClassNames = new ConcurrentHashMap<String, String>();
 
-    private final String baseJmxName;
+    private final ConcurrentMap<String, String> shortClassNames = new ConcurrentHashMap<>();
 
     public ShortNameStrategy(String baseJmxName) {
-        this.baseJmxName = baseJmxName;
-
-        // Java does not allow super (..., new ShortContextClassStrategy(), new ShortSqlObjectStrategy(), ...);
-        // ==> No enclosing instance of type <xxx> is available due to some intermediate constructor invocation. Lame.
         registerStrategies(NameStrategies.CHECK_EMPTY,
-                           new ShortContextClassStrategy(),
-                           new ShortSqlObjectStrategy(),
-                           NameStrategies.CHECK_RAW,
-                           NameStrategies.NAIVE_NAME);
-    }
+                statementContext -> {
+                    final Object classObj = statementContext.getAttribute(NameStrategies.STATEMENT_CLASS);
+                    final Object nameObj = statementContext.getAttribute(NameStrategies.STATEMENT_NAME);
 
-    private final class ShortContextClassStrategy implements StatementNameStrategy {
-        @Override
-        public String getStatementName(StatementContext statementContext) {
-            final Object classObj = statementContext.getAttribute(NameStrategies.STATEMENT_CLASS);
-            final Object nameObj = statementContext.getAttribute(NameStrategies.STATEMENT_NAME);
+                    if (classObj == null || nameObj == null) {
+                        return null;
+                    }
 
-            if (classObj == null || nameObj == null) {
-                return null;
-            }
+                    final String className = (String) classObj;
+                    final String statementName = (String) nameObj;
 
-            final String className = (String) classObj;
-            final String statementName = (String) nameObj;
+                    final int dotPos = className.lastIndexOf('.');
+                    if (dotPos == -1) {
+                        return null;
+                    }
 
-            final int dotPos = className.lastIndexOf('.');
-            if (dotPos == -1) {
-                return null;
-            }
+                    final String shortName = className.substring(dotPos + 1);
 
-            final String shortName = className.substring(dotPos + 1);
+                    final String oldClassName = shortClassNames.putIfAbsent(shortName, className);
+                    if (oldClassName == null || oldClassName.equals(className)) {
+                        return name(baseJmxName, shortName, statementName);
+                    } else {
+                        return name(baseJmxName, className, statementName);
+                    }
+                },
+                statementContext -> {
+                    final Class<?> clazz = statementContext.getExtensionMethod().getType();
+                    final Method method = statementContext.getExtensionMethod().getMethod();
+                    if (clazz != null && method != null) {
+                        final String className = clazz.getName();
+                        final String statementName = method.getName();
 
-            final String oldClassName = shortClassNames.putIfAbsent(shortName, className);
-            if (oldClassName == null || oldClassName.equals(className)) {
-                return name(baseJmxName, shortName, statementName);
-            } else {
-                return name(baseJmxName, className, statementName);
-            }
-        }
-    }
+                        final int dotPos = className.lastIndexOf('.');
+                        if (dotPos == -1) {
+                            return null;
+                        }
 
-    private final class ShortSqlObjectStrategy implements StatementNameStrategy {
-        @Override
-        public String getStatementName(StatementContext statementContext) {
-            final Class<?> clazz = statementContext.getExtensionMethod().getType();
-            final Method method = statementContext.getExtensionMethod().getMethod();
-            if (clazz != null && method != null) {
-                final String className = clazz.getName();
-                final String statementName = method.getName();
+                        final String shortName = className.substring(dotPos + 1);
 
-                final int dotPos = className.lastIndexOf('.');
-                if (dotPos == -1) {
+                        final String oldClassName = shortClassNames.putIfAbsent(shortName, className);
+                        if (oldClassName == null || oldClassName.equals(className)) {
+                            return name(baseJmxName, shortName, statementName);
+                        } else {
+                            return name(baseJmxName, className, statementName);
+                        }
+                    }
                     return null;
-                }
-
-                final String shortName = className.substring(dotPos + 1);
-
-                final String oldClassName = shortClassNames.putIfAbsent(shortName, className);
-                if (oldClassName == null || oldClassName.equals(className)) {
-                    return name(baseJmxName, shortName, statementName);
-                } else {
-                    return name(baseJmxName, className, statementName);
-                }
-            }
-            return null;
-        }
+                },
+                NameStrategies.CHECK_RAW,
+                NameStrategies.NAIVE_NAME);
     }
 }

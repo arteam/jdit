@@ -1,7 +1,6 @@
 package com.github.arteam.jdbi3.strategies;
 
 import org.jdbi.v3.core.ExtensionMethod;
-import org.jdbi.v3.core.StatementContext;
 
 import java.lang.reflect.Method;
 import java.util.regex.Matcher;
@@ -9,18 +8,14 @@ import java.util.regex.Pattern;
 
 import static com.codahale.metrics.MetricRegistry.name;
 
-public final class NameStrategies {
-    public static final StatementNameStrategy CHECK_EMPTY = new CheckEmptyStrategy();
-    public static final StatementNameStrategy CHECK_RAW = new CheckRawStrategy();
-    public static final StatementNameStrategy SQL_OBJECT = new SqlObjectStrategy();
-    public static final StatementNameStrategy NAIVE_NAME = new NaiveNameStrategy();
-    public static final StatementNameStrategy CONTEXT_CLASS = new ContextClassStrategy();
-    public static final StatementNameStrategy CONTEXT_NAME = new ContextNameStrategy();
+public class NameStrategies {
 
     /**
-     * An empty SQL statement.
+     * File pattern to shorten the group name.
      */
-    private static final String EMPTY_SQL = "sql.empty";
+    private static final Pattern SHORT_PATTERN = Pattern.compile("^(.*?)/(.*?)(-sql)?\\.st(g)?$");
+
+    private static final String SQL_EMPTY = "sql.empty";
 
     /**
      * Unknown SQL.
@@ -50,142 +45,89 @@ public final class NameStrategies {
     private static String forRawSql(String rawSql) {
         return name("sql", "raw", rawSql);
     }
-
-    static final class CheckEmptyStrategy implements StatementNameStrategy {
-        private CheckEmptyStrategy() {
+    public static final StatementNameStrategy CHECK_EMPTY = statementContext -> {
+        final String rawSql = statementContext.getRawSql();
+        if (rawSql == null || rawSql.length() == 0) {
+            return SQL_EMPTY;
         }
+        return null;
+    };
 
-        @Override
-        public String getStatementName(StatementContext statementContext) {
-            final String rawSql = statementContext.getRawSql();
+    public static final StatementNameStrategy CHECK_RAW = statementContext -> forRawSql(statementContext.getRawSql());
 
-            if (rawSql == null || rawSql.length() == 0) {
-                return EMPTY_SQL;
-            }
-            return null;
+    public static final StatementNameStrategy SQL_OBJECT = statementContext -> {
+        ExtensionMethod extensionMethod = statementContext.getExtensionMethod();
+        if (extensionMethod != null) {
+            final Class<?> clazz = extensionMethod.getType();
+            final Method method = extensionMethod.getMethod();
+            final String group = clazz.getPackage().getName();
+            final String name = clazz.getSimpleName();
+            return name(group, name, method.getName());
         }
-    }
+        return null;
+    };
 
-    static final class CheckRawStrategy implements StatementNameStrategy {
-        private CheckRawStrategy() {
-        }
+    public static final StatementNameStrategy NAIVE_NAME = statementContext -> {
+        final String rawSql = statementContext.getRawSql();
 
-        @Override
-        public String getStatementName(StatementContext statementContext) {
-            final String rawSql = statementContext.getRawSql();
+        // Is it using the template loader?
+        final int colon = rawSql.indexOf(':');
 
-            //if (ClasspathStatementLocator.looksLikeSql(rawSql)) {}
+        if (colon == -1) {
+            // No package? Just return the name, JDBI figured out somehow on how to find the raw sql for this statement.
             return forRawSql(rawSql);
         }
-    }
 
-    static final class NaiveNameStrategy implements StatementNameStrategy {
-        private NaiveNameStrategy() {
-        }
+        final String group = rawSql.substring(0, colon);
+        final String name = rawSql.substring(colon + 1);
+        return name(group, name);
+    };
 
-        @Override
-        public String getStatementName(StatementContext statementContext) {
-            final String rawSql = statementContext.getRawSql();
+    public static final StatementNameStrategy CONTEXT_CLASS = statementContext -> {
+        final Object classObj = statementContext.getAttribute(STATEMENT_CLASS);
+        final Object nameObj = statementContext.getAttribute(STATEMENT_NAME);
 
-            // Is it using the template loader?
-            final int colon = rawSql.indexOf(':');
-
-            if (colon == -1) {
-                // No package? Just return the name, JDBI figured out somehow on how to find the raw sql for this statement.
-                return forRawSql(rawSql);
-            }
-
-            final String group = rawSql.substring(0, colon);
-            final String name = rawSql.substring(colon + 1);
-            return name(group, name);
-        }
-    }
-
-    static final class SqlObjectStrategy implements StatementNameStrategy {
-        private SqlObjectStrategy() {
-        }
-
-        @Override
-        public String getStatementName(StatementContext statementContext) {
-            ExtensionMethod extensionMethod = statementContext.getExtensionMethod();
-            if (extensionMethod != null) {
-                final Class<?> clazz = extensionMethod.getType();
-                final Method method = extensionMethod.getMethod();
-
-                final String group = clazz.getPackage().getName();
-                final String name = clazz.getSimpleName();
-                return name(group, name, method.getName());
-            }
+        if (classObj == null || nameObj == null) {
             return null;
         }
-    }
 
-    static final class ContextClassStrategy implements StatementNameStrategy {
-        private ContextClassStrategy() {
+        final String className = (String) classObj;
+        final String statementName = (String) nameObj;
+
+        final int dotPos = className.lastIndexOf('.');
+        if (dotPos == -1) {
+            return null;
         }
 
-        @Override
-        public String getStatementName(StatementContext statementContext) {
-            final Object classObj = statementContext.getAttribute(STATEMENT_CLASS);
-            final Object nameObj = statementContext.getAttribute(STATEMENT_NAME);
+        return name(className.substring(0, dotPos),
+                className.substring(dotPos + 1),
+                statementName);
+    };
 
-            if (classObj == null || nameObj == null) {
-                return null;
-            }
+    public static final StatementNameStrategy CONTEXT_NAME = statementContext -> {
+        final Object groupObj = statementContext.getAttribute(STATEMENT_GROUP);
+        final Object typeObj = statementContext.getAttribute(STATEMENT_TYPE);
+        final Object nameObj = statementContext.getAttribute(STATEMENT_NAME);
 
-            final String className = (String) classObj;
-            final String statementName = (String) nameObj;
-
-            final int dotPos = className.lastIndexOf('.');
-            if (dotPos == -1) {
-                return null;
-            }
-
-            return name(className.substring(0, dotPos),
-                        className.substring(dotPos + 1),
-                        statementName);
-        }
-    }
-
-    static final class ContextNameStrategy implements StatementNameStrategy {
-        /**
-         * File pattern to shorten the group name.
-         */
-        private static final Pattern SHORT_PATTERN = Pattern.compile("^(.*?)/(.*?)(-sql)?\\.st(g)?$");
-
-        private ContextNameStrategy() {
+        if (groupObj == null || nameObj == null) {
+            return null;
         }
 
-        @Override
-        public String getStatementName(StatementContext statementContext) {
-            final Object groupObj = statementContext.getAttribute(STATEMENT_GROUP);
-            final Object typeObj = statementContext.getAttribute(STATEMENT_TYPE);
-            final Object nameObj = statementContext.getAttribute(STATEMENT_NAME);
+        final String group = (String) groupObj;
+        final String statementName = (String) nameObj;
 
-            if (groupObj == null || nameObj == null) {
-                return null;
+        if (typeObj == null) {
+            final Matcher matcher = SHORT_PATTERN.matcher(group);
+            if (matcher.matches()) {
+                final String groupName = matcher.group(1);
+                final String typeName = matcher.group(2);
+                return name(groupName, typeName, statementName);
             }
 
-            final String group = (String) groupObj;
-            final String statementName = (String) nameObj;
-
-            if (typeObj == null) {
-                final Matcher matcher = SHORT_PATTERN.matcher(group);
-                if (matcher.matches()) {
-                    final String groupName = matcher.group(1);
-                    final String typeName = matcher.group(2);
-                    return name(groupName, typeName, statementName);
-                }
-
-                return name(group, statementName, "");
-            } else {
-                final String type = (String) typeObj;
-
-                return name(group, type, statementName);
-            }
+            return name(group, statementName, "");
+        } else {
+            final String type = (String) typeObj;
+            return name(group, type, statementName);
         }
-    }
-
-    private NameStrategies() {
-    }
+    };
 }

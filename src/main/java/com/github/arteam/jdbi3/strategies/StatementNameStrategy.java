@@ -5,6 +5,7 @@ import org.jdbi.v3.core.StatementContext;
 /**
  * Interface for strategies to statement contexts to metric names.
  */
+@FunctionalInterface
 public interface StatementNameStrategy {
     String getStatementName(StatementContext statementContext);
 }
