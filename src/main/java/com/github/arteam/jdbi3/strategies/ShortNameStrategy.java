@@ -64,7 +64,6 @@ public final class ShortNameStrategy extends DelegatingStatementNameStrategy {
                     }
                     return null;
                 },
-                NameStrategies.CHECK_RAW,
                 NameStrategies.NAIVE_NAME);
     }
 }

@@ -56,8 +56,7 @@ public class InstrumentedTimingCollectorTest {
         final String name = strategy.getStatementName(ctx);
         final Timer timer = registry.timer(name);
 
-        assertThat(name)
-                .isEqualTo(name("sql", "raw", "SELECT 1"));
+        assertThat(name).isEqualTo(name("sql", "raw"));
         assertThat(timer.getSnapshot().getMax())
                 .isEqualTo(2000000000);
     }
@@ -78,25 +77,6 @@ public class InstrumentedTimingCollectorTest {
                 .isEqualTo(name("sql", "empty"));
         assertThat(timer.getSnapshot().getMax())
                 .isEqualTo(2000000000);
-    }
-
-    @Test
-    public void updatesTimerForNonSqlishRawSql() throws Exception {
-        final StatementNameStrategy strategy = new SmartNameStrategy();
-        final InstrumentedTimingCollector collector = new InstrumentedTimingCollector(registry,
-                strategy);
-        final StatementContext ctx = mock(StatementContext.class);
-        doReturn("don't know what it is but it's not SQL").when(ctx).getRawSql();
-
-        collector.collect(TimeUnit.SECONDS.toNanos(3), ctx);
-
-        final String name = strategy.getStatementName(ctx);
-        final Timer timer = registry.timer(name);
-
-        assertThat(name)
-                .isEqualTo(name("sql", "raw", "don't know what it is but it's not SQL"));
-        assertThat(timer.getSnapshot().getMax())
-                .isEqualTo(3000000000L);
     }
 
     @Test

@@ -16,6 +16,7 @@ public class NameStrategies {
     private static final Pattern SHORT_PATTERN = Pattern.compile("^(.*?)/(.*?)(-sql)?\\.st(g)?$");
 
     private static final String SQL_EMPTY = "sql.empty";
+    private static final String SQL_RAW = "sql.raw";
 
     /**
      * Unknown SQL.
@@ -42,9 +43,6 @@ public class NameStrategies {
      */
     public static final String STATEMENT_NAME = "_metric_name";
 
-    private static String forRawSql(String rawSql) {
-        return name("sql", "raw", rawSql);
-    }
     public static final StatementNameStrategy CHECK_EMPTY = statementContext -> {
         final String rawSql = statementContext.getRawSql();
         if (rawSql == null || rawSql.length() == 0) {
@@ -52,8 +50,6 @@ public class NameStrategies {
         }
         return null;
     };
-
-    public static final StatementNameStrategy CHECK_RAW = statementContext -> forRawSql(statementContext.getRawSql());
 
     public static final StatementNameStrategy SQL_OBJECT = statementContext -> {
         ExtensionMethod extensionMethod = statementContext.getExtensionMethod();
@@ -72,10 +68,9 @@ public class NameStrategies {
 
         // Is it using the template loader?
         final int colon = rawSql.indexOf(':');
-
         if (colon == -1) {
-            // No package? Just return the name, JDBI figured out somehow on how to find the raw sql for this statement.
-            return forRawSql(rawSql);
+            // Return a constant, because we don't want to have an SQL query in metrics
+            return SQL_RAW;
         }
 
         final String group = rawSql.substring(0, colon);

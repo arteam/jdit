@@ -8,7 +8,6 @@ package com.github.arteam.jdbi3.strategies;
 public class ContextNameStrategy extends DelegatingStatementNameStrategy {
     public ContextNameStrategy() {
         super(NameStrategies.CHECK_EMPTY,
-              NameStrategies.CHECK_RAW,
               NameStrategies.CONTEXT_NAME,
               NameStrategies.NAIVE_NAME);
     }
