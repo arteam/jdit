@@ -111,12 +111,10 @@ public final class NameStrategies {
             if (extensionMethod != null) {
                 final Class<?> clazz = extensionMethod.getType();
                 final Method method = extensionMethod.getMethod();
-                final String rawSql = statementContext.getRawSql();
 
                 final String group = clazz.getPackage().getName();
                 final String name = clazz.getSimpleName();
-                final String type = method == null ? rawSql : method.getName();
-                return name(group, name, type);
+                return name(group, name, method.getName());
             }
             return null;
         }

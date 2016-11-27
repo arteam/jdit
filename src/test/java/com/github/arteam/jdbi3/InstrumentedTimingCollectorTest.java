@@ -6,9 +6,12 @@ import com.github.arteam.jdbi3.strategies.NameStrategies;
 import com.github.arteam.jdbi3.strategies.ShortNameStrategy;
 import com.github.arteam.jdbi3.strategies.SmartNameStrategy;
 import com.github.arteam.jdbi3.strategies.StatementNameStrategy;
+import org.jdbi.v3.core.ExtensionMethod;
 import org.jdbi.v3.core.StatementContext;
 import org.junit.Test;
+import org.mockito.Mockito;
 
+import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 
 import static com.codahale.metrics.MetricRegistry.name;
@@ -26,8 +29,8 @@ public class InstrumentedTimingCollectorTest {
                 strategy);
         final StatementContext ctx = mock(StatementContext.class);
         doReturn("SELECT 1").when(ctx).getRawSql();
-        doReturn(getClass()).when(ctx).getExtensionMethod();
-        doReturn(getClass().getMethod("updatesTimerForSqlObjects")).when(ctx).getExtensionMethod();
+        doReturn(new ExtensionMethod(getClass(), getClass().getMethod("updatesTimerForSqlObjects")))
+                .when(ctx).getExtensionMethod();
 
         collector.collect(TimeUnit.SECONDS.toNanos(1), ctx);
 
@@ -36,26 +39,6 @@ public class InstrumentedTimingCollectorTest {
 
         assertThat(name)
                 .isEqualTo(name(getClass(), "updatesTimerForSqlObjects"));
-        assertThat(timer.getSnapshot().getMax())
-                .isEqualTo(1000000000);
-    }
-
-    @Test
-    public void updatesTimerForSqlObjectsWithoutMethod() throws Exception {
-        final StatementNameStrategy strategy = new SmartNameStrategy();
-        final InstrumentedTimingCollector collector = new InstrumentedTimingCollector(registry,
-                strategy);
-        final StatementContext ctx = mock(StatementContext.class);
-        doReturn("SELECT 1").when(ctx).getRawSql();
-        doReturn(getClass()).when(ctx).getExtensionMethod();
-
-        collector.collect(TimeUnit.SECONDS.toNanos(1), ctx);
-
-        final String name = strategy.getStatementName(ctx);
-        final Timer timer = registry.timer(name);
-
-        assertThat(name)
-                .isEqualTo(name(getClass(), "SELECT 1"));
         assertThat(timer.getSnapshot().getMax())
                 .isEqualTo(1000000000);
     }
@@ -212,9 +195,8 @@ public class InstrumentedTimingCollectorTest {
                 strategy);
         final StatementContext ctx = mock(StatementContext.class);
         doReturn("SELECT 1").when(ctx).getRawSql();
-        doReturn(getClass()).when(ctx).getExtensionMethod();
-        doReturn(getClass().getMethod("updatesTimerForShortSqlObjectStrategy")).when(ctx)
-                .getExtensionMethod();
+        doReturn(new ExtensionMethod(getClass(), getClass().getMethod("updatesTimerForShortSqlObjectStrategy")))
+                .when(ctx).getExtensionMethod();
 
         collector.collect(TimeUnit.SECONDS.toNanos(1), ctx);
 
