@@ -6,6 +6,7 @@ package com.github.arteam.jdbi3.strategies;
  * NameStrategies#STATEMENT_NAME} for group based display.
  */
 public class ContextNameStrategy extends DelegatingStatementNameStrategy {
+
     public ContextNameStrategy() {
         super(NameStrategies.CHECK_EMPTY,
               NameStrategies.CONTEXT_NAME,

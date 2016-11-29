@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
  * method names for millisecond-precision timers.
  */
 public class InstrumentedTimingCollector implements TimingCollector {
+
     private final MetricRegistry registry;
     private final StatementNameStrategy statementNameStrategy;
 
