@@ -10,9 +10,9 @@ import static com.codahale.metrics.MetricRegistry.name;
  * Assembles all JDBI stats under a common prefix (passed in at constructor time). Stats are grouped
  * by class name and method; a shortening strategy is applied to make the JMX output nicer.
  */
-public final class ShortNameStrategy extends DelegatingStatementNameStrategy {
+public final class ContextShortNameStrategy extends DelegatingStatementNameStrategy {
 
-    public ShortNameStrategy(String baseName) {
+    public ContextShortNameStrategy(String baseName) {
         registerStrategies(NameStrategies.CHECK_EMPTY,
                 statementContext -> {
                     final Object classObj = statementContext.getAttribute(NameStrategies.STATEMENT_CLASS);

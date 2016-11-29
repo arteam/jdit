@@ -10,9 +10,9 @@ import static com.codahale.metrics.MetricRegistry.name;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-public class ShortNameStrategyTest extends AbstractStrategyTest {
+public class ContextShortNameStrategyTest extends AbstractStrategyTest {
 
-    private ShortNameStrategy shortNameStrategy = new ShortNameStrategy("jdbi");
+    private ContextShortNameStrategy shortNameStrategy = new ContextShortNameStrategy("jdbi");
     private InstrumentedTimingCollector collector = new InstrumentedTimingCollector(registry, shortNameStrategy);
 
     @Test
