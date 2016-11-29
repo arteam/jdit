@@ -16,4 +16,8 @@ public class AbstractStrategyTest {
     public void setUp() throws Exception {
         when(ctx.getRawSql()).thenReturn("SELECT 1");
     }
+
+    protected long getTimerMaxValue(String name) {
+        return registry.timer(name).getSnapshot().getMax();
+    }
 }

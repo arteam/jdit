@@ -1,6 +1,5 @@
 package com.github.arteam.jdbi3;
 
-import com.codahale.metrics.Timer;
 import com.github.arteam.jdbi3.strategies.NameStrategies;
 import com.github.arteam.jdbi3.strategies.SmartNameStrategy;
 import com.github.arteam.jdbi3.strategies.StatementNameStrategy;
@@ -33,11 +32,9 @@ public class SmartNameStrategyTest extends AbstractStrategyTest {
 
         collector.collect(TimeUnit.SECONDS.toNanos(1), ctx);
 
-        final String name = smartNameStrategy.getStatementName(ctx);
-        final Timer timer = registry.timer(name);
-
+        String name = smartNameStrategy.getStatementName(ctx);
         assertThat(name).isEqualTo(name(getClass(), "updatesTimerForSqlObjects"));
-        assertThat(timer.getSnapshot().getMax()).isEqualTo(1000000000);
+        assertThat(getTimerMaxValue(name)).isEqualTo(1000000000);
     }
 
     @Test
@@ -45,11 +42,9 @@ public class SmartNameStrategyTest extends AbstractStrategyTest {
 
         collector.collect(TimeUnit.SECONDS.toNanos(2), ctx);
 
-        final String name = smartNameStrategy.getStatementName(ctx);
-        final Timer timer = registry.timer(name);
-
+        String name = smartNameStrategy.getStatementName(ctx);
         assertThat(name).isEqualTo(name("sql", "raw"));
-        assertThat(timer.getSnapshot().getMax()).isEqualTo(2000000000);
+        assertThat(getTimerMaxValue(name)).isEqualTo(2000000000);
     }
 
     @Test
@@ -58,11 +53,9 @@ public class SmartNameStrategyTest extends AbstractStrategyTest {
 
         collector.collect(TimeUnit.SECONDS.toNanos(2), ctx);
 
-        final String name = smartNameStrategy.getStatementName(ctx);
-        final Timer timer = registry.timer(name);
-
+        String name = smartNameStrategy.getStatementName(ctx);
         assertThat(name).isEqualTo(name("sql", "empty"));
-        assertThat(timer.getSnapshot().getMax()).isEqualTo(2000000000);
+        assertThat(getTimerMaxValue(name)).isEqualTo(2000000000);
     }
 
     @Test
@@ -72,11 +65,9 @@ public class SmartNameStrategyTest extends AbstractStrategyTest {
 
         collector.collect(TimeUnit.SECONDS.toNanos(3), ctx);
 
-        final String name = smartNameStrategy.getStatementName(ctx);
-        final Timer timer = registry.timer(name);
-
+        String name = smartNameStrategy.getStatementName(ctx);
         assertThat(name).isEqualTo(name(getClass(), "updatesTimerForContextClass"));
-        assertThat(timer.getSnapshot().getMax()).isEqualTo(3000000000L);
+        assertThat(getTimerMaxValue(name)).isEqualTo(3000000000L);
     }
 
     @Test
@@ -86,11 +77,9 @@ public class SmartNameStrategyTest extends AbstractStrategyTest {
 
         collector.collect(TimeUnit.SECONDS.toNanos(4), ctx);
 
-        final String name = smartNameStrategy.getStatementName(ctx);
-        final Timer timer = registry.timer(name);
-
+        String name = smartNameStrategy.getStatementName(ctx);
         assertThat(name).isEqualTo(name("foo", "bar", "updatesTimerForTemplateFile"));
-        assertThat(timer.getSnapshot().getMax()).isEqualTo(4000000000L);
+        assertThat(getTimerMaxValue(name)).isEqualTo(4000000000L);
     }
 
     @Test
@@ -100,11 +89,9 @@ public class SmartNameStrategyTest extends AbstractStrategyTest {
 
         collector.collect(TimeUnit.SECONDS.toNanos(4), ctx);
 
-        final String name = smartNameStrategy.getStatementName(ctx);
-        final Timer timer = registry.timer(name);
-
+        String name = smartNameStrategy.getStatementName(ctx);
         assertThat(name).isEqualTo(name("my-group", "updatesTimerForContextGroupAndName"));
-        assertThat(timer.getSnapshot().getMax()).isEqualTo(4000000000L);
+        assertThat(getTimerMaxValue(name)).isEqualTo(4000000000L);
     }
 
     @Test
@@ -115,10 +102,8 @@ public class SmartNameStrategyTest extends AbstractStrategyTest {
 
         collector.collect(TimeUnit.SECONDS.toNanos(5), ctx);
 
-        final String name = smartNameStrategy.getStatementName(ctx);
-        final Timer timer = registry.timer(name);
-
+        String name = smartNameStrategy.getStatementName(ctx);
         assertThat(name).isEqualTo(name("my-group", "my-type", "updatesTimerForContextGroupTypeAndName"));
-        assertThat(timer.getSnapshot().getMax()).isEqualTo(5000000000L);
+        assertThat(getTimerMaxValue(name)).isEqualTo(5000000000L);
     }
 }
