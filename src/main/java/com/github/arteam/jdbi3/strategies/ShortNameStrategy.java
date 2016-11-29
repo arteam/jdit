@@ -12,9 +12,7 @@ import static com.codahale.metrics.MetricRegistry.name;
  */
 public final class ShortNameStrategy extends DelegatingStatementNameStrategy {
 
-    private final ConcurrentMap<String, String> shortClassNames = new ConcurrentHashMap<>();
-
-    public ShortNameStrategy(String baseJmxName) {
+    public ShortNameStrategy(String baseName) {
         registerStrategies(NameStrategies.CHECK_EMPTY,
                 statementContext -> {
                     final Object classObj = statementContext.getAttribute(NameStrategies.STATEMENT_CLASS);
@@ -33,13 +31,7 @@ public final class ShortNameStrategy extends DelegatingStatementNameStrategy {
                     }
 
                     final String shortName = className.substring(dotPos + 1);
-
-                    final String oldClassName = shortClassNames.putIfAbsent(shortName, className);
-                    if (oldClassName == null || oldClassName.equals(className)) {
-                        return name(baseJmxName, shortName, statementName);
-                    } else {
-                        return name(baseJmxName, className, statementName);
-                    }
+                    return name(baseName, shortName, statementName);
                 },
                 statementContext -> {
                     final Class<?> clazz = statementContext.getExtensionMethod().getType();
@@ -54,13 +46,7 @@ public final class ShortNameStrategy extends DelegatingStatementNameStrategy {
                         }
 
                         final String shortName = className.substring(dotPos + 1);
-
-                        final String oldClassName = shortClassNames.putIfAbsent(shortName, className);
-                        if (oldClassName == null || oldClassName.equals(className)) {
-                            return name(baseJmxName, shortName, statementName);
-                        } else {
-                            return name(baseJmxName, className, statementName);
-                        }
+                        return name(baseName, shortName, statementName);
                     }
                     return null;
                 },
