@@ -8,34 +8,39 @@ import com.github.arteam.jdbi3.strategies.SmartNameStrategy;
 import com.github.arteam.jdbi3.strategies.StatementNameStrategy;
 import org.jdbi.v3.core.ExtensionMethod;
 import org.jdbi.v3.core.StatementContext;
+import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
-import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 
 import static com.codahale.metrics.MetricRegistry.name;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
 public class InstrumentedTimingCollectorTest {
+
     private final MetricRegistry registry = new MetricRegistry();
+    private StatementNameStrategy smartNameStrategy = new SmartNameStrategy();
+    private InstrumentedTimingCollector collector;
+    private StatementContext ctx;
+
+    @Before
+    public void setUp() throws Exception {
+        collector = new InstrumentedTimingCollector(registry, smartNameStrategy);
+        ctx = mock(StatementContext.class);
+        when(ctx.getRawSql()).thenReturn("SELECT 1");
+    }
 
     @Test
     public void updatesTimerForSqlObjects() throws Exception {
-        final StatementNameStrategy strategy = new SmartNameStrategy();
-        final InstrumentedTimingCollector collector = new InstrumentedTimingCollector(registry,
-                strategy);
-        final StatementContext ctx = mock(StatementContext.class);
-        when(ctx.getRawSql()).thenReturn("SELECT 1");
         when(ctx.getExtensionMethod()).thenReturn(
                 new ExtensionMethod(getClass(), getClass().getMethod("updatesTimerForSqlObjects")));
 
         collector.collect(TimeUnit.SECONDS.toNanos(1), ctx);
 
-        final String name = strategy.getStatementName(ctx);
+        final String name = smartNameStrategy.getStatementName(ctx);
         final Timer timer = registry.timer(name);
 
         assertThat(name).isEqualTo(name(getClass(), "updatesTimerForSqlObjects"));
@@ -44,14 +49,10 @@ public class InstrumentedTimingCollectorTest {
 
     @Test
     public void updatesTimerForRawSql() throws Exception {
-        final StatementNameStrategy strategy = new SmartNameStrategy();
-        final InstrumentedTimingCollector collector = new InstrumentedTimingCollector(registry, strategy);
-        final StatementContext ctx = mock(StatementContext.class);
-        when(ctx.getRawSql()).thenReturn("SELECT 1");
 
         collector.collect(TimeUnit.SECONDS.toNanos(2), ctx);
 
-        final String name = strategy.getStatementName(ctx);
+        final String name = smartNameStrategy.getStatementName(ctx);
         final Timer timer = registry.timer(name);
 
         assertThat(name).isEqualTo(name("sql", "raw"));
@@ -60,14 +61,11 @@ public class InstrumentedTimingCollectorTest {
 
     @Test
     public void updatesTimerForNoRawSql() throws Exception {
-        final StatementNameStrategy strategy = new SmartNameStrategy();
-        final InstrumentedTimingCollector collector = new InstrumentedTimingCollector(registry,
-                strategy);
-        final StatementContext ctx = mock(StatementContext.class);
+        reset(ctx);
 
         collector.collect(TimeUnit.SECONDS.toNanos(2), ctx);
 
-        final String name = strategy.getStatementName(ctx);
+        final String name = smartNameStrategy.getStatementName(ctx);
         final Timer timer = registry.timer(name);
 
         assertThat(name).isEqualTo(name("sql", "empty"));
@@ -76,17 +74,12 @@ public class InstrumentedTimingCollectorTest {
 
     @Test
     public void updatesTimerForContextClass() throws Exception {
-        final StatementNameStrategy strategy = new SmartNameStrategy();
-        final InstrumentedTimingCollector collector = new InstrumentedTimingCollector(registry,
-                strategy);
-        final StatementContext ctx = mock(StatementContext.class);
-        when(ctx.getRawSql()).thenReturn("SELECT 1");
         when(ctx.getAttribute(NameStrategies.STATEMENT_CLASS)).thenReturn(getClass().getName());
         when(ctx.getAttribute(NameStrategies.STATEMENT_NAME)).thenReturn("updatesTimerForContextClass");
 
         collector.collect(TimeUnit.SECONDS.toNanos(3), ctx);
 
-        final String name = strategy.getStatementName(ctx);
+        final String name = smartNameStrategy.getStatementName(ctx);
         final Timer timer = registry.timer(name);
 
         assertThat(name).isEqualTo(name(getClass(), "updatesTimerForContextClass"));
@@ -95,17 +88,12 @@ public class InstrumentedTimingCollectorTest {
 
     @Test
     public void updatesTimerForTemplateFile() throws Exception {
-        final StatementNameStrategy strategy = new SmartNameStrategy();
-        final InstrumentedTimingCollector collector = new InstrumentedTimingCollector(registry,
-                strategy);
-        final StatementContext ctx = mock(StatementContext.class);
-        when(ctx.getRawSql()).thenReturn("SELECT 1");
         when(ctx.getAttribute(NameStrategies.STATEMENT_GROUP)).thenReturn("foo/bar.stg");
         when(ctx.getAttribute(NameStrategies.STATEMENT_NAME)).thenReturn("updatesTimerForTemplateFile");
 
         collector.collect(TimeUnit.SECONDS.toNanos(4), ctx);
 
-        final String name = strategy.getStatementName(ctx);
+        final String name = smartNameStrategy.getStatementName(ctx);
         final Timer timer = registry.timer(name);
 
         assertThat(name).isEqualTo(name("foo", "bar", "updatesTimerForTemplateFile"));
@@ -114,16 +102,12 @@ public class InstrumentedTimingCollectorTest {
 
     @Test
     public void updatesTimerForContextGroupAndName() throws Exception {
-        final StatementNameStrategy strategy = new SmartNameStrategy();
-        final InstrumentedTimingCollector collector = new InstrumentedTimingCollector(registry, strategy);
-        final StatementContext ctx = mock(StatementContext.class);
-        when(ctx.getRawSql()).thenReturn("SELECT 1");
         when(ctx.getAttribute(NameStrategies.STATEMENT_GROUP)).thenReturn("my-group");
         when(ctx.getAttribute(NameStrategies.STATEMENT_NAME)).thenReturn("updatesTimerForContextGroupAndName");
 
         collector.collect(TimeUnit.SECONDS.toNanos(4), ctx);
 
-        final String name = strategy.getStatementName(ctx);
+        final String name = smartNameStrategy.getStatementName(ctx);
         final Timer timer = registry.timer(name);
 
         assertThat(name).isEqualTo(name("my-group", "updatesTimerForContextGroupAndName"));
@@ -132,17 +116,13 @@ public class InstrumentedTimingCollectorTest {
 
     @Test
     public void updatesTimerForContextGroupTypeAndName() throws Exception {
-        final StatementNameStrategy strategy = new SmartNameStrategy();
-        final InstrumentedTimingCollector collector = new InstrumentedTimingCollector(registry, strategy);
-        final StatementContext ctx = mock(StatementContext.class);
-        when(ctx.getRawSql()).thenReturn("SELECT 1");
         when(ctx.getAttribute(NameStrategies.STATEMENT_GROUP)).thenReturn("my-group");
         when(ctx.getAttribute(NameStrategies.STATEMENT_TYPE)).thenReturn("my-type");
         when(ctx.getAttribute(NameStrategies.STATEMENT_NAME)).thenReturn("updatesTimerForContextGroupTypeAndName");
 
         collector.collect(TimeUnit.SECONDS.toNanos(5), ctx);
 
-        final String name = strategy.getStatementName(ctx);
+        final String name = smartNameStrategy.getStatementName(ctx);
         final Timer timer = registry.timer(name);
 
         assertThat(name).isEqualTo(name("my-group", "my-type", "updatesTimerForContextGroupTypeAndName"));
@@ -151,17 +131,14 @@ public class InstrumentedTimingCollectorTest {
 
     @Test
     public void updatesTimerForShortSqlObjectStrategy() throws Exception {
-        final StatementNameStrategy strategy = new ShortNameStrategy("jdbi");
-        final InstrumentedTimingCollector collector = new InstrumentedTimingCollector(registry,
-                strategy);
-        final StatementContext ctx = mock(StatementContext.class);
-        when(ctx.getRawSql()).thenReturn("SELECT 1");
+        final StatementNameStrategy shortNameStrategy = new ShortNameStrategy("jdbi");
+        final InstrumentedTimingCollector collector = new InstrumentedTimingCollector(registry, shortNameStrategy);
         when(ctx.getExtensionMethod()).thenReturn(
                 new ExtensionMethod(getClass(), getClass().getMethod("updatesTimerForShortSqlObjectStrategy")));
 
         collector.collect(TimeUnit.SECONDS.toNanos(1), ctx);
 
-        final String name = strategy.getStatementName(ctx);
+        final String name = shortNameStrategy.getStatementName(ctx);
         final Timer timer = registry.timer(name);
 
         assertThat(name).isEqualTo(name("jdbi", getClass().getSimpleName(),
@@ -171,17 +148,14 @@ public class InstrumentedTimingCollectorTest {
 
     @Test
     public void updatesTimerForShortContextClassStrategy() throws Exception {
-        final StatementNameStrategy strategy = new ShortNameStrategy("jdbi");
-        final InstrumentedTimingCollector collector = new InstrumentedTimingCollector(registry,
-                strategy);
-        final StatementContext ctx = mock(StatementContext.class);
-        when(ctx.getRawSql()).thenReturn("SELECT 1");
+        final StatementNameStrategy shortNameStrategy = new ShortNameStrategy("jdbi");
+        final InstrumentedTimingCollector collector = new InstrumentedTimingCollector(registry, shortNameStrategy);
         when(ctx.getAttribute(NameStrategies.STATEMENT_CLASS)).thenReturn(getClass().getName());
         when(ctx.getAttribute(NameStrategies.STATEMENT_NAME)).thenReturn("updatesTimerForShortContextClassStrategy");
 
         collector.collect(TimeUnit.SECONDS.toNanos(3), ctx);
 
-        final String name = strategy.getStatementName(ctx);
+        final String name = shortNameStrategy.getStatementName(ctx);
         final Timer timer = registry.timer(name);
 
         assertThat(name).isEqualTo(name("jdbi", getClass().getSimpleName(),
