@@ -1,7 +1,6 @@
-package com.github.arteam.jdbi3;
+package com.github.arteam.jdbi3.strategies;
 
-import com.github.arteam.jdbi3.strategies.NameStrategies;
-import com.github.arteam.jdbi3.strategies.ShortNameStrategy;
+import com.github.arteam.jdbi3.InstrumentedTimingCollector;
 import org.jdbi.v3.core.ExtensionMethod;
 import org.junit.Test;
 

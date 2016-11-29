@@ -1,6 +1,5 @@
 package com.github.arteam.jdbi3.strategies;
 
-import com.github.arteam.jdbi3.AbstractStrategyTest;
 import com.github.arteam.jdbi3.InstrumentedTimingCollector;
 import org.jdbi.v3.core.ExtensionMethod;
 import org.junit.Test;
