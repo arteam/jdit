@@ -11,7 +11,7 @@ public class NaiveNameStrategyTest extends AbstractStrategyTest {
     @Test
     public void producesSqlRawMetrics() throws Exception {
         String name = naiveNameStrategy.getStatementName(ctx);
-        assertThat(name).isEqualToIgnoringCase("sql.raw");
+        assertThat(name).isEqualToIgnoringCase("SELECT 1");
     }
 
 }

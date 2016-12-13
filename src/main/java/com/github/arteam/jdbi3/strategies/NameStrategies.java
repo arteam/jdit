@@ -1,6 +1,7 @@
 package com.github.arteam.jdbi3.strategies;
 
 import org.jdbi.v3.core.ExtensionMethod;
+import org.jdbi.v3.core.StatementContext;
 
 import java.lang.reflect.Method;
 import java.util.regex.Matcher;
@@ -63,20 +64,9 @@ public class NameStrategies {
         return null;
     };
 
-    public static final StatementNameStrategy NAIVE_NAME = statementContext -> {
-        final String rawSql = statementContext.getRawSql();
+    public static final StatementNameStrategy NAIVE_NAME = StatementContext::getRawSql;
 
-        // Is it using the template loader?
-        final int colon = rawSql.indexOf(':');
-        if (colon == -1) {
-            // Return a constant, because we don't want to have an SQL query in metrics
-            return SQL_RAW;
-        }
-
-        final String group = rawSql.substring(0, colon);
-        final String name = rawSql.substring(colon + 1);
-        return name(group, name);
-    };
+    public static final StatementNameStrategy CONSTANT_SQL_RAW = statementContext -> SQL_RAW;
 
     public static final StatementNameStrategy CONTEXT_CLASS = statementContext -> {
         final Object classObj = statementContext.getAttribute(STATEMENT_CLASS);

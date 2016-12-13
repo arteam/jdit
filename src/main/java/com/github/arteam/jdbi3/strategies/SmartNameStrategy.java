@@ -14,6 +14,6 @@ public class SmartNameStrategy extends DelegatingStatementNameStrategy {
                 NameStrategies.CONTEXT_CLASS,
                 NameStrategies.CONTEXT_NAME,
                 NameStrategies.SQL_OBJECT,
-                NameStrategies.NAIVE_NAME);
+                NameStrategies.CONSTANT_SQL_RAW);
     }
 }
