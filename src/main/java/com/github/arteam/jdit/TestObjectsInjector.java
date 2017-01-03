@@ -4,8 +4,8 @@ import com.github.arteam.jdit.annotations.DBIHandle;
 import com.github.arteam.jdit.annotations.DBIInstance;
 import com.github.arteam.jdit.annotations.TestedDao;
 import com.github.arteam.jdit.annotations.TestedSqlObject;
-import org.skife.jdbi.v2.DBI;
-import org.skife.jdbi.v2.Handle;
+import org.jdbi.v3.core.Handle;
+import org.jdbi.v3.core.Jdbi;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -26,10 +26,10 @@ import java.util.List;
  */
 class TestObjectsInjector {
 
-    private final DBI dbi;
+    private final Jdbi dbi;
     private final Handle handle;
 
-    TestObjectsInjector(DBI dbi, Handle handle) {
+    TestObjectsInjector(Jdbi dbi, Handle handle) {
         this.dbi = dbi;
         this.handle = handle;
     }
@@ -99,7 +99,7 @@ class TestObjectsInjector {
      * @throws IllegalAccessException reflection error
      */
     private void handleDbiInstance(Object test, Field field) throws IllegalAccessException {
-        if (!field.getType().equals(DBI.class)) {
+        if (!field.getType().equals(Jdbi.class)) {
             throw new IllegalArgumentException("Unable inject a DBI instance to " +
                     "a field with type " + field.getType());
         }
@@ -134,7 +134,7 @@ class TestObjectsInjector {
     /**
      * Create a inject a DBI DAO instance to a field with the {@link TestedDao}  annotation.
      * <p>The DAO should provide a default constructor or a constructor
-     * that accepts a {@link DBI} as the single parameter<p>
+     * that accepts a {@link Jdbi} as the single parameter<p>
      *
      * @param test  current test
      * @param field current field
@@ -154,7 +154,7 @@ class TestObjectsInjector {
         Constructor<?> defaultConstructor = null;
         for (Constructor<?> constructor : field.getType().getDeclaredConstructors()) {
             Class<?>[] parameterTypes = constructor.getParameterTypes();
-            if (parameterTypes.length == 1 && parameterTypes[0].equals(DBI.class)) {
+            if (parameterTypes.length == 1 && parameterTypes[0].equals(Jdbi.class)) {
                 // If a constructor with a DBI is provided, just invoke it
                 try {
                     constructor.setAccessible(true);
@@ -186,7 +186,7 @@ class TestObjectsInjector {
         }
 
         for (Field classField : field.getType().getDeclaredFields()) {
-            if (classField.getType().equals(DBI.class)) {
+            if (classField.getType().equals(Jdbi.class)) {
                 classField.setAccessible(true);
                 classField.set(dbiDao, dbi);
                 return dbiDao;

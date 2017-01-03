@@ -3,10 +3,10 @@ package com.github.arteam.jdit;
 import com.github.arteam.jdit.annotations.DBIHandle;
 import com.github.arteam.jdit.annotations.TestedDao;
 import com.github.arteam.jdit.domain.PlayerDaoWithConstructor;
+import org.jdbi.v3.core.Handle;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.skife.jdbi.v2.Handle;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -34,7 +34,7 @@ public class DBIDaoWithConstructorTest {
 
         String initials = handle.createQuery("select first_name || ' ' || last_name from players")
                 .mapTo(String.class)
-                .first();
+                .findOnly();
         System.out.println(initials);
         Assert.assertEquals(initials, "Vladimir Tarasenko");
     }

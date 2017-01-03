@@ -1,7 +1,6 @@
 package com.github.arteam.jdit;
 
-import org.skife.jdbi.v2.DBI;
-import org.skife.jdbi.v2.logging.PrintStreamLog;
+import org.jdbi.v3.core.Jdbi;
 
 import java.util.Properties;
 
@@ -11,17 +10,16 @@ import java.util.Properties;
  * <p>
  * Factory for creating a standard DBI instance from properties
  * <p>
- * A single addition is that SQL queries are logged to the console.
  *
  * @author Artem Prigoda
  */
 public class StandardDBIFactory implements DBIFactory {
 
     @Override
-    public DBI createDBI(Properties properties) {
-        DBI dbi = new DBI(properties.getProperty("db.url"), properties.getProperty("db.username"),
+    public Jdbi createDBI(Properties properties) {
+        Jdbi dbi = Jdbi.create(properties.getProperty("db.url"), properties.getProperty("db.username"),
                 properties.getProperty("db.password"));
-        dbi.setSQLLog(new PrintStreamLog());
+        dbi.installPlugins();
         return dbi;
     }
 }

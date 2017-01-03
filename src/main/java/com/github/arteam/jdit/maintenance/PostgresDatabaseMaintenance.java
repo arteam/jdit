@@ -1,6 +1,8 @@
 package com.github.arteam.jdit.maintenance;
 
-import org.skife.jdbi.v2.*;
+import org.jdbi.v3.core.Batch;
+import org.jdbi.v3.core.Handle;
+import org.jdbi.v3.core.Query;
 
 /**
  * Date: 1/1/16
@@ -19,7 +21,7 @@ class PostgresDatabaseMaintenance implements DatabaseMaintenance {
     }
 
     public void sweepData() {
-        handle.useTransaction((h, transactionStatus) -> {
+        handle.useTransaction(h -> {
             Batch batch = h.createBatch();
             Query<String> tableForeignKeys = h.createQuery(
                     "select 'alter table \"' || relname || '\" drop constraint \"'|| conname ||'\"' " +
@@ -51,10 +53,10 @@ class PostgresDatabaseMaintenance implements DatabaseMaintenance {
     }
 
     public void dropTablesAndSequences() {
-        handle.useTransaction((h, transactionStatus) -> {
+        handle.useTransaction(h -> {
             String currentUser = h.createQuery("select current_user")
                     .mapTo(String.class)
-                    .first();
+                    .findOnly();
             h.execute(String.format("drop owned by \"%s\"", currentUser));
         });
     }
