@@ -3,13 +3,13 @@ package com.github.arteam.jdit;
 import com.github.arteam.jdit.annotations.JditProperties;
 import com.github.arteam.jdit.maintenance.DatabaseMaintenance;
 import com.github.arteam.jdit.maintenance.DatabaseMaintenanceFactory;
+import org.jdbi.v3.core.Handle;
+import org.jdbi.v3.core.Jdbi;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
-import org.skife.jdbi.v2.DBI;
-import org.skife.jdbi.v2.Handle;
 
 /**
  * Date: 1/22/15
@@ -18,7 +18,7 @@ import org.skife.jdbi.v2.Handle;
  * Tests runner which:
  * <ul>
  * <li>Injects DBI related tested instances to the tests.
- * <p>Supports {@link Handle}, {@link DBI}, SQLObject and DBI DAO.
+ * <p>Supports {@link Handle}, {@link Jdbi}, SQLObject and DBI DAO.
  * </li>
  * <li>Injects data to the DB from a script for a specific
  * method or a test</li>
@@ -57,7 +57,7 @@ public class DBIRunner extends BlockJUnit4ClassRunner {
                 // Open a new handle for every test
                 // It affords to avoid creating a static state which makes tests more independent
                 JditProperties jditProperties = klass.getAnnotation(JditProperties.class);
-                DBI dbi = jditProperties != null ? DBIContextFactory.getDBI(jditProperties.value()) : DBIContextFactory.getDBI();
+                Jdbi dbi = jditProperties != null ? DBIContextFactory.getDBI(jditProperties.value()) : DBIContextFactory.getDBI();
                 try (Handle handle = dbi.open()) {
                     injector = new TestObjectsInjector(dbi, handle);
                     databaseMaintenance = DatabaseMaintenanceFactory.create(handle);

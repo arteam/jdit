@@ -1,6 +1,9 @@
 package com.github.arteam.jdit.maintenance;
 
-import org.skife.jdbi.v2.*;
+
+import org.jdbi.v3.core.Batch;
+import org.jdbi.v3.core.Handle;
+import org.jdbi.v3.core.Query;
 
 /**
  * Date: 2/1/16
@@ -27,7 +30,7 @@ class MySqlDatabaseMaintenance implements DatabaseMaintenance {
     }
 
     private void performForEveryTable(final String operation) {
-        handle.useTransaction((h, status) -> {
+        handle.useTransaction(h -> {
             Batch batch = h.createBatch();
             batch.add("set foreign_key_checks=0");
             Query<String> tableNames = h.createQuery("select table_name from information_schema.tables " +

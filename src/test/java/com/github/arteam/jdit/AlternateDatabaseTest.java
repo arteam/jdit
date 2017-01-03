@@ -5,11 +5,11 @@ import com.github.arteam.jdit.annotations.DataSet;
 import com.github.arteam.jdit.annotations.TestedSqlObject;
 import com.github.arteam.jdit.domain.PlayerSqlObject;
 import com.google.common.collect.ImmutableList;
+import org.jdbi.v3.core.Handle;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.skife.jdbi.v2.Handle;
 
 import java.util.List;
 import java.util.Map;

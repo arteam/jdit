@@ -6,7 +6,7 @@ import com.github.arteam.jdit.domain.PlayerSqlObject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.skife.jdbi.v2.Handle;
+import org.jdbi.v3.core.Handle;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -34,7 +34,7 @@ public class DBISqlObjectTest {
 
         String initials = handle.createQuery("select first_name || ' ' || last_name from players")
                 .mapTo(String.class)
-                .first();
+                .findOnly();
         System.out.println(initials);
         Assert.assertEquals(initials, "Vladimir Tarasenko");
     }

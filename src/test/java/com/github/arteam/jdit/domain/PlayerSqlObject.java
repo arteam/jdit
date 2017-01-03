@@ -3,14 +3,16 @@ package com.github.arteam.jdit.domain;
 import com.github.arteam.jdit.domain.entity.Player;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
+import org.jdbi.v3.core.SqlStatement;
+import org.jdbi.v3.core.StatementContext;
+import org.jdbi.v3.core.mapper.RowMapper;
+import org.jdbi.v3.sqlobject.*;
+import org.jdbi.v3.sqlobject.customizers.RegisterRowMapper;
 import org.joda.time.DateTime;
-import org.skife.jdbi.v2.SQLStatement;
-import org.skife.jdbi.v2.StatementContext;
-import org.skife.jdbi.v2.sqlobject.*;
-import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
-import org.skife.jdbi.v2.sqlobject.customizers.SingleValueResult;
-import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
+import java.lang.annotation.*;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
@@ -23,7 +25,7 @@ import java.util.Set;
  *
  * @author Artem Prigoda
  */
-@RegisterMapper(PlayerSqlObject.PlayerMapper.class)
+@RegisterRowMapper(PlayerSqlObject.PlayerMapper.class)
 public interface PlayerSqlObject {
 
     @GetGeneratedKeys
@@ -36,7 +38,7 @@ public interface PlayerSqlObject {
     @GetGeneratedKeys
     @SqlUpdate("insert into players(first_name, last_name, birth_date, weight, height) values" +
             "(:first_name, :last_name, :birth_date, :weight, :height)")
-    Long createPlayer(@Bind(binder = PlayerBinder.class) Player player);
+    Long createPlayer(@PlayerBinder Player player);
 
     @SqlQuery("select last_name from players order by last_name")
     List<String> getLastNames();
@@ -54,7 +56,6 @@ public interface PlayerSqlObject {
     Set<Integer> getBornYears();
 
     @SqlQuery("select * from players where first_name=:first_name and last_name=:last_name")
-    @SingleValueResult
     Optional<Player> findPlayer(@Bind("first_name") String firstName, @Bind("last_name") String lastName);
 
     @SqlQuery("select * from players where weight is not distinct from :weight")
@@ -63,21 +64,31 @@ public interface PlayerSqlObject {
     @SqlQuery("select first_name from players")
     ImmutableSet<String> getFirstNames();
 
-    class PlayerBinder implements Binder<Bind, Player> {
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.PARAMETER})
+    @SqlStatementCustomizingAnnotation(PlayerBinder.Factory.class)
+    @interface PlayerBinder {
 
-        @Override
-        public void bind(SQLStatement<?> q, Bind bind, Player p) {
-            q.bind("first_name", p.firstName);
-            q.bind("last_name", p.lastName);
-            q.bind("birth_date", p.birthDate);
-            q.bind("weight", p.weight);
-            q.bind("height", p.height);
+        class Factory implements SqlStatementCustomizerFactory {
+
+            @Override
+            public SqlStatementCustomizer createForParameter(Annotation annotation, Class<?> sqlObjectType, Method method,
+                                                             Parameter param, int index, Object arg) {
+                return q -> {
+                    Player p  = (Player) arg;
+                    q.bind("first_name", p.firstName);
+                    q.bind("last_name", p.lastName);
+                    q.bind("birth_date", p.birthDate);
+                    q.bind("weight", p.weight);
+                    q.bind("height", p.height);
+                };
+            }
         }
     }
 
-    class PlayerMapper implements ResultSetMapper<Player> {
+    class PlayerMapper implements RowMapper<Player> {
         @Override
-        public Player map(int index, ResultSet r, StatementContext ctx) throws SQLException {
+        public Player map(ResultSet r, StatementContext ctx) throws SQLException {
             int height = r.getInt("height");
             int weight = r.getInt("weight");
             return new Player(Optional.of(r.getLong("id")), r.getString("first_name"), r.getString("last_name"),

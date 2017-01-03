@@ -2,8 +2,8 @@ package com.github.arteam.jdit;
 
 import com.github.arteam.jdit.maintenance.DatabaseMaintenance;
 import com.github.arteam.jdit.maintenance.DatabaseMaintenanceFactory;
-import org.skife.jdbi.v2.DBI;
-import org.skife.jdbi.v2.Handle;
+import org.jdbi.v3.core.Jdbi;
+import org.jdbi.v3.core.Handle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +23,7 @@ import java.util.Properties;
  * <p>It's responsible for maintaining an active DB with a schema during the run of the tests</p>
  * <ul>
  * <li>The DB is lazily created at the first invocation</li>
- * <li>A {@link DBI} instance is created according to DB connection params</li>
+ * <li>A {@link Jdbi} instance is created according to DB connection params</li>
  * <li>The instance is configured in the similar way as in {@link io.dropwizard.jdbi.DBIFactory}
  * with some differences (SQL queries at INFO level, no metrics and health checks)
  * </li>
@@ -39,7 +39,7 @@ public class DBIContext {
     private static final String DEFAULT_PROPERTIES_LOCATION = "jdit-default.properties";
     private static final String DEFAULT_SCHEMA_LOCATION = "schema.sql";
 
-    private DBI dbi;
+    private Jdbi dbi;
 
     private DBIContext(String propertiesLocation) {
         Properties properties = loadProperties(propertiesLocation);
@@ -47,7 +47,7 @@ public class DBIContext {
         migrateSchema(properties);
     }
 
-    public static DBI create(String propertiesLocation) {
+    public static Jdbi create(String propertiesLocation) {
         return new DBIContext(propertiesLocation).dbi;
     }
 
@@ -80,13 +80,13 @@ public class DBIContext {
     }
 
     /**
-     * Create and configure a {@link DBI} instance from the properties
+     * Create and configure a {@link Jdbi} instance from the properties
      * The DB is created during the first connection.
      *
      * @param properties configuration of DB
-     * @return a new {@link DBI} instance for performing database access
+     * @return a new {@link Jdbi} instance for performing database access
      */
-    private DBI createDBI(Properties properties) {
+    private Jdbi createDBI(Properties properties) {
         try {
             DBIFactory dbiFactory = (DBIFactory) Class.forName(properties.getProperty("dbi.factory"))
                     .newInstance();

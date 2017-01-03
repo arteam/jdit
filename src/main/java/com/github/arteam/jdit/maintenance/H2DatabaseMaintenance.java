@@ -1,6 +1,8 @@
 package com.github.arteam.jdit.maintenance;
 
-import org.skife.jdbi.v2.*;
+import org.jdbi.v3.core.Batch;
+import org.jdbi.v3.core.Handle;
+import org.jdbi.v3.core.Query;
 
 /**
  * Date: 1/1/16
@@ -24,7 +26,7 @@ class H2DatabaseMaintenance implements DatabaseMaintenance {
 
     @Override
     public void sweepData() {
-        handle.useTransaction((h, status) -> {
+        handle.useTransaction(h -> {
             Batch batch = h.createBatch();
             batch.add("set referential_integrity false");
 

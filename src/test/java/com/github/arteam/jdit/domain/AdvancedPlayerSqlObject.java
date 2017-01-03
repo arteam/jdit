@@ -2,13 +2,13 @@ package com.github.arteam.jdit.domain;
 
 import com.github.arteam.jdit.domain.entity.Player;
 import com.google.common.base.Optional;
-import org.skife.jdbi.v2.StatementContext;
-import org.skife.jdbi.v2.sqlobject.Bind;
-import org.skife.jdbi.v2.sqlobject.SqlQuery;
-import org.skife.jdbi.v2.sqlobject.customizers.Define;
-import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
-import org.skife.jdbi.v2.sqlobject.stringtemplate.UseStringTemplate3StatementLocator;
-import org.skife.jdbi.v2.tweak.ResultSetMapper;
+import org.jdbi.v3.core.StatementContext;
+import org.jdbi.v3.core.mapper.RowMapper;
+import org.jdbi.v3.sqlobject.Bind;
+import org.jdbi.v3.sqlobject.SqlQuery;
+import org.jdbi.v3.sqlobject.customizers.Define;
+import org.jdbi.v3.sqlobject.customizers.RegisterRowMapper;
+import org.jdbi.v3.stringtemplate.UseStringTemplateSqlLocator;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,8 +20,8 @@ import java.util.List;
  *
  * @author Artem Prigoda
  */
-@RegisterMapper(AdvancedPlayerSqlObject.PlayerMapper.class)
-@UseStringTemplate3StatementLocator("/locator/advanced.sql.stg")
+@RegisterRowMapper(AdvancedPlayerSqlObject.PlayerMapper.class)
+@UseStringTemplateSqlLocator
 public interface AdvancedPlayerSqlObject {
 
     @SqlQuery
@@ -32,9 +32,9 @@ public interface AdvancedPlayerSqlObject {
                             @Define("isLimit") boolean isLimit, @Define("limit") int limit,
                             @Define("isOffset") boolean isOffset, @Define("offset") int offset);
 
-    class PlayerMapper implements ResultSetMapper<Player> {
+    class PlayerMapper implements RowMapper<Player> {
         @Override
-        public Player map(int index, ResultSet r, StatementContext ctx) throws SQLException {
+        public Player map(ResultSet r, StatementContext ctx) throws SQLException {
             int height = r.getInt("height");
             int weight = r.getInt("weight");
             return new Player(Optional.of(r.getLong("id")), r.getString("first_name"), r.getString("last_name"),
