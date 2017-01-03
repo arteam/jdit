@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  * Time: 12:47 AM
  * <p>
  * Annotation for injecting a DBI instance to the current test. A field, which this
- * annotation marks, should have type {@link org.skife.jdbi.v2.DBI}, otherwise an exception
+ * annotation marks, should have type {@link org.jdbi.v3.core.Jdbi}, otherwise an exception
  * will be raised
  *
  * @author Artem Prigoda

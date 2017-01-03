@@ -1,6 +1,6 @@
 package com.github.arteam.jdit.domain;
 
-import org.skife.jdbi.v2.DBI;
+import org.jdbi.v3.core.Jdbi;
 
 /**
  * Date: 1/25/15
@@ -10,14 +10,14 @@ import org.skife.jdbi.v2.DBI;
  */
 public class PlayerDaoWithConstructor extends BasePlayerDao {
 
-    private DBI dbi;
+    private Jdbi dbi;
 
-    public PlayerDaoWithConstructor(DBI dbi) {
+    public PlayerDaoWithConstructor(Jdbi dbi) {
         this.dbi = dbi;
     }
 
     @Override
-    public DBI dbi() {
+    public Jdbi dbi() {
         return dbi;
     }
 }

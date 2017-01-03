@@ -6,7 +6,7 @@ import com.github.arteam.jdit.annotations.TestedSqlObject;
 import com.github.arteam.jdit.domain.PlayerSqlObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.skife.jdbi.v2.Handle;
+import org.jdbi.v3.core.Handle;
 
 import java.text.SimpleDateFormat;
 
