@@ -4,7 +4,7 @@
 
     <groupId>com.github.arteam</groupId>
     <artifactId>jdit</artifactId>
-    <version>0.5</version>
+    <version>0.5.1-SNAPSHOT</version>
 
     <name>JDBI Dropwizard Integration Testing</name>
 
@@ -62,6 +62,23 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.5</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <configuration>
+                    <gpgArguments>--no-tty</gpgArguments>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
         <testResources>
@@ -136,9 +153,9 @@
 
     <distributionManagement>
         <repository>
-            <id>bintray-jdit-arteam-maven</id>
-            <name>bintray-jdit-arteam-maven</name>
-            <url>https://api.bintray.com/maven/arteam/maven/jdit</url>
+            <id>sonatype-nexus-staging</id>
+            <name>Nexus Release Repository</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
     </distributionManagement>
 

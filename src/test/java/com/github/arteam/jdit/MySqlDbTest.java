@@ -1,6 +1,7 @@
 package com.github.arteam.jdit;
 
 import com.github.arteam.jdit.annotations.JditProperties;
+import org.junit.Ignore;
 
 /**
  * Date: 1/1/16
@@ -8,6 +9,7 @@ import com.github.arteam.jdit.annotations.JditProperties;
  *
  * @author Artem Prigoda
  */
+@Ignore
 @JditProperties("jdit-mysql.properties")
 public class MySqlDbTest extends AlternateDatabaseTest {
 }
