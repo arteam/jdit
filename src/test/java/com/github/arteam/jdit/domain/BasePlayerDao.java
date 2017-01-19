@@ -1,8 +1,7 @@
 package com.github.arteam.jdit.domain;
 
-import org.skife.jdbi.v2.DBI;
-import org.skife.jdbi.v2.Handle;
-import org.skife.jdbi.v2.util.LongColumnMapper;
+import org.jdbi.v3.core.Handle;
+import org.jdbi.v3.core.Jdbi;
 
 import java.util.Date;
 import java.util.List;
@@ -15,26 +14,27 @@ import java.util.List;
  */
 public abstract class BasePlayerDao {
 
-    public abstract DBI dbi();
+    public abstract Jdbi dbi();
 
     public Long createPlayer(String firstName, String lastName, Date birthDate, int height, int weight) {
         try (Handle handle = dbi().open()) {
-            return handle.createStatement("insert into players(first_name, last_name, birth_date, weight, height) values" +
+            return handle.createUpdate("insert into players(first_name, last_name, birth_date, weight, height) values" +
                     "(:first_name, :last_name, :birth_date, :weight, :height)")
                     .bind("first_name", firstName)
                     .bind("last_name", lastName)
                     .bind("birth_date", birthDate)
                     .bind("height", height)
                     .bind("weight", weight)
-                    .executeAndReturnGeneratedKeys(LongColumnMapper.WRAPPER)
-                    .first();
+                    .executeAndReturnGeneratedKeys()
+                    .mapTo(Long.class)
+                    .findOnly();
         }
     }
 
     public List<String> getLastNames() {
         try (Handle handle = dbi().open()) {
             return handle.createQuery("select last_name from players")
-                    .map(String.class)
+                    .mapTo(String.class)
                     .list();
         }
     }

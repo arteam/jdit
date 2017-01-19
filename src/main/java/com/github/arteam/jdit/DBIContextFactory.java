@@ -1,6 +1,6 @@
 package com.github.arteam.jdit;
 
-import org.skife.jdbi.v2.DBI;
+import org.jdbi.v3.core.Jdbi;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,23 +16,19 @@ import java.util.Map;
  */
 public class DBIContextFactory {
 
-    private static final Map<String, DBI> CONTEXTS = new HashMap<>();
+    private static final Map<String, Jdbi> contexts = new HashMap<>();
     private static final String DEFAULT_PROPERTIES_LOCATION = "jdit.properties";
 
     /**
-     * Get the default {@link DBI} instance
+     * Get the default {@link Jdbi} instance
      *
-     * @return configured {@link DBI} instance to an active DB
+     * @return configured {@link Jdbi} instance to an active DB
      */
-    public static DBI getDBI() {
+    public static Jdbi getDBI() {
         return getDBI(DEFAULT_PROPERTIES_LOCATION);
     }
 
-    static DBI getDBI(String propertiesLocation) {
-        DBI dbi = CONTEXTS.get(propertiesLocation);
-        if (dbi == null) {
-            CONTEXTS.put(propertiesLocation, dbi = DBIContext.create(propertiesLocation));
-        }
-        return dbi;
+    static Jdbi getDBI(String propertiesLocation) {
+        return contexts.computeIfAbsent(propertiesLocation, p -> DBIContext.create(propertiesLocation));
     }
 }

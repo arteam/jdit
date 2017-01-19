@@ -5,11 +5,11 @@ import com.github.arteam.jdit.annotations.DataSet;
 import com.github.arteam.jdit.annotations.TestedSqlObject;
 import com.github.arteam.jdit.domain.PlayerSqlObject;
 import com.google.common.collect.ImmutableList;
+import org.jdbi.v3.core.Handle;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.skife.jdbi.v2.Handle;
 
 import java.util.List;
 import java.util.Map;
@@ -40,7 +40,9 @@ public abstract class AlternateDatabaseTest {
                 196, 102);
         assertEquals(playerId.longValue(), 2L);
 
-        List<Map<String, Object>> rows = handle.select("select * from players where id=?", 2);
+        List<Map<String, Object>> rows = handle.select("select * from players where id=?", 2)
+                .mapToMap()
+                .list();
         assertEquals(rows.size(), 1);
         Map<String, Object> row = rows.get(0);
         assertEquals(row.get("id"), 2);
@@ -58,7 +60,9 @@ public abstract class AlternateDatabaseTest {
                 178, 75);
         assertEquals(playerId.longValue(), 2L);
 
-        List<Map<String, Object>> rows = handle.select("select * from players where id=?", 2);
+        List<Map<String, Object>> rows = handle.select("select * from players where id=?", 2)
+                .mapToMap()
+                .list();
         assertEquals(rows.size(), 1);
         Map<String, Object> row = rows.get(0);
         assertEquals(row.get("id"), 2);

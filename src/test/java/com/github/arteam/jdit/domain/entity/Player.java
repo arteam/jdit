@@ -1,9 +1,9 @@
 package com.github.arteam.jdit.domain.entity;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Optional;
 
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * Date: 2/7/15
@@ -31,19 +31,19 @@ public class Player {
     }
 
     public Player(String firstName, String lastName, Date birthDate, int height, int weight) {
-        this(Optional.<Long>absent(), firstName, lastName, birthDate, Optional.of(height), Optional.of(weight));
+        this(Optional.<Long>empty(), firstName, lastName, birthDate, Optional.of(height), Optional.of(weight));
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .omitNullValues()
-                .add("id", id.orNull())
+                .add("id", id.orElse(null))
                 .add("firstName", firstName)
                 .add("lastName", lastName)
                 .add("birthDate", birthDate)
-                .add("height", height.orNull())
-                .add("weight", weight.orNull())
+                .add("height", height.orElse(null))
+                .add("weight", weight.orElse(null))
                 .toString();
     }
 }
