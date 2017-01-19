@@ -40,7 +40,9 @@ public abstract class AlternateDatabaseTest {
                 196, 102);
         assertEquals(playerId.longValue(), 2L);
 
-        List<Map<String, Object>> rows = handle.select("select * from players where id=?", 2);
+        List<Map<String, Object>> rows = handle.select("select * from players where id=?", 2)
+                .mapToMap()
+                .list();
         assertEquals(rows.size(), 1);
         Map<String, Object> row = rows.get(0);
         assertEquals(row.get("id"), 2);
@@ -58,7 +60,9 @@ public abstract class AlternateDatabaseTest {
                 178, 75);
         assertEquals(playerId.longValue(), 2L);
 
-        List<Map<String, Object>> rows = handle.select("select * from players where id=?", 2);
+        List<Map<String, Object>> rows = handle.select("select * from players where id=?", 2)
+                .mapToMap()
+                .list();
         assertEquals(rows.size(), 1);
         Map<String, Object> row = rows.get(0);
         assertEquals(row.get("id"), 2);

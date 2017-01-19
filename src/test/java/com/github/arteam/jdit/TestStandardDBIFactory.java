@@ -4,9 +4,9 @@ import com.github.arteam.jdit.annotations.DBIHandle;
 import com.github.arteam.jdit.annotations.JditProperties;
 import com.github.arteam.jdit.annotations.TestedSqlObject;
 import com.github.arteam.jdit.domain.PlayerSqlObject;
+import org.jdbi.v3.core.Handle;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.jdbi.v3.core.Handle;
 
 import java.text.SimpleDateFormat;
 
@@ -32,7 +32,9 @@ public class TestStandardDBIFactory {
     public void testInsert() throws Exception {
         playerDao.createPlayer("Petteri", "Lindbohm",
                 new SimpleDateFormat("yyyy-MM-dd").parse("1993-09-23"), 191, 95);
-        assertEquals(handle.select("select (first_name || ' ' || last_name) initials from players")
-                .get(0).get("initials"), "Petteri Lindbohm");
+        assertEquals(handle.createQuery("select (first_name || ' ' || last_name) initials from players")
+                .mapToMap()
+                .findOnly()
+                .get("initials"), "Petteri Lindbohm");
     }
 }
