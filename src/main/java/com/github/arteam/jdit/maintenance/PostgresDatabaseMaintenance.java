@@ -1,8 +1,8 @@
 package com.github.arteam.jdit.maintenance;
 
-import org.jdbi.v3.core.Batch;
 import org.jdbi.v3.core.Handle;
-import org.jdbi.v3.core.Query;
+import org.jdbi.v3.core.result.ResultIterable;
+import org.jdbi.v3.core.statement.Batch;
 
 /**
  * Date: 1/1/16
@@ -23,7 +23,7 @@ class PostgresDatabaseMaintenance implements DatabaseMaintenance {
     public void sweepData() {
         handle.useTransaction(h -> {
             Batch batch = h.createBatch();
-            Query<String> tableForeignKeys = h.createQuery(
+            ResultIterable<String> tableForeignKeys = h.createQuery(
                     "select 'alter table \"' || relname || '\" drop constraint \"'|| conname ||'\"' " +
                     "from pg_constraint " +
                     "inner join pg_class on conrelid=pg_class.oid " +
@@ -34,14 +34,14 @@ class PostgresDatabaseMaintenance implements DatabaseMaintenance {
             for (String alterTable : tableForeignKeys) {
                 batch.add(alterTable);
             }
-            Query<String> tableNames = h.createQuery("select tablename from pg_tables " +
+            ResultIterable<String> tableNames = h.createQuery("select tablename from pg_tables " +
                     "where tableowner = (select current_user) " +
                     "and schemaname = 'public'")
                     .mapTo(String.class);
             for (String tableName : tableNames) {
                 batch.add(String.format("delete from \"%s\"", tableName));
             }
-            Query<String> sequenceNames = h.createQuery("select sequence_name from information_schema.sequences " +
+            ResultIterable<String> sequenceNames = h.createQuery("select sequence_name from information_schema.sequences " +
                     "where sequence_schema='public' " +
                     "and sequence_catalog = (select current_catalog)")
                     .mapTo(String.class);
