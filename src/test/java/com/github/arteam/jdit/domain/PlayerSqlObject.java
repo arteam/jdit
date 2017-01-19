@@ -3,11 +3,16 @@ package com.github.arteam.jdit.domain;
 import com.github.arteam.jdit.domain.entity.Player;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
-import org.jdbi.v3.core.SqlStatement;
-import org.jdbi.v3.core.StatementContext;
 import org.jdbi.v3.core.mapper.RowMapper;
-import org.jdbi.v3.sqlobject.*;
-import org.jdbi.v3.sqlobject.customizers.RegisterRowMapper;
+import org.jdbi.v3.core.statement.StatementContext;
+import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
+import org.jdbi.v3.sqlobject.customizer.Bind;
+import org.jdbi.v3.sqlobject.customizer.SqlStatementCustomizer;
+import org.jdbi.v3.sqlobject.customizer.SqlStatementCustomizerFactory;
+import org.jdbi.v3.sqlobject.customizer.SqlStatementCustomizingAnnotation;
+import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
+import org.jdbi.v3.sqlobject.statement.SqlQuery;
+import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import org.joda.time.DateTime;
 
 import java.lang.annotation.*;
@@ -75,7 +80,7 @@ public interface PlayerSqlObject {
             public SqlStatementCustomizer createForParameter(Annotation annotation, Class<?> sqlObjectType, Method method,
                                                              Parameter param, int index, Object arg) {
                 return q -> {
-                    Player p  = (Player) arg;
+                    Player p = (Player) arg;
                     q.bind("first_name", p.firstName);
                     q.bind("last_name", p.lastName);
                     q.bind("birth_date", p.birthDate);

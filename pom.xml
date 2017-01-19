@@ -11,7 +11,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <dropwizard.version>1.0.5</dropwizard.version>
-        <jdbi.version>3.0.0-alpha5</jdbi.version>
+        <jdbi.version>3.0.0-alpha8</jdbi.version>
         <hsqldb.version>2.3.4</hsqldb.version>
         <postgresql.version>9.4.1208</postgresql.version>
         <mysql.version>5.1.39</mysql.version>
@@ -100,7 +100,7 @@
 
         <dependency>
             <groupId>org.jdbi</groupId>
-            <artifactId>jdbi3-string-template</artifactId>
+            <artifactId>jdbi3-stringtemplate4</artifactId>
             <version>${jdbi.version}</version>
             <scope>test</scope>
         </dependency>
@@ -114,7 +114,7 @@
 
         <dependency>
             <groupId>org.jdbi</groupId>
-            <artifactId>jdbi3-jodatime</artifactId>
+            <artifactId>jdbi3-jodatime2</artifactId>
             <version>${jdbi.version}</version>
             <scope>test</scope>
         </dependency>
@@ -151,13 +151,6 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>stringtemplate</artifactId>
-            <version>${stringtemplate.version}</version>
-            <scope>test</scope>
         </dependency>
 
     </dependencies>

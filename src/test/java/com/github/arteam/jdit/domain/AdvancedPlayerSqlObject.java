@@ -2,13 +2,13 @@ package com.github.arteam.jdit.domain;
 
 import com.github.arteam.jdit.domain.entity.Player;
 import com.google.common.base.Optional;
-import org.jdbi.v3.core.StatementContext;
 import org.jdbi.v3.core.mapper.RowMapper;
-import org.jdbi.v3.sqlobject.Bind;
-import org.jdbi.v3.sqlobject.SqlQuery;
-import org.jdbi.v3.sqlobject.customizers.Define;
-import org.jdbi.v3.sqlobject.customizers.RegisterRowMapper;
-import org.jdbi.v3.stringtemplate.UseStringTemplateSqlLocator;
+import org.jdbi.v3.core.statement.StatementContext;
+import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
+import org.jdbi.v3.sqlobject.customizer.Bind;
+import org.jdbi.v3.sqlobject.customizer.Define;
+import org.jdbi.v3.sqlobject.statement.SqlQuery;
+import org.jdbi.v3.stringtemplate4.UseStringTemplateSqlLocator;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

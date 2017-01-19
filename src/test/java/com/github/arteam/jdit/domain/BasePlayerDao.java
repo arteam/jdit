@@ -25,7 +25,8 @@ public abstract class BasePlayerDao {
                     .bind("birth_date", birthDate)
                     .bind("height", height)
                     .bind("weight", weight)
-                    .executeAndReturnGeneratedKeys(Long.class)
+                    .executeAndReturnGeneratedKeys()
+                    .mapTo(Long.class)
                     .findOnly();
         }
     }
