@@ -1,7 +1,6 @@
 package com.github.arteam.jdit.domain;
 
 import com.github.arteam.jdit.domain.entity.Player;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
@@ -22,6 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -98,8 +98,8 @@ public interface PlayerSqlObject {
             int weight = r.getInt("weight");
             return new Player(Optional.of(r.getLong("id")), r.getString("first_name"), r.getString("last_name"),
                     r.getTimestamp("birth_date"),
-                    height != 0 ? Optional.of(height) : Optional.<Integer>absent(),
-                    weight != 0 ? Optional.of(weight) : Optional.<Integer>absent());
+                    height != 0 ? Optional.of(height) : Optional.empty(),
+                    weight != 0 ? Optional.of(weight) : Optional.empty());
         }
     }
 }

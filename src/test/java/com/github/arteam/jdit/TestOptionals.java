@@ -4,12 +4,12 @@ import com.github.arteam.jdit.annotations.DataSet;
 import com.github.arteam.jdit.annotations.TestedSqlObject;
 import com.github.arteam.jdit.domain.PlayerSqlObject;
 import com.github.arteam.jdit.domain.entity.Player;
-import com.google.common.base.Optional;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Date: 2/7/15
@@ -42,7 +42,7 @@ public class TestOptionals {
 
     @Test
     public void testAbsentOptionalParameter(){
-        List<Player> playersByWeight = playerSqlObject.getPlayersByWeight(Optional.<Integer>absent());
+        List<Player> playersByWeight = playerSqlObject.getPlayersByWeight(Optional.empty());
         System.out.println(playersByWeight);
         Assert.assertEquals(playersByWeight.size(), 1);
         Assert.assertFalse(playersByWeight.get(0).weight.isPresent());
