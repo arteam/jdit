@@ -1,7 +1,7 @@
 package com.github.arteam.jdit.domain.entity;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 /**
  * Date: 2/7/15
@@ -24,7 +24,7 @@ public class Team {
     public Team(String name, Division division) {
         this.name = name;
         this.division = division;
-        this.id = Optional.absent();
+        this.id = Optional.empty();
     }
 
     @Override

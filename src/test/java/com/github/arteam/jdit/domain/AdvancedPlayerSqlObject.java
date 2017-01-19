@@ -1,7 +1,6 @@
 package com.github.arteam.jdit.domain;
 
 import com.github.arteam.jdit.domain.entity.Player;
-import com.google.common.base.Optional;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
 import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
@@ -13,6 +12,7 @@ import org.jdbi.v3.stringtemplate4.UseStringTemplateSqlLocator;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Date: 1/25/15
@@ -39,8 +39,8 @@ public interface AdvancedPlayerSqlObject {
             int weight = r.getInt("weight");
             return new Player(Optional.of(r.getLong("id")), r.getString("first_name"), r.getString("last_name"),
                     r.getTimestamp("birth_date"),
-                    height != 0 ? Optional.of(height) : Optional.absent(),
-                    weight != 0 ? Optional.of(weight) : Optional.absent());
+                    height != 0 ? Optional.of(height) : Optional.empty(),
+                    weight != 0 ? Optional.of(weight) : Optional.empty());
         }
     }
 }
