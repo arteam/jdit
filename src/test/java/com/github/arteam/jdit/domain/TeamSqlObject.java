@@ -3,8 +3,13 @@ package com.github.arteam.jdit.domain;
 import com.github.arteam.jdit.domain.entity.Division;
 import com.github.arteam.jdit.domain.entity.Player;
 import com.github.arteam.jdit.domain.entity.Team;
-import org.skife.jdbi.v2.sqlobject.*;
-import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
+import org.jdbi.v3.sqlobject.CreateSqlObject;
+import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
+import org.jdbi.v3.sqlobject.customizer.Bind;
+import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
+import org.jdbi.v3.sqlobject.statement.SqlQuery;
+import org.jdbi.v3.sqlobject.statement.SqlUpdate;
+import org.jdbi.v3.sqlobject.transaction.Transaction;
 
 import java.util.List;
 
@@ -14,24 +19,24 @@ import java.util.List;
  *
  * @author Artem Prigoda
  */
-@RegisterMapper(PlayerSqlObject.PlayerMapper.class)
-public abstract class TeamSqlObject {
+@RegisterRowMapper(PlayerSqlObject.PlayerMapper.class)
+public interface TeamSqlObject {
 
     @CreateSqlObject
-    abstract PlayerSqlObject playerDao();
+    PlayerSqlObject playerDao();
 
     @SqlUpdate("insert into teams(name, division) values (:name, :division)")
     @GetGeneratedKeys
-    abstract long createTeam(@Bind("name") String name, @Bind("division") Division division);
+    long createTeam(@Bind("name") String name, @Bind("division") Division division);
 
     @SqlUpdate("insert into roster(team_id, player_id) values (:team_id, :player_id)")
-    abstract long addPlayerToTeam(@Bind("team_id") long teamId, @Bind("player_id") long playerId);
+    void addPlayerToTeam(@Bind("team_id") long teamId, @Bind("player_id") long playerId);
 
     @Transaction
-    public void addTeam(Team team, List<Player> players) {
+    default void addTeam(Team team, List<Player> players) {
         long teamId = createTeam(team.name, team.division);
         for (Player player : players) {
-            Long playerId = playerDao().createPlayer(player);
+            long playerId = playerDao().createPlayer(player);
             addPlayerToTeam(teamId, playerId);
         }
     }
@@ -41,6 +46,5 @@ public abstract class TeamSqlObject {
             "inner join teams t on r.team_id=t.id " +
             "where t.name = :team_name " +
             "order by p.last_name")
-    public abstract List<Player> getPlayers(@Bind("team_name") String teamName);
-
+    List<Player> getPlayers(@Bind("team_name") String teamName);
 }
