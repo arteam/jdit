@@ -1,6 +1,7 @@
 package com.github.arteam.jdit.maintenance;
 
-import org.skife.jdbi.v2.Handle;
+
+import org.jdbi.v3.core.Handle;
 
 /**
  * Date: 1/1/16

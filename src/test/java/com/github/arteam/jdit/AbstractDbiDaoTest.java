@@ -5,7 +5,7 @@ import com.github.arteam.jdit.annotations.TestedDao;
 import com.github.arteam.jdit.domain.PlayerDao;
 import org.junit.Assert;
 import org.junit.Test;
-import org.skife.jdbi.v2.Handle;
+import org.jdbi.v3.core.Handle;
 
 import java.text.SimpleDateFormat;
 
@@ -31,7 +31,7 @@ public abstract class AbstractDbiDaoTest {
 
         String initials = handle.createQuery("select first_name || ' ' || last_name from players")
                 .mapTo(String.class)
-                .first();
+                .findOnly();
         System.out.println(initials);
         Assert.assertEquals(initials, "Vladimir Tarasenko");
     }

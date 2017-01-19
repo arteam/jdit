@@ -1,6 +1,6 @@
 package com.github.arteam.jdit;
 
-import org.skife.jdbi.v2.DBI;
+import org.jdbi.v3.core.Jdbi;
 
 import java.util.Properties;
 
@@ -19,5 +19,5 @@ public interface DBIFactory {
      * @param properties database properties (url, username, password)
      * @return a configured DBI instance
      */
-    DBI createDBI(Properties properties);
+    Jdbi createDBI(Properties properties);
 }
