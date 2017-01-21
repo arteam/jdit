@@ -1,6 +1,6 @@
 # JDIT
 [![Build Status](https://travis-ci.org/arteam/jdit.svg?branch=master)](https://travis-ci.org/arteam/jdit)
-[![Download](https://api.bintray.com/packages/arteam/maven/jdit/images/download.svg) ](https://bintray.com/arteam/maven/jdit/_latestVersion)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.arteam/jdit/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.arteam/jdit/)
 
 ## Overview
 
