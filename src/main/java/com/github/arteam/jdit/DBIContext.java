@@ -24,7 +24,7 @@ import java.util.Properties;
  * <ul>
  * <li>The DB is lazily created at the first invocation</li>
  * <li>A {@link Jdbi} instance is created according to DB connection params</li>
- * <li>The instance is configured in the similar way as in {@link io.dropwizard.jdbi.DBIFactory}
+ * <li>The instance is configured in the similar way as in Dropwizard
  * with some differences (SQL queries at INFO level, no metrics and health checks)
  * </li>
  * <li>The database schema is migrated (if enabled)</li>
