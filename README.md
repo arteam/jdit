@@ -287,7 +287,7 @@ Version 0.5.* is compatible with [Dropwizard](http://dropwizard.io/) 1.0.*
 
 ## Availability
 
-Artifact are available in the [JCenter] (https://bintray.com/arteam/maven/jdit) repository
+The lastest version is available in the Maven Central repository. Old artifacts are available in the [JCenter] (https://bintray.com/arteam/maven/jdit) repository
 
 ````xml
 <repositories>
