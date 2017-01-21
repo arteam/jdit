@@ -78,7 +78,9 @@
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.6</version>
                 <configuration>
-                    <gpgArguments>--no-tty</gpgArguments>
+                    <gpgArguments>
+                        <argument>--no-tty</argument>
+                    </gpgArguments>
                 </configuration>
                 <executions>
                     <execution>
