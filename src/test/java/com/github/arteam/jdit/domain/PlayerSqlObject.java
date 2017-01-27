@@ -5,10 +5,7 @@ import com.google.common.collect.ImmutableSet;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
 import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
-import org.jdbi.v3.sqlobject.customizer.Bind;
-import org.jdbi.v3.sqlobject.customizer.SqlStatementCustomizer;
-import org.jdbi.v3.sqlobject.customizer.SqlStatementCustomizerFactory;
-import org.jdbi.v3.sqlobject.customizer.SqlStatementCustomizingAnnotation;
+import org.jdbi.v3.sqlobject.customizer.*;
 import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
@@ -77,15 +74,15 @@ public interface PlayerSqlObject {
         class Factory implements SqlStatementCustomizerFactory {
 
             @Override
-            public SqlStatementCustomizer createForParameter(Annotation annotation, Class<?> sqlObjectType, Method method,
-                                                             Parameter param, int index, Object arg) {
-                return q -> {
+            public SqlStatementParameterCustomizer createForParameter(Annotation annotation, Class<?> sqlObjectType,
+                                                                      Method method, Parameter param, int index) {
+                return (stmt, arg) -> {
                     Player p = (Player) arg;
-                    q.bind("first_name", p.firstName);
-                    q.bind("last_name", p.lastName);
-                    q.bind("birth_date", p.birthDate);
-                    q.bind("weight", p.weight);
-                    q.bind("height", p.height);
+                    stmt.bind("first_name", p.firstName);
+                    stmt.bind("last_name", p.lastName);
+                    stmt.bind("birth_date", p.birthDate);
+                    stmt.bind("weight", p.weight);
+                    stmt.bind("height", p.height);
                 };
             }
         }
