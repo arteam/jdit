@@ -1,7 +1,7 @@
 package com.github.arteam.jdbi3.strategies;
 
-import org.jdbi.v3.core.ExtensionMethod;
-import org.jdbi.v3.core.StatementContext;
+import org.jdbi.v3.core.extension.ExtensionMethod;
+import org.jdbi.v3.core.statement.StatementContext;
 
 import java.lang.reflect.Method;
 import java.util.regex.Matcher;

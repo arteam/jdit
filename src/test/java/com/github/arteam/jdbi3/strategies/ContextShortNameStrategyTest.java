@@ -1,7 +1,7 @@
 package com.github.arteam.jdbi3.strategies;
 
 import com.github.arteam.jdbi3.InstrumentedTimingCollector;
-import org.jdbi.v3.core.ExtensionMethod;
+import org.jdbi.v3.core.extension.ExtensionMethod;
 import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;

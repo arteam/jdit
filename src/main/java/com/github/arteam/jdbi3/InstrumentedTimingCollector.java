@@ -4,8 +4,8 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
 import com.github.arteam.jdbi3.strategies.SmartNameStrategy;
 import com.github.arteam.jdbi3.strategies.StatementNameStrategy;
-import org.jdbi.v3.core.StatementContext;
-import org.jdbi.v3.core.TimingCollector;
+import org.jdbi.v3.core.statement.StatementContext;
+import org.jdbi.v3.core.statement.TimingCollector;
 
 import java.util.concurrent.TimeUnit;
 

@@ -1,6 +1,6 @@
 package com.github.arteam.jdbi3.strategies;
 
-import org.jdbi.v3.core.ExtensionMethod;
+import org.jdbi.v3.core.extension.ExtensionMethod;
 import org.junit.Test;
 
 import static com.codahale.metrics.MetricRegistry.name;

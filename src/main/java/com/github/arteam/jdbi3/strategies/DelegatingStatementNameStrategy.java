@@ -1,6 +1,6 @@
 package com.github.arteam.jdbi3.strategies;
 
-import org.jdbi.v3.core.StatementContext;
+import org.jdbi.v3.core.statement.StatementContext;
 
 import java.util.ArrayList;
 import java.util.Arrays;

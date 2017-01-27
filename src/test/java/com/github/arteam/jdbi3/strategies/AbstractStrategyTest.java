@@ -1,7 +1,7 @@
 package com.github.arteam.jdbi3.strategies;
 
 import com.codahale.metrics.MetricRegistry;
-import org.jdbi.v3.core.StatementContext;
+import org.jdbi.v3.core.statement.StatementContext;
 import org.junit.Before;
 
 import static org.mockito.Mockito.mock;
