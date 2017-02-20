@@ -1,8 +1,7 @@
 package com.github.arteam.jdbi3.strategies;
 
 /**
- * Collects metrics for SQL Objects and fallbacks to the `sql.raw` constant is no
- * SQL object is present.
+ * Uses a {@link BasicSqlNameStrategy} and fallbacks to {@link DefaultNameStrategy#CONSTANT_SQL_RAW}
  */
 public class SmartNameStrategy extends DelegatingStatementNameStrategy {
 

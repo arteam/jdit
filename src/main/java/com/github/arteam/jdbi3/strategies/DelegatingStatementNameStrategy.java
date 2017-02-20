@@ -2,7 +2,6 @@ package com.github.arteam.jdbi3.strategies;
 
 import org.jdbi.v3.core.statement.StatementContext;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,14 +12,10 @@ public abstract class DelegatingStatementNameStrategy implements StatementNameSt
      */
     private static final String UNKNOWN_SQL = "sql.unknown";
 
-    private final List<StatementNameStrategy> strategies = new ArrayList<>();
+    private final List<StatementNameStrategy> strategies;
 
     protected DelegatingStatementNameStrategy(StatementNameStrategy... strategies) {
-        registerStrategies(strategies);
-    }
-
-    protected void registerStrategies(StatementNameStrategy... strategies) {
-        this.strategies.addAll(Arrays.asList(strategies));
+        this.strategies = Arrays.asList(strategies);
     }
 
     @Override
