@@ -36,11 +36,7 @@ public enum DefaultNameStrategy implements StatementNameStrategy {
         public String getStatementName(StatementContext statementContext) {
             ExtensionMethod extensionMethod = statementContext.getExtensionMethod();
             if (extensionMethod != null) {
-                final Class<?> clazz = extensionMethod.getType();
-                final Method method = extensionMethod.getMethod();
-                final String group = clazz.getPackage().getName();
-                final String name = clazz.getSimpleName();
-                return MetricRegistry.name(group, name, method.getName());
+                return MetricRegistry.name(extensionMethod.getType(), extensionMethod.getMethod().getName());
             }
             return null;
         }
