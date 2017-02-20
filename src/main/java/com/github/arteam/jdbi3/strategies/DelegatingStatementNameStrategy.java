@@ -8,6 +8,11 @@ import java.util.List;
 
 public abstract class DelegatingStatementNameStrategy implements StatementNameStrategy {
 
+    /**
+     * Unknown SQL.
+     */
+    private static final String UNKNOWN_SQL = "sql.unknown";
+
     private final List<StatementNameStrategy> strategies = new ArrayList<>();
 
     protected DelegatingStatementNameStrategy(StatementNameStrategy... strategies) {
@@ -27,6 +32,6 @@ public abstract class DelegatingStatementNameStrategy implements StatementNameSt
             }
         }
 
-        return DefaultNameStrategy.UNKNOWN_SQL;
+        return UNKNOWN_SQL;
     }
 }

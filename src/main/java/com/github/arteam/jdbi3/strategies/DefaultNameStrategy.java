@@ -110,10 +110,6 @@ public enum DefaultNameStrategy implements StatementNameStrategy {
     private static final String SQL_EMPTY = "sql.empty";
     private static final String SQL_RAW = "sql.raw";
 
-    /**
-     * Unknown SQL.
-     */
-    static final String UNKNOWN_SQL = "sql.unknown";
 
     /**
      * Context attribute name for the metric class.
