@@ -1,6 +1,7 @@
 package com.github.arteam.jdbi3.strategies;
 
 import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.annotation.Timed;
 import org.jdbi.v3.core.extension.ExtensionMethod;
 import org.jdbi.v3.core.statement.StatementContext;
 
@@ -40,6 +41,27 @@ public enum DefaultNameStrategy implements StatementNameStrategy {
                 final String group = clazz.getPackage().getName();
                 final String name = clazz.getSimpleName();
                 return MetricRegistry.name(group, name, method.getName());
+            }
+            return null;
+        }
+    },
+
+    /**
+     * Takes into account the {@link Timed} annotation on extension methods
+     */
+    TIMED_SQL_OBJECT {
+        @Override
+        public String getStatementName(StatementContext statementContext) {
+            ExtensionMethod extensionMethod = statementContext.getExtensionMethod();
+            if (extensionMethod != null) {
+                final Class<?> clazz = extensionMethod.getType();
+                final Method method = extensionMethod.getMethod();
+                final Timed timed = method.getAnnotation(Timed.class);
+                if (timed != null) {
+                    return timed.absolute() ? timed.name() : MetricRegistry.name(clazz, timed.name());
+                } else {
+                    return MetricRegistry.name(clazz, method.getName());
+                }
             }
             return null;
         }
