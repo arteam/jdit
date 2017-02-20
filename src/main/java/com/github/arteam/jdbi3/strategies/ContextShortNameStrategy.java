@@ -1,8 +1,6 @@
 package com.github.arteam.jdbi3.strategies;
 
 import java.lang.reflect.Method;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 import static com.codahale.metrics.MetricRegistry.name;
 
@@ -13,10 +11,10 @@ import static com.codahale.metrics.MetricRegistry.name;
 public final class ContextShortNameStrategy extends DelegatingStatementNameStrategy {
 
     public ContextShortNameStrategy(String baseName) {
-        registerStrategies(NameStrategies.CHECK_EMPTY,
+        registerStrategies(DefaultNameStrategy.CHECK_EMPTY,
                 statementContext -> {
-                    final Object classObj = statementContext.getAttribute(NameStrategies.STATEMENT_CLASS);
-                    final Object nameObj = statementContext.getAttribute(NameStrategies.STATEMENT_NAME);
+                    final Object classObj = statementContext.getAttribute(DefaultNameStrategy.STATEMENT_CLASS);
+                    final Object nameObj = statementContext.getAttribute(DefaultNameStrategy.STATEMENT_NAME);
 
                     if (classObj == null || nameObj == null) {
                         return null;
@@ -50,6 +48,6 @@ public final class ContextShortNameStrategy extends DelegatingStatementNameStrat
                     }
                     return null;
                 },
-                NameStrategies.NAIVE_NAME);
+                DefaultNameStrategy.NAIVE_NAME);
     }
 }

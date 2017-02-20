@@ -58,8 +58,8 @@ public class SmartNameStrategyTest extends AbstractStrategyTest {
 
     @Test
     public void updatesTimerForContextClass() throws Exception {
-        when(ctx.getAttribute(NameStrategies.STATEMENT_CLASS)).thenReturn(getClass().getName());
-        when(ctx.getAttribute(NameStrategies.STATEMENT_NAME)).thenReturn("updatesTimerForContextClass");
+        when(ctx.getAttribute(DefaultNameStrategy.STATEMENT_CLASS)).thenReturn(getClass().getName());
+        when(ctx.getAttribute(DefaultNameStrategy.STATEMENT_NAME)).thenReturn("updatesTimerForContextClass");
 
         collector.collect(TimeUnit.SECONDS.toNanos(3), ctx);
 
@@ -70,8 +70,8 @@ public class SmartNameStrategyTest extends AbstractStrategyTest {
 
     @Test
     public void updatesTimerForTemplateFile() throws Exception {
-        when(ctx.getAttribute(NameStrategies.STATEMENT_GROUP)).thenReturn("foo/bar.stg");
-        when(ctx.getAttribute(NameStrategies.STATEMENT_NAME)).thenReturn("updatesTimerForTemplateFile");
+        when(ctx.getAttribute(DefaultNameStrategy.STATEMENT_GROUP)).thenReturn("foo/bar.stg");
+        when(ctx.getAttribute(DefaultNameStrategy.STATEMENT_NAME)).thenReturn("updatesTimerForTemplateFile");
 
         collector.collect(TimeUnit.SECONDS.toNanos(4), ctx);
 
@@ -82,8 +82,8 @@ public class SmartNameStrategyTest extends AbstractStrategyTest {
 
     @Test
     public void updatesTimerForContextGroupAndName() throws Exception {
-        when(ctx.getAttribute(NameStrategies.STATEMENT_GROUP)).thenReturn("my-group");
-        when(ctx.getAttribute(NameStrategies.STATEMENT_NAME)).thenReturn("updatesTimerForContextGroupAndName");
+        when(ctx.getAttribute(DefaultNameStrategy.STATEMENT_GROUP)).thenReturn("my-group");
+        when(ctx.getAttribute(DefaultNameStrategy.STATEMENT_NAME)).thenReturn("updatesTimerForContextGroupAndName");
 
         collector.collect(TimeUnit.SECONDS.toNanos(4), ctx);
 
@@ -94,9 +94,9 @@ public class SmartNameStrategyTest extends AbstractStrategyTest {
 
     @Test
     public void updatesTimerForContextGroupTypeAndName() throws Exception {
-        when(ctx.getAttribute(NameStrategies.STATEMENT_GROUP)).thenReturn("my-group");
-        when(ctx.getAttribute(NameStrategies.STATEMENT_TYPE)).thenReturn("my-type");
-        when(ctx.getAttribute(NameStrategies.STATEMENT_NAME)).thenReturn("updatesTimerForContextGroupTypeAndName");
+        when(ctx.getAttribute(DefaultNameStrategy.STATEMENT_GROUP)).thenReturn("my-group");
+        when(ctx.getAttribute(DefaultNameStrategy.STATEMENT_TYPE)).thenReturn("my-type");
+        when(ctx.getAttribute(DefaultNameStrategy.STATEMENT_NAME)).thenReturn("updatesTimerForContextGroupTypeAndName");
 
         collector.collect(TimeUnit.SECONDS.toNanos(5), ctx);
 

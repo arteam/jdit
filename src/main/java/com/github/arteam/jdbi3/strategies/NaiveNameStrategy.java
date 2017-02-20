@@ -6,7 +6,7 @@ package com.github.arteam.jdbi3.strategies;
 public class NaiveNameStrategy extends DelegatingStatementNameStrategy {
 
     public NaiveNameStrategy() {
-        super(NameStrategies.CHECK_EMPTY,
-              NameStrategies.NAIVE_NAME);
+        super(DefaultNameStrategy.CHECK_EMPTY,
+              DefaultNameStrategy.NAIVE_NAME);
     }
 }

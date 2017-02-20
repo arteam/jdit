@@ -31,8 +31,8 @@ public class ContextShortNameStrategyTest extends AbstractStrategyTest {
 
     @Test
     public void updatesTimerForShortContextClassStrategy() throws Exception {
-        when(ctx.getAttribute(NameStrategies.STATEMENT_CLASS)).thenReturn(getClass().getName());
-        when(ctx.getAttribute(NameStrategies.STATEMENT_NAME)).thenReturn("updatesTimerForShortContextClassStrategy");
+        when(ctx.getAttribute(DefaultNameStrategy.STATEMENT_CLASS)).thenReturn(getClass().getName());
+        when(ctx.getAttribute(DefaultNameStrategy.STATEMENT_NAME)).thenReturn("updatesTimerForShortContextClassStrategy");
 
         collector.collect(TimeUnit.SECONDS.toNanos(3), ctx);
 

@@ -7,5 +7,6 @@ import org.jdbi.v3.core.statement.StatementContext;
  */
 @FunctionalInterface
 public interface StatementNameStrategy {
+
     String getStatementName(StatementContext statementContext);
 }

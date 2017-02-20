@@ -27,6 +27,6 @@ public abstract class DelegatingStatementNameStrategy implements StatementNameSt
             }
         }
 
-        return NameStrategies.UNKNOWN_SQL;
+        return DefaultNameStrategy.UNKNOWN_SQL;
     }
 }
