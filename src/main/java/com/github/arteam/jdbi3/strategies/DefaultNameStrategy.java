@@ -11,11 +11,12 @@ import java.util.regex.Pattern;
 public enum DefaultNameStrategy implements StatementNameStrategy {
 
     CHECK_EMPTY {
+
         @Override
         public String getStatementName(StatementContext statementContext) {
             final String rawSql = statementContext.getRawSql();
             if (rawSql == null || rawSql.length() == 0) {
-                return SQL_EMPTY;
+                return "sql.empty";
             }
             return null;
         }
@@ -43,9 +44,10 @@ public enum DefaultNameStrategy implements StatementNameStrategy {
     },
 
     CONSTANT_SQL_RAW {
+
         @Override
         public String getStatementName(StatementContext statementContext) {
-            return SQL_RAW;
+            return "sql.raw";
         }
     },
 
@@ -73,6 +75,12 @@ public enum DefaultNameStrategy implements StatementNameStrategy {
         }
     },
     CONTEXT_NAME {
+
+        /**
+         * File pattern to shorten the group name.
+         */
+        private final Pattern shortPattern = Pattern.compile("^(.*?)/(.*?)(-sql)?\\.st(g)?$");
+
         @Override
         public String getStatementName(StatementContext statementContext) {
             final Object groupObj = statementContext.getAttribute(STATEMENT_GROUP);
@@ -87,7 +95,7 @@ public enum DefaultNameStrategy implements StatementNameStrategy {
             final String statementName = (String) nameObj;
 
             if (typeObj == null) {
-                final Matcher matcher = SHORT_PATTERN.matcher(group);
+                final Matcher matcher = shortPattern.matcher(group);
                 if (matcher.matches()) {
                     final String groupName = matcher.group(1);
                     final String typeName = matcher.group(2);
@@ -101,15 +109,6 @@ public enum DefaultNameStrategy implements StatementNameStrategy {
             }
         }
     };
-
-    /**
-     * File pattern to shorten the group name.
-     */
-    private static final Pattern SHORT_PATTERN = Pattern.compile("^(.*?)/(.*?)(-sql)?\\.st(g)?$");
-
-    private static final String SQL_EMPTY = "sql.empty";
-    private static final String SQL_RAW = "sql.raw";
-
 
     /**
      * Context attribute name for the metric class.
