@@ -8,10 +8,15 @@ import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Default strategies which build a basis of more complex strategies
+ */
 public enum DefaultNameStrategy implements StatementNameStrategy {
 
+    /**
+     * If no SQL in the context, returns `sql.empty`, otherwise falls through
+     */
     CHECK_EMPTY {
-
         @Override
         public String getStatementName(StatementContext statementContext) {
             final String rawSql = statementContext.getRawSql();
@@ -21,6 +26,12 @@ public enum DefaultNameStrategy implements StatementNameStrategy {
             return null;
         }
     },
+
+    /**
+     * If there is an SQL object attached to the context, returns the name package,
+     * the class and the method on which SQL is declared. If not SQL object is attached,
+     * falls through
+     */
     SQL_OBJECT {
         @Override
         public String getStatementName(StatementContext statementContext) {
@@ -36,6 +47,9 @@ public enum DefaultNameStrategy implements StatementNameStrategy {
         }
     },
 
+    /**
+     * Returns a raw SQL in the context (even if it's not exist)
+     */
     NAIVE_NAME {
         @Override
         public String getStatementName(StatementContext statementContext) {
@@ -43,14 +57,19 @@ public enum DefaultNameStrategy implements StatementNameStrategy {
         }
     },
 
+    /**
+     * Returns the `sql.raw` constant
+     */
     CONSTANT_SQL_RAW {
-
         @Override
         public String getStatementName(StatementContext statementContext) {
             return "sql.raw";
         }
     },
 
+    /**
+     * Collects statistic based on the class name and statement of StringTemplate templates
+     */
     CONTEXT_CLASS {
         @Override
         public String getStatementName(StatementContext statementContext) {
@@ -74,6 +93,10 @@ public enum DefaultNameStrategy implements StatementNameStrategy {
                     statementName);
         }
     },
+
+    /**
+     * Collects statistic based on the statement group of StringTemplate templates
+     */
     CONTEXT_NAME {
 
         /**

@@ -1,5 +1,8 @@
 package com.github.arteam.jdbi3.strategies;
 
+/**
+ * Collects metrics by respective SQLObject methods.
+ */
 public class BasicSqlNameStrategy extends DelegatingStatementNameStrategy {
 
     public BasicSqlNameStrategy() {
