@@ -43,25 +43,6 @@ public enum DefaultNameStrategy implements StatementNameStrategy {
     },
 
     /**
-     * Takes into account the {@link Timed} annotation on extension methods
-     */
-    TIMED_SQL_OBJECT {
-        @Override
-        public String getStatementName(StatementContext statementContext) {
-            ExtensionMethod extensionMethod = statementContext.getExtensionMethod();
-            if (extensionMethod != null) {
-                final Class<?> clazz = extensionMethod.getType();
-                final Method method = extensionMethod.getMethod();
-                final Timed timed = method.getAnnotation(Timed.class);
-                if (timed != null) {
-                    return timed.absolute() ? timed.name() : MetricRegistry.name(clazz, timed.name());
-                }
-            }
-            return null;
-        }
-    },
-
-    /**
      * Returns a raw SQL in the context (even if it's not exist)
      */
     NAIVE_NAME {
