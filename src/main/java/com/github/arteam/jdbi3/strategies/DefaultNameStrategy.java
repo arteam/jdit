@@ -55,8 +55,6 @@ public enum DefaultNameStrategy implements StatementNameStrategy {
                 final Timed timed = method.getAnnotation(Timed.class);
                 if (timed != null) {
                     return timed.absolute() ? timed.name() : MetricRegistry.name(clazz, timed.name());
-                } else {
-                    return MetricRegistry.name(clazz, method.getName());
                 }
             }
             return null;
