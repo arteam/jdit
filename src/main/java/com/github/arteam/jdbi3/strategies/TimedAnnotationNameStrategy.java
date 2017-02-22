@@ -17,10 +17,22 @@ public class TimedAnnotationNameStrategy implements StatementNameStrategy {
         ExtensionMethod extensionMethod = statementContext.getExtensionMethod();
         if (extensionMethod != null) {
             final Class<?> clazz = extensionMethod.getType();
+            final Timed classTimed = clazz.getAnnotation(Timed.class);
             final Method method = extensionMethod.getMethod();
-            final Timed timed = method.getAnnotation(Timed.class);
-            if (timed != null) {
-                return timed.absolute() ? timed.name() : MetricRegistry.name(clazz, timed.name());
+            final Timed methodTimed = method.getAnnotation(Timed.class);
+            // If the method is metered, figure out the name
+            if (methodTimed != null) {
+                if (methodTimed.absolute()) {
+                    return methodTimed.name();
+                } else {
+                    // We need to check if the class has a custom timer name
+                    return classTimed == null ? MetricRegistry.name(clazz, methodTimed.name()) :
+                            MetricRegistry.name(classTimed.name(), methodTimed.name());
+                }
+            }
+            // Maybe the class is metered?
+            if (classTimed != null) {
+                return MetricRegistry.name(classTimed.name(), method.getName());
             }
         }
         return null;
