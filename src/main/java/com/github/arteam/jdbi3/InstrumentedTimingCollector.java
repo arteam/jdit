@@ -1,7 +1,6 @@
 package com.github.arteam.jdbi3;
 
 import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.Timer;
 import com.github.arteam.jdbi3.strategies.SmartNameStrategy;
 import com.github.arteam.jdbi3.strategies.StatementNameStrategy;
 import org.jdbi.v3.core.statement.StatementContext;
@@ -30,11 +29,9 @@ public class InstrumentedTimingCollector implements TimingCollector {
 
     @Override
     public void collect(long elapsedTime, StatementContext ctx) {
-        final Timer timer = getTimer(ctx);
-        timer.update(elapsedTime, TimeUnit.NANOSECONDS);
-    }
-
-    private Timer getTimer(StatementContext ctx) {
-        return registry.timer(statementNameStrategy.getStatementName(ctx));
+        String statementName = statementNameStrategy.getStatementName(ctx);
+        if (statementName != null) {
+            registry.timer(statementName).update(elapsedTime, TimeUnit.NANOSECONDS);
+        }
     }
 }
