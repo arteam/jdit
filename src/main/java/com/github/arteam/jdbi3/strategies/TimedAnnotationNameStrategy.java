@@ -26,13 +26,15 @@ public class TimedAnnotationNameStrategy implements StatementNameStrategy {
                     return methodTimed.name();
                 } else {
                     // We need to check if the class has a custom timer name
-                    return classTimed == null ? MetricRegistry.name(clazz, methodTimed.name()) :
+                    return classTimed == null || classTimed.name().isEmpty() ?
+                            MetricRegistry.name(clazz, methodTimed.name()) :
                             MetricRegistry.name(classTimed.name(), methodTimed.name());
                 }
             }
             // Maybe the class is metered?
             if (classTimed != null) {
-                return MetricRegistry.name(classTimed.name(), method.getName());
+                return classTimed.name().isEmpty() ? MetricRegistry.name(clazz, method.getName()) :
+                        MetricRegistry.name(classTimed.name(), method.getName());
             }
         }
         return null;
