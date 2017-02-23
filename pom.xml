@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.arteam</groupId>
     <artifactId>metrics-jdbi3</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-rc1</version>
     <name>Integration between Dropwizard Metrics and JDBI3</name>
 
     <scm>
-        <developerConnection>scm:git:git@github.com:arteam/jdit.git</developerConnection>
+        <developerConnection>scm:git@github.com:arteam/metrics-jdbi3.git</developerConnection>
         <url>https://github.com/arteam/metrics-jdbi3</url>
-        <tag>HEAD</tag>
+        <tag>metrics-jdbi3-1.0-rc1</tag>
     </scm>
 
     <licenses>
