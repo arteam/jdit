@@ -10,7 +10,7 @@
     <name>Integration between Dropwizard Metrics and JDBI3</name>
 
     <scm>
-        <developerConnection>git@github.com:arteam/metrics-jdbi3.git</developerConnection>
+        <developerConnection>scm:git:git@github.com:arteam/jdit.git</developerConnection>
         <url>https://github.com/arteam/metrics-jdbi3</url>
         <tag>HEAD</tag>
     </scm>
