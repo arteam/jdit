@@ -17,7 +17,7 @@
         <hsqldb.version>2.3.4</hsqldb.version>
         <postgresql.version>9.4.1208</postgresql.version>
         <mysql.version>5.1.39</mysql.version>
-        <h2.version>1.4.190</h2.version>
+        <h2.version>1.4.193</h2.version>
         <junit.version>4.12</junit.version>
         <stringtemplate.version>3.2.1</stringtemplate.version>
     </properties>
