@@ -14,6 +14,7 @@ import org.joda.time.DateTime;
 import java.lang.annotation.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.lang.reflect.Type;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
@@ -75,7 +76,8 @@ public interface PlayerSqlObject {
 
             @Override
             public SqlStatementParameterCustomizer createForParameter(Annotation annotation, Class<?> sqlObjectType,
-                                                                      Method method, Parameter param, int index) {
+                                                                      Method method, Parameter param, int index,
+                                                                      Type type) {
                 return (stmt, arg) -> {
                     Player p = (Player) arg;
                     stmt.bind("first_name", p.firstName);
