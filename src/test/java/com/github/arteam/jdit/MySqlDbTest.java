@@ -10,6 +10,7 @@ import org.jdbi.v3.core.Handle;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -28,6 +29,7 @@ import static org.junit.Assume.assumeTrue;
  */
 @JditProperties("jdit-mysql.properties")
 @RunWith(DBIRunner.class)
+@Ignore
 public class MySqlDbTest {
 
     @BeforeClass
