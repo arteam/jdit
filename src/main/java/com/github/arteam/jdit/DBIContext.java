@@ -2,16 +2,18 @@ package com.github.arteam.jdit;
 
 import com.github.arteam.jdit.maintenance.DatabaseMaintenance;
 import com.github.arteam.jdit.maintenance.DatabaseMaintenanceFactory;
-import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.Handle;
+import org.jdbi.v3.core.Jdbi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Properties;
 
@@ -41,9 +43,13 @@ public class DBIContext {
 
     private Jdbi dbi;
 
+    @Nullable
+    private Comparator<String> migrationFileComparator;
+
     private DBIContext(String propertiesLocation) {
         Properties properties = loadProperties(propertiesLocation);
         dbi = createDBI(properties);
+        migrationFileComparator = createFilesComparator(properties);
         migrateSchema(properties);
     }
 
@@ -96,6 +102,20 @@ public class DBIContext {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    @Nullable
+    private Comparator<String> createFilesComparator(Properties properties) {
+        try {
+            if (!properties.containsKey("schema.migration.file.comparator")) {
+                return null;
+            }
+            return (Comparator<String>) Class.forName(properties.getProperty("schema.migration.file.comparator"))
+                    .newInstance();
+        } catch (Exception e) {
+            throw new IllegalStateException("Unable to create a comparator", e);
+        }
+    }
+
     /**
      * Migrate the DB schema
      *
@@ -134,7 +154,11 @@ public class DBIContext {
             log.warn("Directory '" + directory + "' is empty. Migrations are not applied");
             return;
         }
-        Arrays.sort(childFileNames);
+        if (migrationFileComparator != null) {
+            Arrays.sort(childFileNames, migrationFileComparator);
+        } else {
+            Arrays.sort(childFileNames);
+        }
         for (String childFileName : childFileNames) {
             String childFileLocation = schemaLocation + File.separator + childFileName;
             if (!childFileName.endsWith("sql")) {
