@@ -4,7 +4,7 @@
 
     <groupId>com.github.arteam</groupId>
     <artifactId>jdit</artifactId>
-    <version>0.7</version>
+    <version>0.8-SNAPSHOT</version>
 
     <name>JDBI Dropwizard Integration Testing</name>
     <description>JDIT is library which simplifies integration testing of JDBI applications</description>
@@ -23,7 +23,7 @@
     <scm>
         <developerConnection>scm:git:git@github.com:arteam/jdit.git</developerConnection>
         <url>https://github.com/arteam/jdit.git</url>
-        <tag>jdit-0.7</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <licenses>
