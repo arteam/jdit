@@ -5,8 +5,7 @@
 ## Overview
 
 *JDIT* is a library for simplifying of integration
-testing of [*JDBI*](http://jdbi.org/) data access objects in
-[*Dropwizard*](http://dropwizard.io/) applications.
+testing of [*JDBI3*](https://jdbi.github.io/) data access objects
 
 ## What it does
 
@@ -14,17 +13,13 @@ The library does the following things:
 
 * Supports *[HSQLDB](http://hsqldb.org/)*, *[PostgreSQL](https://www.postgresql.org/)*,
 *[MySQL](https://www.mysql.com/)*, *[H2](http://h2database.com)* databases;
-* Creates a DBI instance with the same configuration as in 
-Dropwizard's `DBIFactory` (support of Guava's `Optional`, `ImmutableList`,
-`ImmutableSet`, JodaTime's `DateTime`, logging of a SQL Object name);
-* Logs SQL queries to *Logback* with *INFO* level;
-* Optionally migrates a user-defined sql schema; 
+* Optionally migrates a user-defined sql schema;
 * The database and the DBI instance are shared between the tests, so they are
 performed quickly;
 * Provides a *JUnit* runner for running DBI-related tests;
 * Supports injecting a DBI DAO or a SQL object to the current test
 by annotating a tested instance;
-* Supports injecting a `DBI` instance or an `Handle` instance to the 
+* Supports injecting a `DBI` instance or an `Handle` instance to the
 current test for performing SQL requests against the database;
 * Sweeps data from the database and reset sequences after every test.
 All data changes performed in tests are discarded (but the schema
@@ -72,7 +67,7 @@ public interface PlayerDao {
 <dependency>
     <groupId>com.github.arteam</groupId>
     <artifactId>jdit</artifactId>
-    <version>0.5</version>
+    <version>0.7</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -95,7 +90,7 @@ If your test database is different from the production one, add a test database 
 You need to create a test resource directory to host resources.
 By default it's '*src/test/resources*'.
 
-If you want to use another directory, don't forget to set it in Maven as 
+If you want to use another directory, don't forget to set it in Maven as
 a test resources directory in the *build* section:
 
 ````xml
@@ -237,7 +232,7 @@ db.password=
 schema.migration.enabled=true
 schema.migration.location=schema.sql
 
-dbi.factory=com.github.arteam.jdit.DropwizardDBIFactory
+dbi.factory=com.github.arteam.jdit.StandardDBIFactory
 ````
 
 * _db.url_ - Database URL;
@@ -269,8 +264,7 @@ More examples available in a separate [repository](https://github.com/arteam/jdi
 
 ## Dependencies
 
-* [JDBI](http://jdbi.org/) 2.73
-* [Dropwizard](http://dropwizard.io/) 1.0.0
+* [JDBI3](https://jdbi.github.io/) 3.0.0-beta2
 * [JUnit](http://junit.org/) 4.12
 
 ## Compatability
@@ -284,6 +278,10 @@ Version 0.3 is compatible with [Dropwizard](http://dropwizard.io/) 0.9.*
 Version 0.4.* is compatible with [Dropwizard](http://dropwizard.io/) 0.9.*
 
 Version 0.5.* is compatible with [Dropwizard](http://dropwizard.io/) 1.0.*
+
+Version 0.6.* is compatible with [Dropwizard](http://dropwizard.io/) 1.1.*
+
+Version 0.7 is not depended on Dropwizard
 
 ## Availability
 
