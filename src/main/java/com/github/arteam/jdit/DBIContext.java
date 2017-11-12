@@ -7,7 +7,6 @@ import org.jdbi.v3.core.Jdbi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,7 +42,6 @@ public class DBIContext {
 
     private Jdbi dbi;
 
-    @Nullable
     private Comparator<String> migrationFileComparator;
 
     private DBIContext(String propertiesLocation) {
@@ -103,7 +101,6 @@ public class DBIContext {
     }
 
     @SuppressWarnings("unchecked")
-    @Nullable
     private Comparator<String> createFilesComparator(Properties properties) {
         try {
             if (!properties.containsKey("schema.migration.file.comparator")) {
