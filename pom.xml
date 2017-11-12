@@ -12,7 +12,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jdbi.version>3.0.0-beta2</jdbi.version>
+        <jdbi.version>3.0.0-rc1</jdbi.version>
         <hsqldb.version>2.3.4</hsqldb.version>
         <postgresql.version>42.1.1</postgresql.version>
         <mysql.version>5.1.40</mysql.version>
@@ -132,7 +132,7 @@
 
         <dependency>
             <groupId>org.jdbi</groupId>
-            <artifactId>jdbi3</artifactId>
+            <artifactId>jdbi3-core</artifactId>
             <version>${jdbi.version}</version>
         </dependency>
 
