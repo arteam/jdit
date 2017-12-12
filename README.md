@@ -53,8 +53,7 @@ public interface PlayerDao {
     int getAmountPlayersBornInYear(@Bind("year") int year);
 
     @SqlQuery("select * from players where first_name=:first_name and " +
-              "last_name=:last_name")
-    @SingleValueResult
+              "last_name=:last_name")	      
     Optional<Player> findPlayer(@Bind("first_name") String firstName,
                                 @Bind("last_name") String lastName);
 }
