@@ -4,12 +4,10 @@ import com.github.arteam.jdit.annotations.DataSet;
 import com.github.arteam.jdit.annotations.JditProperties;
 import com.github.arteam.jdit.annotations.TestedSqlObject;
 import com.github.arteam.jdit.domain.TeamSqlObject;
-import com.github.arteam.jdit.domain.entity.Player;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Date: 2/22/15
@@ -27,9 +25,8 @@ public class TestDirectoryMigration {
     @Test
     @DataSet({"teamDao/insert-divisions.sql", "teamDao/teams-and-players.sql"})
     public void testGetTeamPlayers() {
-        List<Player> players = teamSqlObject.getPlayers("St. Louis Blues");
-        Assert.assertEquals(players.get(0).lastName, "Allen");
-        Assert.assertEquals(players.get(1).lastName, "Schwartz");
-        Assert.assertEquals(players.get(2).lastName, "Tarasenko");
+        assertThat(teamSqlObject.getPlayers("St. Louis Blues")).hasSize(3)
+                .extracting(p -> p.lastName)
+                .containsExactly("Allen", "Schwartz", "Tarasenko");
     }
 }

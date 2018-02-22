@@ -4,12 +4,13 @@ import com.github.arteam.jdit.annotations.DataSet;
 import com.github.arteam.jdit.annotations.TestedSqlObject;
 import com.github.arteam.jdit.domain.PlayerSqlObject;
 import com.github.arteam.jdit.domain.entity.Player;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Date: 2/7/15
@@ -27,21 +28,20 @@ public class TestOptionals {
     @Test
     public void testExistOptional() {
         Optional<Player> player = playerSqlObject.findPlayer("Vladimir", "Tarasenko");
-        Assert.assertTrue(player.isPresent());
-        Assert.assertEquals(player.get().firstName, "Vladimir");
-        Assert.assertEquals(player.get().lastName, "Tarasenko");
+        assertThat(player).map(p -> p.firstName).contains("Vladimir");
+        assertThat(player).map(p -> p.firstName).contains("Tarasenko");
     }
 
     @Test
     public void testNotExistOptional() {
         Optional<Player> player = playerSqlObject.findPlayer("Ryan", "Getzlaf");
-        Assert.assertFalse(player.isPresent());
+        assertThat(player).isNotPresent();
     }
 
     @Test
-    public void testAbsentOptionalParameter(){
+    public void testAbsentOptionalParameter() {
         List<Player> playersByWeight = playerSqlObject.getPlayersByWeight(Optional.empty());
-        Assert.assertEquals(playersByWeight.size(), 1);
-        Assert.assertFalse(playersByWeight.get(0).weight.isPresent());
+        assertThat(playersByWeight).hasSize(1);
+        assertThat(playersByWeight.get(0).weight).isPresent();
     }
 }

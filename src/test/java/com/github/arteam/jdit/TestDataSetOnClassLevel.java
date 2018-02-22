@@ -3,14 +3,13 @@ package com.github.arteam.jdit;
 import com.github.arteam.jdit.annotations.DataSet;
 import com.github.arteam.jdit.annotations.TestedSqlObject;
 import com.github.arteam.jdit.domain.PlayerSqlObject;
-import com.google.common.collect.ImmutableSet;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Date: 1/22/15
@@ -28,33 +27,33 @@ public class TestDataSetOnClassLevel {
     @Test
     public void testGetInitials() {
         List<String> lastNames = playerDao.getLastNames();
-        Assert.assertEquals(lastNames, Arrays.asList("Tarasenko"));
+        assertThat(lastNames).containsOnly("Tarasenko");
     }
 
     @Test
     @DataSet("playerDao/players.sql")
     public void testGetInitialsForMultiplyPlayers(){
         List<String> lastNames = playerDao.getLastNames();
-        Assert.assertEquals(lastNames, Arrays.asList("Ellis", "Rattie", "Seguin", "Tarasenko", "Tavares"));
+        assertThat(lastNames).containsExactly("Ellis", "Rattie", "Seguin", "Tarasenko", "Tavares");
     }
 
     @Test
     @DataSet("playerDao/players.sql")
     public void testGetAmountPlayersBornInYear() {
         int amount = playerDao.getAmountPlayersBornInYear(1991);
-        Assert.assertEquals(amount, 2);
+        assertThat(amount).isEqualTo( 2);
     }
 
     @Test
     @DataSet("playerDao/players.sql")
     public void testBornYearsForMultiplyPlayers() {
         Set<Integer> bornYears = playerDao.getBornYears();
-        Assert.assertEquals(bornYears, ImmutableSet.of(1990, 1991, 1992, 1993));
+        assertThat(bornYears).containsOnly(1990, 1991, 1992, 1993);
     }
 
     @Test
     public void testBornYearsForSinglePlayer() {
         Set<Integer> bornYears = playerDao.getBornYears();
-        Assert.assertEquals(bornYears, ImmutableSet.of(1991));
+        assertThat(bornYears).containsOnly(1991);
     }
 }
