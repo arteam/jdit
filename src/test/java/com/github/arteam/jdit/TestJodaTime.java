@@ -32,7 +32,6 @@ public class TestJodaTime {
     public void testDateTimeParameter() {
         DateTime dateTime = FMT.parseDateTime("1991-04-01");
         List<Player> players = playerDao.getPlayersBornAfter(dateTime);
-        System.out.println(players);
         Assert.assertEquals(players.size(), 3);
         for (Player player : players) {
             Assert.assertTrue(player.birthDate.after(dateTime.toDate()));
@@ -42,7 +41,6 @@ public class TestJodaTime {
     @Test
     public void testJodaTimeResponse() {
         DateTime birthDate = playerDao.getPlayerBirthDate("Vladimir", "Tarasenko");
-        System.out.println(birthDate);
         Assert.assertEquals(1991, birthDate.getYear());
         Assert.assertEquals(8, birthDate.getMonthOfYear());
         Assert.assertEquals(5, birthDate.getDayOfMonth());

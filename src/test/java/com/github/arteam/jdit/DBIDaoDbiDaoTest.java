@@ -18,7 +18,6 @@ public class DBIDaoDbiDaoTest extends AbstractDbiDaoTest {
     @Test
     public void testGetInitials() {
         List<String> lastNames = playerDao.getLastNames();
-        System.out.println(lastNames);
         Assert.assertTrue(lastNames.isEmpty());
     }
 }

@@ -36,9 +36,6 @@ public class DBIComplexSqlObjectTest {
                 new Player("David", "Backes", date("1985-03-06"), 188, 95)
         ));
         List<Player> players = teamSqlObject.getPlayers("St. Louis");
-        for (Player player : players) {
-            System.out.println(player);
-        }
     }
 
     @Test
