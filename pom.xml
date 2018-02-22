@@ -14,7 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdbi.version>3.0.1</jdbi.version>
         <hsqldb.version>2.3.4</hsqldb.version>
-        <postgresql.version>42.1.1</postgresql.version>
+        <postgresql.version>42.2.1</postgresql.version>
         <mysql.version>5.1.40</mysql.version>
         <h2.version>1.4.193</h2.version>
         <junit.version>4.12</junit.version>
