@@ -8,12 +8,13 @@ import com.github.arteam.jdit.domain.entity.Player;
 import com.github.arteam.jdit.domain.entity.Team;
 import com.google.common.collect.ImmutableList;
 import org.joda.time.format.ISODateTimeFormat;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Date;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Date: 1/22/15
@@ -36,11 +37,14 @@ public class DBIComplexSqlObjectTest {
                 new Player("David", "Backes", date("1985-03-06"), 188, 95)
         ));
         List<Player> players = teamSqlObject.getPlayers("St. Louis");
+        assertThat(players).hasSize(3);
+        assertThat(players).extracting(p -> p.firstName).containsOnly("Vladimir", "Jack", "David");
+        assertThat(players).extracting(p -> p.lastName).containsOnly("Tarasenko", "Allen", "Backes");
     }
 
     @Test
     public void testCheckNoData() {
-        Assert.assertTrue(teamSqlObject.getPlayers("St. Louis").isEmpty());
+        assertThat(teamSqlObject.getPlayers("St. Louis")).isEmpty();
     }
 
     private static Date date(String textDate) {

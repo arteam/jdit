@@ -1,10 +1,9 @@
 package com.github.arteam.jdit;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Date: 1/22/15
@@ -17,7 +16,6 @@ public class DBIDaoDbiDaoTest extends AbstractDbiDaoTest {
 
     @Test
     public void testGetInitials() {
-        List<String> lastNames = playerDao.getLastNames();
-        Assert.assertTrue(lastNames.isEmpty());
+        assertThat(playerDao.getLastNames()).isEmpty();
     }
 }

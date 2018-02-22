@@ -3,12 +3,10 @@ package com.github.arteam.jdit;
 import com.github.arteam.jdit.annotations.DataSet;
 import com.github.arteam.jdit.annotations.TestedSqlObject;
 import com.github.arteam.jdit.domain.PlayerSqlObject;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Arrays;
-import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Date: 1/22/15
@@ -25,7 +23,6 @@ public class TestDataSet {
     @Test
     @DataSet("playerDao/getInitials.sql")
     public void testGetInitials() {
-        List<String> lastNames = playerDao.getLastNames();
-        Assert.assertEquals(lastNames, Arrays.asList("Tarasenko"));
+        assertThat(playerDao.getLastNames()).containsOnly("Tarasenko");
     }
 }

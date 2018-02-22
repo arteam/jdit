@@ -3,10 +3,10 @@ package com.github.arteam.jdit;
 import com.github.arteam.jdit.annotations.DataSet;
 import com.github.arteam.jdit.annotations.TestedSqlObject;
 import com.github.arteam.jdit.domain.PlayerSqlObject;
-import com.google.common.collect.ImmutableSet;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Date: 2/12/15
@@ -22,8 +22,7 @@ public class TestImmutables {
     PlayerSqlObject playerDao;
 
     @Test
-    public void testSet(){
-        ImmutableSet<String> firstNames = playerDao.getFirstNames();
-        Assert.assertEquals(ImmutableSet.of("Vladimir", "Tyler", "Ryan", "John", "Ty"), firstNames);
+    public void testSet() {
+        assertThat(playerDao.getFirstNames()).containsOnly("Vladimir", "Tyler", "Ryan", "John", "Ty");
     }
 }

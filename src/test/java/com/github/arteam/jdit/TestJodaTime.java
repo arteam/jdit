@@ -5,13 +5,13 @@ import com.github.arteam.jdit.annotations.TestedSqlObject;
 import com.github.arteam.jdit.domain.PlayerSqlObject;
 import com.github.arteam.jdit.domain.entity.Player;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Date: 2/11/15
@@ -23,26 +23,24 @@ import java.util.List;
 @DataSet("playerDao/players.sql")
 public class TestJodaTime {
 
-    private static final DateTimeFormatter FMT = ISODateTimeFormat.date().withZoneUTC();
-
     @TestedSqlObject
     PlayerSqlObject playerDao;
 
     @Test
     public void testDateTimeParameter() {
-        DateTime dateTime = FMT.parseDateTime("1991-04-01");
+        DateTime dateTime = ISODateTimeFormat.date().withZoneUTC().parseDateTime("1991-04-01");
         List<Player> players = playerDao.getPlayersBornAfter(dateTime);
-        Assert.assertEquals(players.size(), 3);
-        for (Player player : players) {
-            Assert.assertTrue(player.birthDate.after(dateTime.toDate()));
-        }
+        assertThat(players)
+                .hasSize(3)
+                .extracting(p -> p.birthDate)
+                .allSatisfy(d -> d.after(dateTime.toDate()));
     }
 
     @Test
     public void testJodaTimeResponse() {
         DateTime birthDate = playerDao.getPlayerBirthDate("Vladimir", "Tarasenko");
-        Assert.assertEquals(1991, birthDate.getYear());
-        Assert.assertEquals(8, birthDate.getMonthOfYear());
-        Assert.assertEquals(5, birthDate.getDayOfMonth());
+        assertThat(birthDate.getYear()).isEqualTo(1991);
+        assertThat(birthDate.getMonthOfYear()).isEqualTo(8);
+        assertThat(birthDate.getDayOfMonth()).isEqualTo(5);
     }
 }
