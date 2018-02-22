@@ -24,7 +24,6 @@ public class TestImmutables {
     @Test
     public void testSet(){
         ImmutableSet<String> firstNames = playerDao.getFirstNames();
-        System.out.println(firstNames);
         Assert.assertEquals(ImmutableSet.of("Vladimir", "Tyler", "Ryan", "John", "Ty"), firstNames);
     }
 }

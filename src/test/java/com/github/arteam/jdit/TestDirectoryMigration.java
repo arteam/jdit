@@ -28,9 +28,6 @@ public class TestDirectoryMigration {
     @DataSet({"teamDao/insert-divisions.sql", "teamDao/teams-and-players.sql"})
     public void testGetTeamPlayers() {
         List<Player> players = teamSqlObject.getPlayers("St. Louis Blues");
-        for (Player player : players) {
-            System.out.println(player);
-        }
         Assert.assertEquals(players.get(0).lastName, "Allen");
         Assert.assertEquals(players.get(1).lastName, "Schwartz");
         Assert.assertEquals(players.get(2).lastName, "Tarasenko");

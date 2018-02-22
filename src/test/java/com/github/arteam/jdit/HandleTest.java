@@ -29,7 +29,6 @@ public class HandleTest {
         String initials = handle.createQuery("select first_name || ' ' || last_name from players")
                 .mapTo(String.class)
                 .findOnly();
-        System.out.println(initials);
         Assert.assertEquals(initials, "Vladimir Tarasenko");
     }
 
@@ -38,7 +37,6 @@ public class HandleTest {
         List<String> lastNames = handle.createQuery("select last_name from players")
                 .mapTo(String.class)
                 .list();
-        System.out.println(lastNames);
         Assert.assertTrue(lastNames.isEmpty());
     }
 }
