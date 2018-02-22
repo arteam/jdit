@@ -8,6 +8,6 @@ import com.github.arteam.jdit.annotations.JditProperties;
  *
  * @author Artem Prigoda
  */
-@JditProperties("jdit-hsqldb-pgs.properties")
+@JditProperties("jdit.properties")
 public class HsqlDbTest extends AlternateDatabaseTest {
 }

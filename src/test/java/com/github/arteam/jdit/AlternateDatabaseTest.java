@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(DBIRunner.class)
 public abstract class AlternateDatabaseTest {
 
-    private static final DateTimeFormatter fmt = ISODateTimeFormat.date().withZoneUTC();
+    private static final DateTimeFormatter fmt = ISODateTimeFormat.date();
 
     @TestedSqlObject
     PlayerSqlObject playerDao;

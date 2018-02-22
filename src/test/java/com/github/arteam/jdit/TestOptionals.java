@@ -29,19 +29,12 @@ public class TestOptionals {
     public void testExistOptional() {
         Optional<Player> player = playerSqlObject.findPlayer("Vladimir", "Tarasenko");
         assertThat(player).map(p -> p.firstName).contains("Vladimir");
-        assertThat(player).map(p -> p.firstName).contains("Tarasenko");
+        assertThat(player).map(p -> p.lastName).contains("Tarasenko");
     }
 
     @Test
     public void testNotExistOptional() {
         Optional<Player> player = playerSqlObject.findPlayer("Ryan", "Getzlaf");
         assertThat(player).isNotPresent();
-    }
-
-    @Test
-    public void testAbsentOptionalParameter() {
-        List<Player> playersByWeight = playerSqlObject.getPlayersByWeight(Optional.empty());
-        assertThat(playersByWeight).hasSize(1);
-        assertThat(playersByWeight.get(0).weight).isPresent();
     }
 }
