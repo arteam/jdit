@@ -3,13 +3,13 @@ package com.github.arteam.jdit;
 import com.github.arteam.jdit.annotations.DBIHandle;
 import com.github.arteam.jdit.annotations.TestedSqlObject;
 import com.github.arteam.jdit.domain.PlayerSqlObject;
-import org.junit.Assert;
+import org.jdbi.v3.core.Handle;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.jdbi.v3.core.Handle;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Date: 1/22/15
@@ -28,18 +28,18 @@ public class DBISqlObjectTest {
 
     @Test
     public void testInsert() throws Exception {
-        Long playerId = playerDao.createPlayer("Vladimir", "Tarasenko", new SimpleDateFormat("yyyy-MM-dd HH:mm:SS")
-                .parse("1991-08-05 00:00:00"), 84, 99);
-        String initials = handle.createQuery("select first_name || ' ' || last_name from players")
+        Long playerId = playerDao.createPlayer("Vladimir", "Tarasenko",
+                new SimpleDateFormat("yyyy-MM-dd HH:mm:SS").parse("1991-08-05 00:00:00"),
+                84, 99);
+        assertThat(playerId).isPositive();
+        assertThat(handle.createQuery("select first_name || ' ' || last_name from players")
                 .mapTo(String.class)
-                .findOnly();
-        Assert.assertEquals(initials, "Vladimir Tarasenko");
+                .findOnly()).isEqualTo("Vladimir Tarasenko");
     }
 
 
     @Test
     public void testGetInitials() {
-        List<String> lastNames = playerDao.getLastNames();
-        Assert.assertTrue(lastNames.isEmpty());
+        assertThat(playerDao.getLastNames()).isEmpty();
     }
 }

@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Artem Prigoda
@@ -28,8 +28,8 @@ public class SqlLocatorTest {
     public void getPlayerBySeveralAtributes() {
         List<Player> players = playerDao.getPlayers(true, "John", true, "Tavares", true, "last_name", true,
                 true, 3, true, 0);
-        assertEquals(players.size(), 1);
-        assertEquals(players.get(0).firstName, "John");
-        assertEquals(players.get(0).lastName, "Tavares");
+        assertThat(players).hasSize(1);
+        assertThat(players).extracting(p -> p.firstName).containsOnly("John");
+        assertThat(players).extracting(p -> p.lastName).containsOnly("Tavares");
     }
 }

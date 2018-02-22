@@ -4,17 +4,13 @@ import com.github.arteam.jdit.annotations.DBIHandle;
 import com.github.arteam.jdit.annotations.DataSet;
 import com.github.arteam.jdit.annotations.TestedSqlObject;
 import com.github.arteam.jdit.domain.PlayerSqlObject;
-import com.google.common.collect.ImmutableList;
 import org.jdbi.v3.core.Handle;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Date: 1/2/16
@@ -38,19 +34,15 @@ public abstract class AlternateDatabaseTest {
     public void testCreatePlayer() {
         Long playerId = playerDao.createPlayer("Colton", "Parayko", fmt.parseDateTime("1993-05-12").toDate(),
                 196, 102);
-        assertEquals(playerId.longValue(), 2L);
-
-        List<Map<String, Object>> rows = handle.select("select * from players where id=?", 2)
+        assertThat(playerId).isEqualTo(2L);
+        assertThat(handle.select("select * from players where id=?", 2)
                 .mapToMap()
-                .list();
-        assertEquals(rows.size(), 1);
-        Map<String, Object> row = rows.get(0);
-        assertEquals(row.get("id"), 2);
-        assertEquals(row.get("first_name"), "Colton");
-        assertEquals(row.get("last_name"), "Parayko");
-        assertEquals(row.get("weight"), 102);
-        assertEquals(row.get("height"), 196);
-        assertEquals(row.get("birth_date").toString(), "1993-05-12");
+                .findOnly()).containsEntry("id", 2)
+                .containsEntry("first_name", "Colton")
+                .containsEntry("last_name", "Parayko")
+                .containsEntry("weight", 102)
+                .containsEntry("height", 196)
+                .containsEntry("birth_date", fmt.parseDateTime("1993-05-12").toDate());
     }
 
     @Test
@@ -58,25 +50,20 @@ public abstract class AlternateDatabaseTest {
     public void testCreateAnotherPlayer() {
         Long playerId = playerDao.createPlayer("Robby", "Fabbri", fmt.parseDateTime("1996-01-22").toDate(),
                 178, 75);
-        assertEquals(playerId.longValue(), 2L);
-
-        List<Map<String, Object>> rows = handle.select("select * from players where id=?", 2)
+        assertThat(playerId).isEqualTo(2L);
+        assertThat(handle.select("select * from players where id=?", 2)
                 .mapToMap()
-                .list();
-        assertEquals(rows.size(), 1);
-        Map<String, Object> row = rows.get(0);
-        assertEquals(row.get("id"), 2);
-        assertEquals(row.get("first_name"), "Robby");
-        assertEquals(row.get("last_name"), "Fabbri");
-        assertEquals(row.get("weight"), 75);
-        assertEquals(row.get("height"), 178);
-        assertEquals(row.get("birth_date").toString(), "1996-01-22");
+                .findOnly()).containsEntry("id", 2)
+                .containsEntry("first_name", "Robby")
+                .containsEntry("last_name", "Fabbri")
+                .containsEntry("weight", 75)
+                .containsEntry("height", 178)
+                .containsEntry("birth_date", fmt.parseDateTime("1996-01-22").toDate());
     }
 
     @Test
     @DataSet("playerDao/getInitials.sql")
     public void testGetLastNames() {
-        List<String> lastNames = playerDao.getLastNames();
-        assertEquals(lastNames, ImmutableList.of("Tarasenko"));
+        assertThat(playerDao.getLastNames()).containsOnly("Tarasenko");
     }
 }

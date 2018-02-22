@@ -3,11 +3,12 @@ package com.github.arteam.jdit;
 import com.github.arteam.jdit.annotations.DBIHandle;
 import com.github.arteam.jdit.annotations.TestedDao;
 import com.github.arteam.jdit.domain.PlayerDao;
-import org.junit.Assert;
-import org.junit.Test;
 import org.jdbi.v3.core.Handle;
+import org.junit.Test;
 
 import java.text.SimpleDateFormat;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Date: 1/2/16
@@ -25,11 +26,13 @@ public abstract class AbstractDbiDaoTest {
 
     @Test
     public void testInsert() throws Exception {
-        Long playerId = playerDao.createPlayer("Vladimir", "Tarasenko", new SimpleDateFormat("yyyy-MM-dd HH:mm:SS")
-                .parse("1991-08-05 00:00:00"), 84, 99);
+        Long playerId = playerDao.createPlayer("Vladimir", "Tarasenko",
+                new SimpleDateFormat("yyyy-MM-dd HH:mm:SS").parse("1991-08-05 00:00:00"),
+                84, 99);
+        assertThat(playerId).isPositive();
         String initials = handle.createQuery("select first_name || ' ' || last_name from players")
                 .mapTo(String.class)
                 .findOnly();
-        Assert.assertEquals(initials, "Vladimir Tarasenko");
+        assertThat(initials).isEqualTo("Vladimir Tarasenko");
     }
 }
