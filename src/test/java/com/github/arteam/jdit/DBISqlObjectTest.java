@@ -30,12 +30,9 @@ public class DBISqlObjectTest {
     public void testInsert() throws Exception {
         Long playerId = playerDao.createPlayer("Vladimir", "Tarasenko", new SimpleDateFormat("yyyy-MM-dd HH:mm:SS")
                 .parse("1991-08-05 00:00:00"), 84, 99);
-        System.out.println(playerId);
-
         String initials = handle.createQuery("select first_name || ' ' || last_name from players")
                 .mapTo(String.class)
                 .findOnly();
-        System.out.println(initials);
         Assert.assertEquals(initials, "Vladimir Tarasenko");
     }
 
@@ -43,7 +40,6 @@ public class DBISqlObjectTest {
     @Test
     public void testGetInitials() {
         List<String> lastNames = playerDao.getLastNames();
-        System.out.println(lastNames);
         Assert.assertTrue(lastNames.isEmpty());
     }
 }

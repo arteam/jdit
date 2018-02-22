@@ -26,7 +26,6 @@ public class TestDataSet {
     @DataSet("playerDao/getInitials.sql")
     public void testGetInitials() {
         List<String> lastNames = playerDao.getLastNames();
-        System.out.println(lastNames);
         Assert.assertEquals(lastNames, Arrays.asList("Tarasenko"));
     }
 }
