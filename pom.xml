@@ -212,6 +212,12 @@
             <version>${junit.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.wix</groupId>
+            <artifactId>wix-embedded-mysql</artifactId>
+            <version>4.1.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <distributionManagement>

@@ -6,11 +6,13 @@ import com.github.arteam.jdit.annotations.JditProperties;
 import com.github.arteam.jdit.annotations.TestedSqlObject;
 import com.github.arteam.jdit.domain.PlayerSqlObject;
 import com.google.common.collect.ImmutableList;
+import com.wix.mysql.EmbeddedMysql;
+import com.wix.mysql.config.MysqldConfig;
 import org.jdbi.v3.core.Handle;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -18,8 +20,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static com.wix.mysql.EmbeddedMysql.anEmbeddedMysql;
+import static com.wix.mysql.config.MysqldConfig.aMysqldConfig;
+import static com.wix.mysql.distribution.Version.v5_7_latest;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assume.assumeTrue;
 
 /**
  * Date: 1/1/16
@@ -29,14 +33,7 @@ import static org.junit.Assume.assumeTrue;
  */
 @JditProperties("jdit-mysql.properties")
 @RunWith(DBIRunner.class)
-@Ignore
 public class MySqlDbTest {
-
-    @BeforeClass
-    public static void beforeInit() {
-        assumeTrue(Boolean.parseBoolean(System.getenv("TRAVIS")));
-    }
-
     private static final DateTimeFormatter fmt = ISODateTimeFormat.date().withZoneUTC();
 
     @TestedSqlObject
