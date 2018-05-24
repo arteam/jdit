@@ -16,12 +16,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Date: 1/22/15
- * Time: 8:57 PM
- *
- * @author Artem Prigoda
- */
 @RunWith(DBIRunner.class)
 @DataSet("teamDao/insert-divisions.sql")
 public class DBIComplexSqlObjectTest {

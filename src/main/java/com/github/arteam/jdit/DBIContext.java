@@ -17,8 +17,6 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * Date: 2/22/15
- * Time: 10:06 PM
  * <p>
  * The current database context.
  * <p>It's responsible for maintaining an active DB with a schema during the run of the tests</p>
@@ -30,8 +28,6 @@ import java.util.Properties;
  * </li>
  * <li>The database schema is migrated (if enabled)</li>
  * </ul>
- *
- * @author Artem Prigoda
  */
 public class DBIContext {
 

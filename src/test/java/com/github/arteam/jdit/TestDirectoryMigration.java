@@ -9,12 +9,6 @@ import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Date: 2/22/15
- * Time: 6:16 PM
- *
- * @author Artem Prigoda
- */
 @RunWith(DBIRunner.class)
 @JditProperties("jdit-schema-directory.properties")
 public class TestDirectoryMigration {

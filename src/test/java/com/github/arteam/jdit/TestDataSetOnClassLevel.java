@@ -11,12 +11,6 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Date: 1/22/15
- * Time: 8:57 PM
- *
- * @author Artem Prigoda
- */
 @RunWith(DBIRunner.class)
 @DataSet("/playerDao/getInitials.sql")
 public class TestDataSetOnClassLevel {

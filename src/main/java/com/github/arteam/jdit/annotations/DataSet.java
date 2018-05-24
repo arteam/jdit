@@ -6,12 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Date: 1/26/15
- * Time: 12:02 AM
- * <p>
  * Annotation for marking that a data set should be loaded from a location before the method execution
- *
- * @author Artem Prigoda
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})
