@@ -12,12 +12,6 @@ import java.text.SimpleDateFormat;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Date: 5/5/15
- * Time: 11:21 PM
- *
- * @author Artem Prigoda
- */
 @JditProperties("jdit-alternate-factory.properties")
 @RunWith(DBIRunner.class)
 public class TestStandardDBIFactory {

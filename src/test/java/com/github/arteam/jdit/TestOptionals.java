@@ -12,12 +12,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Date: 2/7/15
- * Time: 5:39 PM
- *
- * @author Artem Prigoda
- */
 @RunWith(DBIRunner.class)
 @DataSet("playerDao/players.sql")
 public class TestOptionals {

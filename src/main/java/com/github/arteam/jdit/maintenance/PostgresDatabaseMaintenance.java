@@ -5,12 +5,7 @@ import org.jdbi.v3.core.result.ResultIterable;
 import org.jdbi.v3.core.statement.Batch;
 
 /**
- * Date: 1/1/16
- * Time: 7:05 PM
- * <p/>
  * Maintenance operations for the PostgreSQL database
- *
- * @author Artem Prigoda
  */
 class PostgresDatabaseMaintenance implements DatabaseMaintenance {
 

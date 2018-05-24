@@ -6,13 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Date: 1/25/15
- * Time: 6:50 PM
- * <p>
  * Annotation for creating and injecting a DBI DAO (class with a {@link org.jdbi.v3.core.Jdbi}
  * field) to the current test.
- *
- * @author Artem Prigoda
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

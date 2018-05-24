@@ -5,15 +5,10 @@ import com.github.arteam.jdit.annotations.DataSet;
 import java.lang.reflect.Method;
 
 /**
- * Date: 2/1/15
- * Time: 3:24 PM
- * <p>
  * Component which is responsible for injecting test data to methods.
  * It analyzes test methods and classes for the {@link DataSet} annotation
  * and dispatches locations of the data to the {@link DataMigration}
  * component.
- *
- * @author Artem Prigoda
  */
 class DataSetInjector {
 

@@ -12,10 +12,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * @author Artem Prigoda
- * @since 18.07.16
- */
 @RunWith(DBIRunner.class)
 @JditProperties("jdit-h2-pgs.properties")
 public class SqlLocatorTest {

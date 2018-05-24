@@ -10,12 +10,6 @@ import java.text.SimpleDateFormat;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Date: 1/2/16
- * Time: 6:48 PM
- *
- * @author Artem Prigoda
- */
 public abstract class AbstractDbiDaoTest {
 
     @DBIHandle

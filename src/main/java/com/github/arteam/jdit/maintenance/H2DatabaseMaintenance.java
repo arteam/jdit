@@ -5,11 +5,7 @@ import org.jdbi.v3.core.result.ResultIterable;
 import org.jdbi.v3.core.statement.Batch;
 
 /**
- * Date: 1/1/16
- * Time: 8:11 PM
  * Maintenance operations for the H2 database
- *
- * @author Artem Prigoda
  */
 class H2DatabaseMaintenance implements DatabaseMaintenance {
 

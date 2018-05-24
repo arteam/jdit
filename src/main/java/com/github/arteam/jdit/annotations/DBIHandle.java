@@ -6,14 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Date: 1/24/15
- * Time: 12:24 AM
- * <p>
  * Annotation for injecting a DBI handle to the current test. A field, which this
  * annotation marks, should have type {@link org.jdbi.v3.core.Handle}, otherwise
  * an exception will be raised during injecting.
- *
- * @author Artem Prigoda
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

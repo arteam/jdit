@@ -16,13 +16,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Date: 1/25/15
- * Time: 11:56 PM
  * <p>
  * Component which injects test instances (DBI, Handles, SQLObjects, JDBI DAOs)
  * to the fields with corresponding annotations in the test.
- *
- * @author Artem Prigoda
  */
 class TestObjectsInjector {
 

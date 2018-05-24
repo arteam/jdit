@@ -8,12 +8,6 @@ import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Date: 2/12/15
- * Time: 12:10 AM
- *
- * @author Artem Prigoda
- */
 @DataSet("playerDao/players.sql")
 @RunWith(DBIRunner.class)
 public class TestImmutables {
