@@ -7,12 +7,6 @@ import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Date: 1/25/15
- * Time: 9:50 PM
- *
- * @author Artem Prigoda
- */
 @RunWith(DBIRunner.class)
 public class HandleTest {
 

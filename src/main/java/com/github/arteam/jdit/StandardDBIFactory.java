@@ -5,13 +5,7 @@ import org.jdbi.v3.core.Jdbi;
 import java.util.Properties;
 
 /**
- * Date: 2/17/15
- * Time: 10:29 PM
- * <p>
  * Factory for creating a standard DBI instance from properties
- * <p>
- *
- * @author Artem Prigoda
  */
 public class StandardDBIFactory implements DBIFactory {
 

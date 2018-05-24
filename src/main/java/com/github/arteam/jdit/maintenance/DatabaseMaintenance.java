@@ -1,12 +1,7 @@
 package com.github.arteam.jdit.maintenance;
 
 /**
- * Date: 1/1/16
- * Time: 6:57 PM
- * <p>
  * An interface for representing vendor-specific database maintenance operations
- *
- * @author Artem Prigoda
  */
 public interface DatabaseMaintenance {
 

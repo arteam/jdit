@@ -12,8 +12,6 @@ import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 
 /**
- * Date: 1/22/15
- * Time: 8:55 PM
  * <p>
  * Tests runner which:
  * <ul>
@@ -25,8 +23,6 @@ import org.junit.runners.model.Statement;
  * <li>Sweeps data from the DB after every tests, so every
  * test starts with an empty schema</li>
  * </ul>
- *
- * @author Artem Prigoda
  */
 public class DBIRunner extends BlockJUnit4ClassRunner {
 

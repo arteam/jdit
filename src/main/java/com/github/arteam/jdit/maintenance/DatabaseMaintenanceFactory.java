@@ -1,18 +1,12 @@
 package com.github.arteam.jdit.maintenance;
 
-
 import org.jdbi.v3.core.Handle;
 
 import java.sql.SQLException;
 
 /**
- * Date: 1/1/16
- * Time: 6:54 PM
- * <p>
  * A factory for creating vendor-specific {@link DatabaseMaintenance} instances
  * based on the current database vendor name
- *
- * @author Artem Prigoda
  */
 public final class DatabaseMaintenanceFactory {
 

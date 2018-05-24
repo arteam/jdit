@@ -13,12 +13,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Date: 2/11/15
- * Time: 11:50 PM
- *
- * @author Artem Prigoda
- */
 @RunWith(DBIRunner.class)
 @DataSet("playerDao/players.sql")
 public class TestJodaTime {

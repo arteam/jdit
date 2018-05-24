@@ -21,12 +21,6 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assume.assumeTrue;
 
-/**
- * Date: 1/1/16
- * Time: 7:51 PM
- *
- * @author Artem Prigoda
- */
 @JditProperties("jdit-mysql.properties")
 @RunWith(DBIRunner.class)
 @Ignore

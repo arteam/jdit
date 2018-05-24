@@ -4,12 +4,7 @@ package com.github.arteam.jdit.maintenance;
 import org.jdbi.v3.core.Handle;
 
 /**
- * Date: 1/1/16
- * Time: 7:40 PM
- * <p/>
  * Maintenance operations for the HSQLDB database
- *
- * @author Artem Prigoda
  */
 class HsqlDatabaseMaintenance implements DatabaseMaintenance {
 

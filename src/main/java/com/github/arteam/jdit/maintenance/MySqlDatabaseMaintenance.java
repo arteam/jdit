@@ -5,12 +5,7 @@ import org.jdbi.v3.core.result.ResultIterable;
 import org.jdbi.v3.core.statement.Batch;
 
 /**
- * Date: 2/1/16
- * Time: 8:01 PM
- * <p/>
  * Maintenance operations for the MySQL database
- *
- * @author Artem Prigoda
  */
 class MySqlDatabaseMaintenance implements DatabaseMaintenance {
 
