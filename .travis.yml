@@ -2,7 +2,7 @@ language: java
 #after_success:
 #- mvn jacoco:report coveralls:jacoco
 jdk:
- - oraclejdk8
+ - openjdk11
 
 before_script:
   - psql -U postgres -f setup_postgresql_database.sql
