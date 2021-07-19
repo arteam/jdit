@@ -15,7 +15,7 @@
         <jdbi.version>3.18.0</jdbi.version>
         <hsqldb.version>2.5.1</hsqldb.version>
         <postgresql.version>42.2.19</postgresql.version>
-        <mysql.version>8.0.23</mysql.version>
+        <mysql.version>8.0.26</mysql.version>
         <h2.version>1.4.200</h2.version>
         <junit.version>4.13.2</junit.version>
     </properties>
