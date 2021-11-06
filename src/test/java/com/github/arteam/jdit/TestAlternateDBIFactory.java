@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @JditProperties("jdit-alternate-factory.properties")
 @RunWith(DBIRunner.class)
-public class TestStandardDBIFactory {
+public class TestAlternateDBIFactory {
 
     @DBIHandle
     Handle handle;
