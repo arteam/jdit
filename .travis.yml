@@ -9,6 +9,5 @@ services:
  - mysql
 
 before_script:
-  - psql -U postgres -f setup_postgresql_database.sql
   - mysql -u root < setup_mysql_database.sql
 
