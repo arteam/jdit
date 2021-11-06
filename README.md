@@ -265,33 +265,3 @@ More examples available in a separate [repository](https://github.com/arteam/jdi
 
 * [JDBI3](https://jdbi.github.io/) 3.0.0-beta2
 * [JUnit](http://junit.org/) 4.12
-
-## Compatability
-
-Version 0.1 is compatible with [Dropwizard](http://dropwizard.io/) 0.7.1 and 0.8.0
-
-Version 0.2 is compatible with [Dropwizard](http://dropwizard.io/) 0.8.1
-
-Version 0.3 is compatible with [Dropwizard](http://dropwizard.io/) 0.9.*
-
-Version 0.4.* is compatible with [Dropwizard](http://dropwizard.io/) 0.9.*
-
-Version 0.5.* is compatible with [Dropwizard](http://dropwizard.io/) 1.0.*
-
-Version 0.6.* is compatible with [Dropwizard](http://dropwizard.io/) 1.1.*
-
-Version 0.7 and higher are not depended on Dropwizard
-
-## Availability
-
-The lastest version is available in the Maven Central repository. Old artifacts are available in the [JCenter] (https://bintray.com/arteam/maven/jdit) repository
-
-````xml
-<repositories>
-        <repository>
-            <id>jcenter</id>
-            <name>bintray</name>
-            <url>http://jcenter.bintray.com</url>
-        </repository>
-</repositories>
-````
