@@ -13,7 +13,7 @@ public class EmbeddedMysqlDBIFactory implements DBIFactory {
     private static final MySQLContainer<?> mysqlContainer;
 
     static {
-        mysqlContainer = new MySQLContainer<>("mysql:5.7");
+        mysqlContainer = new MySQLContainer<>("mysql:8.0");
         mysqlContainer.start();
         Runtime.getRuntime().addShutdownHook(new Thread(mysqlContainer::stop));
     }
