@@ -23,13 +23,7 @@ import static org.junit.Assume.assumeTrue;
 
 @JditProperties("jdit-mysql.properties")
 @RunWith(DBIRunner.class)
-@Ignore
 public class MySqlDbTest {
-
-    @BeforeClass
-    public static void beforeInit() {
-        assumeTrue(Boolean.parseBoolean(System.getenv("TRAVIS")));
-    }
 
     private static final DateTimeFormatter fmt = ISODateTimeFormat.date().withZoneUTC();
 
