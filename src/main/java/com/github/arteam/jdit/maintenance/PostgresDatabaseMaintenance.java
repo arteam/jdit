@@ -48,11 +48,9 @@ class PostgresDatabaseMaintenance implements DatabaseMaintenance {
     }
 
     public void dropTablesAndSequences() {
-        handle.useTransaction(h -> {
-            String currentUser = h.createQuery("select current_user")
-                    .mapTo(String.class)
-                    .findOnly();
-            h.execute(String.format("drop owned by \"%s\"", currentUser));
-        });
+        String currentUser = handle.createQuery("select current_user")
+                .mapTo(String.class)
+                .findOnly();
+        handle.execute(String.format("drop owned by \"%s\"", currentUser));
     }
 }
