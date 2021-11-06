@@ -13,7 +13,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdbi.version>3.21.0</jdbi.version>
-        <hsqldb.version>2.6.0</hsqldb.version>
+        <hsqldb.version>2.6.1</hsqldb.version>
         <postgresql.version>42.2.23</postgresql.version>
         <mysql.version>8.0.26</mysql.version>
         <h2.version>1.4.200</h2.version>
@@ -202,7 +202,7 @@
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.20.2</version>
+            <version>3.21.0</version>
             <scope>test</scope>
         </dependency>
 
