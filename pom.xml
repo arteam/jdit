@@ -212,6 +212,13 @@
             <version>${junit.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.opentable.components</groupId>
+            <artifactId>otj-pg-embedded</artifactId>
+            <version>0.13.4</version>
+            <scope>optional</scope>
+        </dependency>
+
     </dependencies>
 
     <distributionManagement>
