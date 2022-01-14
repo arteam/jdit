@@ -1,5 +1,6 @@
+create sequence players_id_seq as integer;
 create table players(
-    id  serial primary key,
+    id integer not null default nextval('players_id_seq') primary key,
     first_name varchar(128) not null,
     last_name varchar(128) not null,
     birth_date date not null,
