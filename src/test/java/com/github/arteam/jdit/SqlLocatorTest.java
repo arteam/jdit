@@ -13,7 +13,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(DBIRunner.class)
-@JditProperties("jdit-h2-pgs.properties")
+@JditProperties("jdit-h2.properties")
 public class SqlLocatorTest {
 
     @TestedSqlObject
