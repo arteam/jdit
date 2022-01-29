@@ -15,7 +15,7 @@
         <jdbi.version>3.27.0</jdbi.version>
         <hsqldb.version>2.6.1</hsqldb.version>
         <postgresql.version>42.3.1</postgresql.version>
-        <mysql.version>8.0.27</mysql.version>
+        <mysql.version>8.0.28</mysql.version>
         <h2.version>2.0.206</h2.version>
         <junit.version>4.13.2</junit.version>
     </properties>
@@ -195,7 +195,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.32</version>
+            <version>1.7.35</version>
             <scope>test</scope>
         </dependency>
 
@@ -215,7 +215,7 @@
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>postgresql</artifactId>
-            <version>1.16.2</version>
+            <version>1.16.3</version>
             <optional>true</optional>
         </dependency>
         <dependency>
