@@ -8,6 +8,7 @@ import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
 
 import java.lang.annotation.Annotation;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -21,6 +22,8 @@ import java.util.List;
  * to the fields with corresponding annotations in the test.
  */
 class TestObjectsInjector {
+
+    private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
 
     private final Jdbi dbi;
     private final Handle handle;
@@ -83,8 +86,9 @@ class TestObjectsInjector {
         if (Modifier.isStatic(field.getModifiers())) {
             throw new IllegalArgumentException("Unable inject a DBI Handle to a static field");
         }
-        field.setAccessible(true);
-        field.set(test, handle);
+        MethodHandles.privateLookupIn(field.getDeclaringClass(), LOOKUP)
+                .unreflectVarHandle(field)
+                .set(test, handle);
     }
 
     /**
@@ -102,8 +106,9 @@ class TestObjectsInjector {
         if (Modifier.isStatic(field.getModifiers())) {
             throw new IllegalArgumentException("Unable inject a DBI instance to a static field");
         }
-        field.setAccessible(true);
-        field.set(test, dbi);
+        MethodHandles.privateLookupIn(field.getDeclaringClass(), LOOKUP)
+                .unreflectVarHandle(field)
+                .set(test, dbi);
     }
 
     /**
@@ -123,8 +128,9 @@ class TestObjectsInjector {
         if (Modifier.isStatic(field.getModifiers())) {
             throw new IllegalArgumentException("Unable inject a DBI sql object to a static field");
         }
-        field.setAccessible(true);
-        field.set(test, handle.attach(field.getType()));
+        MethodHandles.privateLookupIn(field.getDeclaringClass(), LOOKUP)
+                .unreflectVarHandle(field)
+                .set(test, handle.attach(field.getType()));
     }
 
     /**
@@ -141,8 +147,9 @@ class TestObjectsInjector {
             throw new IllegalArgumentException("Unable inject a DBI DAO to a static field");
         }
 
-        field.setAccessible(true);
-        field.set(test, createDBIDao(field));
+        MethodHandles.privateLookupIn(test.getClass(), LOOKUP)
+                .unreflectVarHandle(field)
+                .set(test, createDBIDao(field));
     }
 
     private Object createDBIDao(Field field) throws IllegalAccessException {
@@ -153,11 +160,12 @@ class TestObjectsInjector {
             if (parameterTypes.length == 1 && parameterTypes[0].equals(Jdbi.class)) {
                 // If a constructor with a DBI is provided, just invoke it
                 try {
-                    constructor.setAccessible(true);
-                    return constructor.newInstance(dbi);
-                } catch (Exception e) {
+                    return MethodHandles.privateLookupIn(constructor.getDeclaringClass(), LOOKUP)
+                            .unreflectConstructor(constructor)
+                            .invoke(dbi);
+                } catch (Throwable t) {
                     throw new RuntimeException("Unable to create an instance of class '"
-                            + field.getDeclaringClass() + "'", e);
+                            + field.getDeclaringClass() + "'", t);
                 }
             } else if (parameterTypes.length == 0) {
                 defaultConstructor = constructor;
@@ -173,18 +181,20 @@ class TestObjectsInjector {
         // A default constructor is provided.
         // Invoke it, find a DBI field and set a DBI context to it.
         Object dbiDao;
-        defaultConstructor.setAccessible(true);
         try {
-            dbiDao = defaultConstructor.newInstance();
-        } catch (Exception e) {
+            dbiDao = MethodHandles.privateLookupIn(defaultConstructor.getDeclaringClass(), LOOKUP)
+                    .unreflectConstructor(defaultConstructor)
+                    .invoke();
+        } catch (Throwable t) {
             throw new RuntimeException("Unable to create an instance of class '"
-                    + field.getDeclaringClass() + "'", e);
+                    + field.getDeclaringClass() + "'", t);
         }
 
         for (Field classField : field.getType().getDeclaredFields()) {
             if (classField.getType().equals(Jdbi.class)) {
-                classField.setAccessible(true);
-                classField.set(dbiDao, dbi);
+                MethodHandles.privateLookupIn(classField.getDeclaringClass(), LOOKUP)
+                        .unreflectVarHandle(classField)
+                        .set(dbiDao, dbi);
                 return dbiDao;
             }
         }
