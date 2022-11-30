@@ -4,7 +4,7 @@ import com.github.arteam.jdit.annotations.DBIHandle;
 import com.github.arteam.jdit.annotations.TestedDao;
 import com.github.arteam.jdit.domain.PlayerDao;
 import org.jdbi.v3.core.Handle;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.text.SimpleDateFormat;
 
