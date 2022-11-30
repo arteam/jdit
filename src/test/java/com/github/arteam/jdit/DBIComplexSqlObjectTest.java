@@ -8,15 +8,15 @@ import com.github.arteam.jdit.domain.entity.Player;
 import com.github.arteam.jdit.domain.entity.Team;
 import com.google.common.collect.ImmutableList;
 import org.joda.time.format.ISODateTimeFormat;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(DBIRunner.class)
+@ExtendWith(DBIExtension.class)
 @DataSet("teamDao/insert-divisions.sql")
 public class DBIComplexSqlObjectTest {
 

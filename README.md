@@ -121,7 +121,7 @@ create table players(
 ### Write a test
 
 ````java
-@RunWith(DBIRunner.class)
+@ExtendWith(DBIExtension.class)
 public class PlayerDaoTest {
 
     @TestedSqlObject
@@ -211,7 +211,7 @@ If you find that you reuse the same data set for different tests, consider
 to place this annotation on a class level.
 
 ````java
-@RunWith(DBIRunner.class)
+@ExtendWith(DBIRunner.class)
 @DataSet("playerDao/players.sql")
 public class PlayerDaoTest {
 ````
@@ -264,4 +264,4 @@ More examples available in a separate [repository](https://github.com/arteam/jdi
 ## Dependencies
 
 * [JDBI3](https://jdbi.github.io/) 3.0.0-beta2
-* [JUnit](http://junit.org/) 4.12
+* [JUnit](http://junit.org/) 5.9.1
