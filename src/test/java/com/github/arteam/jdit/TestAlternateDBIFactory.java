@@ -5,15 +5,15 @@ import com.github.arteam.jdit.annotations.JditProperties;
 import com.github.arteam.jdit.annotations.TestedSqlObject;
 import com.github.arteam.jdit.domain.PlayerSqlObject;
 import org.jdbi.v3.core.Handle;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.text.SimpleDateFormat;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JditProperties("jdit-alternate-factory.properties")
-@RunWith(DBIRunner.class)
+@ExtendWith(DBIExtension.class)
 public class TestAlternateDBIFactory {
 
     @DBIHandle
