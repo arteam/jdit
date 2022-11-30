@@ -4,12 +4,12 @@ import com.github.arteam.jdit.annotations.DataSet;
 import com.github.arteam.jdit.annotations.JditProperties;
 import com.github.arteam.jdit.annotations.TestedSqlObject;
 import com.github.arteam.jdit.domain.TeamSqlObject;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(DBIRunner.class)
+@ExtendWith(DBIExtension.class)
 @JditProperties("jdit-schema-directory.properties")
 public class TestDirectoryMigration {
 

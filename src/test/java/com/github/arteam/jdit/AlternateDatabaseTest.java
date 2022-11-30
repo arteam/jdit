@@ -7,12 +7,12 @@ import com.github.arteam.jdit.domain.PlayerSqlObject;
 import org.jdbi.v3.core.Handle;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(DBIRunner.class)
+@ExtendWith(DBIExtension.class)
 public abstract class AlternateDatabaseTest {
 
     private static final DateTimeFormatter fmt = ISODateTimeFormat.date();
