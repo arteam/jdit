@@ -17,8 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * <p>
- * Component which injects test instances (DBI, Handles, SQLObjects, JDBI DAOs)
+ * A component that injects test instances (DBI, Handles, SQLObjects, JDBI DAOs)
  * to the fields with corresponding annotations in the test.
  */
 class TestObjectsInjector {
@@ -72,7 +71,7 @@ class TestObjectsInjector {
     }
 
     /**
-     * Inject a DBI handle to a field with {@link DBIHandle} annotation.
+     * Inject a DBI handle to a field with a {@link DBIHandle} annotation.
      *
      * @param test  current test
      * @param field current field
@@ -92,7 +91,7 @@ class TestObjectsInjector {
     }
 
     /**
-     * Inject a DBI instance to a field with {@link DBIInstance} annotation.
+     * Inject a DBI instance to a field with a {@link DBIInstance} annotation.
      *
      * @param test  current test
      * @param field current field
@@ -112,8 +111,7 @@ class TestObjectsInjector {
     }
 
     /**
-     * Create and inject a new DBI SQL Object to a field
-     * with {@link TestedSqlObject} annotation.
+     * Create and inject a new DBI SQL Object to a field witha  {@link TestedSqlObject} annotation.
      *
      * @param test  current test
      * @param field current field
@@ -134,9 +132,9 @@ class TestObjectsInjector {
     }
 
     /**
-     * Create a inject a DBI DAO instance to a field with the {@link TestedDao}  annotation.
-     * <p>The DAO should provide a default constructor or a constructor
-     * that accepts a {@link Jdbi} as the single parameter<p>
+     * Create a inject a DBI DAO instance to a field with the {@link TestedDao} annotation.
+     * The DAO should provide a default constructor or a constructor that accepts a {@link Jdbi}
+     * as the single parameter
      *
      * @param test  current test
      * @param field current field

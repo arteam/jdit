@@ -5,10 +5,9 @@ import com.github.arteam.jdit.annotations.DataSet;
 import java.lang.reflect.Method;
 
 /**
- * Component which is responsible for injecting test data to methods.
- * It analyzes test methods and classes for the {@link DataSet} annotation
- * and dispatches locations of the data to the {@link DataMigration}
- * component.
+ * Component which is responsible for injecting test data to methods. It analyzes test methods and
+ * classes for the {@link DataSet} annotation and dispatches locations of the data to
+ * the {@link DataMigration} component.
  */
 class DataSetInjector {
 
@@ -20,7 +19,6 @@ class DataSetInjector {
 
     /**
      * Injects test data to a method.
-     * <p>
      * If the method or class has the {@link DataSet} annotation, data from the scripts of the locations,
      * specified in the annotation, will be injected to the DB
      *

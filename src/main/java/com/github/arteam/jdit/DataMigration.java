@@ -23,8 +23,7 @@ class DataMigration {
     /**
      * Executes a script a from a classpath location
      *
-     * @param scriptLocation script location (without the leading slash).
-     *                       If one exists, it's trimmed.
+     * @param scriptLocation script location (without the leading slash). If one exists, it's trimmed.
      */
     void executeScript(String scriptLocation) {
         String correctLocation = !scriptLocation.startsWith("/") ?

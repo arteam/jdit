@@ -17,7 +17,6 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * <p>
  * The current database context.
  * <p>It's responsible for maintaining an active DB with a schema during the run of the tests</p>
  * <ul>

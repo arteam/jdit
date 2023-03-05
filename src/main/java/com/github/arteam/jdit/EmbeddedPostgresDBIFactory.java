@@ -7,7 +7,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import java.util.Properties;
 
 /**
- * Factory for creating a dynamic Postgres DBI instance
+ * A factory for creating a dynamic Postgres DBI instances
  */
 public class EmbeddedPostgresDBIFactory implements DBIFactory {
     private static final String USER = "jdit";

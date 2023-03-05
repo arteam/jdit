@@ -6,7 +6,7 @@ import org.testcontainers.containers.MySQLContainer;
 import java.util.Properties;
 
 /**
- * Factory for creating embedded MySQL DBI instances
+ * A factory for creating embedded MySQL DBI instances
  */
 public class EmbeddedMysqlDBIFactory implements DBIFactory {
 

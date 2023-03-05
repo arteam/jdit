@@ -13,8 +13,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestInstancePostProcessor;
 
 /**
- * <p>
- * Test extension that:
+ * A JUnit5 test extension that:
  * <ul>
  * <li>Injects DBI related tested instances to the tests.
  * <p>Supports {@link Handle}, {@link Jdbi}, SQLObject and DBI DAO.
@@ -32,7 +31,7 @@ public class DBIExtension implements TestInstancePostProcessor, BeforeAllCallbac
     @Override
     public void beforeAll(ExtensionContext context) throws Exception {
         // Open a new handle for every test
-        // It affords to avoid creating a static state which makes tests more independent
+        // It allows us to avoid creating a static state which makes tests independent from each other
         Class<?> testClass = context.getRequiredTestClass();
         JditProperties jditProperties = testClass.getAnnotation(JditProperties.class);
         Jdbi dbi = jditProperties != null ? DBIContextFactory.getDBI(jditProperties.value()) : DBIContextFactory.getDBI();
