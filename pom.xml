@@ -19,6 +19,7 @@
         <mysql.version>8.0.30</mysql.version>
         <h2.version>2.1.214</h2.version>
         <junit.version>5.9.1</junit.version>
+        <slf4j.version>2.0.6</slf4j.version>
     </properties>
 
     <scm>
@@ -206,13 +207,13 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>2.0.6</version>
+            <version>${slf4j.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>2.0.6</version>
+            <version>${slf4j.version}</version>
             <scope>test</scope>
         </dependency>
 
