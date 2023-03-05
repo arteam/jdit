@@ -20,18 +20,13 @@ public final class DatabaseMaintenanceFactory {
 
     public static DatabaseMaintenance create(Handle handle) {
         String databaseVendor = getDatabaseVendor(handle);
-        switch (databaseVendor) {
-            case POSTGRESQL:
-                return new PostgresDatabaseMaintenance(handle);
-            case HSQLDB:
-                return new HsqlDatabaseMaintenance(handle);
-            case H2:
-                return new H2DatabaseMaintenance(handle);
-            case MYSQL:
-                return new MySqlDatabaseMaintenance(handle);
-            default:
-                throw new UnsupportedOperationException(databaseVendor + " is not supported");
-        }
+        return switch (databaseVendor) {
+            case POSTGRESQL -> new PostgresDatabaseMaintenance(handle);
+            case HSQLDB -> new HsqlDatabaseMaintenance(handle);
+            case H2 -> new H2DatabaseMaintenance(handle);
+            case MYSQL -> new MySqlDatabaseMaintenance(handle);
+            default -> throw new UnsupportedOperationException(databaseVendor + " is not supported");
+        };
     }
 
     private static String getDatabaseVendor(Handle handle) {
