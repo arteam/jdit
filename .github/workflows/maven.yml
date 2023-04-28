@@ -15,14 +15,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ 17, 19 ]
+        java: [ 17, 20 ]
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK 18
+    - name: Set up JDK
       uses: actions/setup-java@v2
       with:
         java-version: ${{ matrix.java }}
-        distribution: 'adopt'
+        distribution: 'temurin'
     - name: Build with Maven
       run: mvn -B package --file pom.xml
