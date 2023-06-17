@@ -143,7 +143,7 @@ public class DBIContext {
     private void migrateDirectory(DataMigration dataMigration, File directory, String schemaLocation) {
         String[] childFileNames = directory.list();
         if (childFileNames == null || childFileNames.length == 0) {
-            log.warn("Directory '" + directory + "' is empty. Migrations are not applied");
+            log.warn("Directory '{}' is empty. Migrations are not applied", directory);
             return;
         }
         if (migrationFileComparator != null) {
@@ -154,7 +154,7 @@ public class DBIContext {
         for (String childFileName : childFileNames) {
             String childFileLocation = schemaLocation + File.separator + childFileName;
             if (!childFileName.endsWith("sql")) {
-                log.warn("'" + childFileLocation + "' is not an SQL script. It's ignored");
+                log.warn("'{}' is not an SQL script. It's ignored", childFileLocation);
                 continue;
             }
             dataMigration.executeScript(childFileLocation);
