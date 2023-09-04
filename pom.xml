@@ -19,7 +19,7 @@
         <mysql.version>8.0.30</mysql.version>
         <h2.version>2.2.220</h2.version>
         <junit.version>5.9.1</junit.version>
-        <slf4j.version>2.0.7</slf4j.version>
+        <slf4j.version>2.0.9</slf4j.version>
     </properties>
 
     <scm>
