@@ -31,7 +31,7 @@ public abstract class AlternateDatabaseTest {
         assertThat(playerId).isEqualTo(2L);
         assertThat(handle.select("select * from players where id=?", 2)
                 .mapToMap()
-                .findOnly()).containsEntry("id", 2)
+                .one()).containsEntry("id", 2)
                 .containsEntry("first_name", "Colton")
                 .containsEntry("last_name", "Parayko")
                 .containsEntry("weight", 102)
@@ -47,7 +47,7 @@ public abstract class AlternateDatabaseTest {
         assertThat(playerId).isEqualTo(2L);
         assertThat(handle.select("select * from players where id=?", 2)
                 .mapToMap()
-                .findOnly()).containsEntry("id", 2)
+                .one()).containsEntry("id", 2)
                 .containsEntry("first_name", "Robby")
                 .containsEntry("last_name", "Fabbri")
                 .containsEntry("weight", 75)
