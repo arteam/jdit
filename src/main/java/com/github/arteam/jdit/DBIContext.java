@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -35,9 +35,9 @@ public class DBIContext {
     private static final String DEFAULT_PROPERTIES_LOCATION = "jdit-default.properties";
     private static final String DEFAULT_SCHEMA_LOCATION = "schema.sql";
 
-    private Jdbi dbi;
+    private final Jdbi dbi;
 
-    private Comparator<String> migrationFileComparator;
+    private final Comparator<String> migrationFileComparator;
 
     private DBIContext(String propertiesLocation) {
         Properties properties = loadProperties(propertiesLocation);
@@ -69,9 +69,7 @@ public class DBIContext {
         } catch (IOException e) {
             throw new IllegalStateException("Unable load properties", e);
         }
-        for (Map.Entry<Object, Object> entry : userProperties.entrySet()) {
-            properties.put(entry.getKey(), entry.getValue());
-        }
+        properties.putAll(userProperties);
         if (properties.isEmpty()) {
             throw new IllegalStateException("No properties specified for JDBI Testing");
         }
@@ -88,7 +86,7 @@ public class DBIContext {
     private Jdbi createDBI(Properties properties) {
         try {
             DBIFactory dbiFactory = (DBIFactory) Class.forName(properties.getProperty("dbi.factory"))
-                    .newInstance();
+                    .getConstructor().newInstance();
             return dbiFactory.createDBI(properties);
         } catch (Exception e) {
             throw new IllegalStateException("Unable instantiate DBI Factory", e);
@@ -102,7 +100,7 @@ public class DBIContext {
                 return null;
             }
             return (Comparator<String>) Class.forName(properties.getProperty("schema.migration.file.comparator"))
-                    .newInstance();
+                    .getConstructor().newInstance();
         } catch (Exception e) {
             throw new IllegalStateException("Unable to create a comparator", e);
         }
@@ -119,10 +117,7 @@ public class DBIContext {
             return;
         }
         try (Handle handle = dbi.open()) {
-            String schemaLocation = properties.getProperty("schema.migration.location");
-            if (schemaLocation == null) {
-                schemaLocation = DEFAULT_SCHEMA_LOCATION;
-            }
+            String schemaLocation = Objects.requireNonNullElse(properties.getProperty("schema.migration.location"), DEFAULT_SCHEMA_LOCATION);
             DatabaseMaintenance databaseMaintenance = DatabaseMaintenanceFactory.create(handle);
             databaseMaintenance.dropTablesAndSequences();
 

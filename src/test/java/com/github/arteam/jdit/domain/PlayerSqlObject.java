@@ -5,13 +5,20 @@ import com.google.common.collect.ImmutableSet;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
 import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
-import org.jdbi.v3.sqlobject.customizer.*;
+import org.jdbi.v3.sqlobject.customizer.Bind;
+import org.jdbi.v3.sqlobject.customizer.SqlStatementCustomizerFactory;
+import org.jdbi.v3.sqlobject.customizer.SqlStatementCustomizingAnnotation;
+import org.jdbi.v3.sqlobject.customizer.SqlStatementParameterCustomizer;
 import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import org.joda.time.DateTime;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Annotation;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
@@ -69,24 +76,24 @@ public interface PlayerSqlObject {
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ElementType.PARAMETER})
-    @SqlStatementCustomizingAnnotation(PlayerBinder.Factory.class)
+    @SqlStatementCustomizingAnnotation(Factory.class)
     @interface PlayerBinder {
+    }
 
-        class Factory implements SqlStatementCustomizerFactory {
+    class Factory implements SqlStatementCustomizerFactory {
 
-            @Override
-            public SqlStatementParameterCustomizer createForParameter(Annotation annotation, Class<?> sqlObjectType,
-                                                                      Method method, Parameter param, int index,
-                                                                      Type type) {
-                return (stmt, arg) -> {
-                    Player p = (Player) arg;
-                    stmt.bind("first_name", p.firstName);
-                    stmt.bind("last_name", p.lastName);
-                    stmt.bind("birth_date", p.birthDate);
-                    stmt.bind("weight", p.weight);
-                    stmt.bind("height", p.height);
-                };
-            }
+        @Override
+        public SqlStatementParameterCustomizer createForParameter(Annotation annotation, Class<?> sqlObjectType,
+                                                                  Method method, Parameter param, int index,
+                                                                  Type type) {
+            return (stmt, arg) -> {
+                Player p = (Player) arg;
+                stmt.bind("first_name", p.firstName);
+                stmt.bind("last_name", p.lastName);
+                stmt.bind("birth_date", p.birthDate);
+                stmt.bind("weight", p.weight);
+                stmt.bind("height", p.height);
+            };
         }
     }
 
@@ -95,7 +102,8 @@ public interface PlayerSqlObject {
         public Player map(ResultSet r, StatementContext ctx) throws SQLException {
             int height = r.getInt("height");
             int weight = r.getInt("weight");
-            return new Player(Optional.of(r.getLong("id")), r.getString("first_name"), r.getString("last_name"),
+            return new Player(Optional.of(r.getLong("id")),
+                    r.getString("first_name"), r.getString("last_name"),
                     r.getTimestamp("birth_date"),
                     height != 0 ? Optional.of(height) : Optional.empty(),
                     weight != 0 ? Optional.of(weight) : Optional.empty());

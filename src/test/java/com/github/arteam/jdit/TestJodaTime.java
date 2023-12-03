@@ -27,7 +27,7 @@ public class TestJodaTime {
         assertThat(players)
                 .hasSize(3)
                 .extracting(p -> p.birthDate)
-                .allSatisfy(d -> d.after(dateTime.toDate()));
+                .allMatch(d -> d.after(dateTime.toDate()));
     }
 
     @Test

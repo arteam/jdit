@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
  */
 class DataSetInjector {
 
-    private DataMigration dataMigration;
+    private final DataMigration dataMigration;
 
     DataSetInjector(DataMigration dataMigration) {
         this.dataMigration = dataMigration;

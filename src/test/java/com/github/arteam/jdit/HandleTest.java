@@ -20,8 +20,7 @@ public class HandleTest {
         assertThat(amount).isEqualTo(1);
 
         String initials = handle.createQuery("select first_name || ' ' || last_name from players")
-                .mapTo(String.class)
-                .findOnly();
+                .mapTo(String.class).one();
         assertThat(initials).isEqualTo("Vladimir Tarasenko");
     }
 

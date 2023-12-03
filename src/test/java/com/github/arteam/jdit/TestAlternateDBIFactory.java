@@ -27,8 +27,7 @@ public class TestAlternateDBIFactory {
         playerDao.createPlayer("Petteri", "Lindbohm",
                 new SimpleDateFormat("yyyy-MM-dd").parse("1993-09-23"), 191, 95);
         assertThat(handle.createQuery("select (first_name || ' ' || last_name) initials from players")
-                .mapToMap()
-                .findOnly()
+                .mapToMap().one()
                 .get("initials")).isEqualTo("Petteri Lindbohm");
     }
 }

@@ -21,12 +21,11 @@ public abstract class AbstractDbiDaoTest {
     @Test
     public void testInsert() throws Exception {
         Long playerId = playerDao.createPlayer("Vladimir", "Tarasenko",
-                new SimpleDateFormat("yyyy-MM-dd HH:mm:SS").parse("1991-08-05 00:00:00"),
+                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("1991-08-05 00:00:00"),
                 84, 99);
         assertThat(playerId).isPositive();
         String initials = handle.createQuery("select first_name || ' ' || last_name from players")
-                .mapTo(String.class)
-                .findOnly();
+                .mapTo(String.class).one();
         assertThat(initials).isEqualTo("Vladimir Tarasenko");
     }
 }
