@@ -1,6 +1,5 @@
 package com.github.arteam.jdit.domain.entity;
 
-
 import java.util.Date;
 import java.util.Optional;
 
@@ -10,38 +9,9 @@ import java.util.Optional;
  *
  * @author Artem Prigoda
  */
-public class Player {
-
-    public final Optional<Long> id;
-    public final String firstName;
-    public final String lastName;
-    public final Date birthDate;
-    public final Optional<Integer> height;
-    public final Optional<Integer> weight;
-
-    public Player(Optional<Long> id, String firstName, String lastName, Date birthDate,
-                  Optional<Integer> height, Optional<Integer> weight) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDate = birthDate;
-        this.height = height;
-        this.weight = weight;
-    }
-
-    public Player(String firstName, String lastName, Date birthDate, int height, int weight) {
-        this(Optional.<Long>empty(), firstName, lastName, birthDate, Optional.of(height), Optional.of(weight));
-    }
-
-    @Override
-    public String toString() {
-        return "Player{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", birthDate=" + birthDate +
-                ", height=" + height +
-                ", weight=" + weight +
-                '}';
+public record Player(Optional<Long> id, String firstName, String lastName, Date birthDate, Optional<Integer> height,
+                     Optional<Integer> weight) {
+    public static Player of(String firstName, String lastName, Date birthDate, int height, int weight) {
+        return new Player(Optional.empty(), firstName, lastName, birthDate, Optional.of(height), Optional.of(weight));
     }
 }

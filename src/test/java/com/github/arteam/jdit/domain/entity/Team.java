@@ -8,30 +8,9 @@ import java.util.Optional;
  *
  * @author Artem Prigoda
  */
-public class Team {
+public record Team(Optional<Long> id, String name, Division division) {
 
-    public final Optional<Long> id;
-    public final String name;
-    public final Division division;
-
-    public Team(Optional<Long> id, String name, Division division) {
-        this.id = id;
-        this.name = name;
-        this.division = division;
-    }
-
-    public Team(String name, Division division) {
-        this.name = name;
-        this.division = division;
-        this.id = Optional.empty();
-    }
-
-    @Override
-    public String toString() {
-        return "Team{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", division=" + division +
-                '}';
+    public static Team of(String name, Division division) {
+        return new Team(Optional.empty(), name, division);
     }
 }

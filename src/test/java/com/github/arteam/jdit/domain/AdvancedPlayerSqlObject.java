@@ -37,8 +37,8 @@ public interface AdvancedPlayerSqlObject {
         public Player map(ResultSet r, StatementContext ctx) throws SQLException {
             int height = r.getInt("height");
             int weight = r.getInt("weight");
-            return new Player(Optional.of(r.getLong("id")), r.getString("first_name"), r.getString("last_name"),
-                    r.getTimestamp("birth_date"),
+            return new Player(Optional.of(r.getLong("id")), r.getString("first_name"),
+                    r.getString("last_name"), r.getTimestamp("birth_date"),
                     height != 0 ? Optional.of(height) : Optional.empty(),
                     weight != 0 ? Optional.of(weight) : Optional.empty());
         }

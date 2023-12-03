@@ -26,7 +26,7 @@ public class TestJodaTime {
         List<Player> players = playerDao.getPlayersBornAfter(dateTime);
         assertThat(players)
                 .hasSize(3)
-                .extracting(p -> p.birthDate)
+                .extracting(p -> p.birthDate())
                 .allMatch(d -> d.after(dateTime.toDate()));
     }
 

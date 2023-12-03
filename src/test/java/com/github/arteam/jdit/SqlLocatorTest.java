@@ -25,7 +25,7 @@ public class SqlLocatorTest {
         List<Player> players = playerDao.getPlayers(true, "John", true, "Tavares", true, "last_name", true,
                 true, 3, true, 0);
         assertThat(players).hasSize(1);
-        assertThat(players).extracting(p -> p.firstName).containsOnly("John");
-        assertThat(players).extracting(p -> p.lastName).containsOnly("Tavares");
+        assertThat(players).extracting(Player::firstName).containsOnly("John");
+        assertThat(players).extracting(Player::lastName).containsOnly("Tavares");
     }
 }

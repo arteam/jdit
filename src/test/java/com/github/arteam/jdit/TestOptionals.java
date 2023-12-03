@@ -21,8 +21,8 @@ public class TestOptionals {
     @Test
     public void testExistOptional() {
         Optional<Player> player = playerSqlObject.findPlayer("Vladimir", "Tarasenko");
-        assertThat(player).map(p -> p.firstName).contains("Vladimir");
-        assertThat(player).map(p -> p.lastName).contains("Tarasenko");
+        assertThat(player).map(Player::firstName).contains("Vladimir");
+        assertThat(player).map(Player::lastName).contains("Tarasenko");
     }
 
     @Test

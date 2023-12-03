@@ -34,7 +34,7 @@ public interface TeamSqlObject {
 
     @Transaction
     default void addTeam(Team team, List<Player> players) {
-        long teamId = createTeam(team.name, team.division);
+        long teamId = createTeam(team.name(), team.division());
         for (Player player : players) {
             long playerId = playerDao().createPlayer(player);
             addPlayerToTeam(teamId, playerId);

@@ -87,11 +87,11 @@ public interface PlayerSqlObject {
                                                                   Type type) {
             return (stmt, arg) -> {
                 Player p = (Player) arg;
-                stmt.bind("first_name", p.firstName);
-                stmt.bind("last_name", p.lastName);
-                stmt.bind("birth_date", p.birthDate);
-                stmt.bind("weight", p.weight);
-                stmt.bind("height", p.height);
+                stmt.bind("first_name", p.firstName());
+                stmt.bind("last_name", p.lastName());
+                stmt.bind("birth_date", p.birthDate());
+                stmt.bind("weight", p.weight());
+                stmt.bind("height", p.height());
             };
         }
     }

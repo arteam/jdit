@@ -24,15 +24,15 @@ public class DBIComplexSqlObjectTest {
 
     @Test
     public void testBulkInsert() throws Exception {
-        teamSqlObject.addTeam(new Team("St. Louis", Division.CENTRAL), List.of(
-                new Player("Vladimir", "Tarasenko", date("1991-04-01"), 184, 90),
-                new Player("Jack", "Allen", date("1990-08-12"), 188, 85),
-                new Player("David", "Backes", date("1985-03-06"), 188, 95)
+        teamSqlObject.addTeam(Team.of("St. Louis", Division.CENTRAL), List.of(
+                Player.of("Vladimir", "Tarasenko", date("1991-04-01"), 184, 90),
+                Player.of("Jack", "Allen", date("1990-08-12"), 188, 85),
+                Player.of("David", "Backes", date("1985-03-06"), 188, 95)
         ));
         List<Player> players = teamSqlObject.getPlayers("St. Louis");
         assertThat(players).hasSize(3);
-        assertThat(players).extracting(p -> p.firstName).containsOnly("Vladimir", "Jack", "David");
-        assertThat(players).extracting(p -> p.lastName).containsOnly("Tarasenko", "Allen", "Backes");
+        assertThat(players).extracting(Player::firstName).containsOnly("Vladimir", "Jack", "David");
+        assertThat(players).extracting(Player::lastName).containsOnly("Tarasenko", "Allen", "Backes");
     }
 
     @Test
