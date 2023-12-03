@@ -1,6 +1,5 @@
 package com.github.arteam.jdit.domain.entity;
 
-import com.google.common.base.MoreObjects;
 
 import java.util.Date;
 import java.util.Optional;
@@ -36,14 +35,13 @@ public class Player {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .omitNullValues()
-                .add("id", id.orElse(null))
-                .add("firstName", firstName)
-                .add("lastName", lastName)
-                .add("birthDate", birthDate)
-                .add("height", height.orElse(null))
-                .add("weight", weight.orElse(null))
-                .toString();
+        return "Player{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", birthDate=" + birthDate +
+                ", height=" + height +
+                ", weight=" + weight +
+                '}';
     }
 }

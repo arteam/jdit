@@ -1,7 +1,6 @@
 package com.github.arteam.jdit.domain;
 
 import com.github.arteam.jdit.domain.entity.Player;
-import com.google.common.collect.ImmutableSet;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
 import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
@@ -72,7 +71,7 @@ public interface PlayerSqlObject {
     List<Player> getPlayersByWeight(@Bind("weight") Optional<Integer> weight);
 
     @SqlQuery("select first_name from players")
-    ImmutableSet<String> getFirstNames();
+    Set<String> getFirstNames();
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ElementType.PARAMETER})

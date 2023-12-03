@@ -6,7 +6,6 @@ import com.github.arteam.jdit.domain.TeamSqlObject;
 import com.github.arteam.jdit.domain.entity.Division;
 import com.github.arteam.jdit.domain.entity.Player;
 import com.github.arteam.jdit.domain.entity.Team;
-import com.google.common.collect.ImmutableList;
 import org.joda.time.format.ISODateTimeFormat;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,7 +24,7 @@ public class DBIComplexSqlObjectTest {
 
     @Test
     public void testBulkInsert() throws Exception {
-        teamSqlObject.addTeam(new Team("St. Louis", Division.CENTRAL), ImmutableList.of(
+        teamSqlObject.addTeam(new Team("St. Louis", Division.CENTRAL), List.of(
                 new Player("Vladimir", "Tarasenko", date("1991-04-01"), 184, 90),
                 new Player("Jack", "Allen", date("1990-08-12"), 188, 85),
                 new Player("David", "Backes", date("1985-03-06"), 188, 95)

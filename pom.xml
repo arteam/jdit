@@ -159,13 +159,6 @@
 
         <dependency>
             <groupId>org.jdbi</groupId>
-            <artifactId>jdbi3-guava</artifactId>
-            <version>${jdbi.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jdbi</groupId>
             <artifactId>jdbi3-jodatime2</artifactId>
             <version>${jdbi.version}</version>
             <scope>test</scope>
