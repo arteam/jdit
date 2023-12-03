@@ -11,7 +11,6 @@ import org.jdbi.v3.sqlobject.customizer.SqlStatementParameterCustomizer;
 import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
-import org.joda.time.DateTime;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
@@ -23,6 +22,8 @@ import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -56,10 +57,10 @@ public interface PlayerSqlObject {
     int getAmountPlayersBornInYear(@Bind("year") int year);
 
     @SqlQuery("select * from players where birth_date > :date")
-    List<Player> getPlayersBornAfter(@Bind("date") DateTime date);
+    List<Player> getPlayersBornAfter(@Bind("date") LocalDate date);
 
     @SqlQuery("select birth_date from players where first_name=:first_name and last_name=:last_name")
-    DateTime getPlayerBirthDate(@Bind("first_name") String firstName, @Bind("last_name") String lastName);
+    LocalDate getPlayerBirthDate(@Bind("first_name") String firstName, @Bind("last_name") String lastName);
 
     @SqlQuery("select distinct extract(year from birth_date) player_year from players order by player_year")
     Set<Integer> getBornYears();

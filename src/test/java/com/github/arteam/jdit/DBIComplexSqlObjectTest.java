@@ -6,10 +6,13 @@ import com.github.arteam.jdit.domain.TeamSqlObject;
 import com.github.arteam.jdit.domain.entity.Division;
 import com.github.arteam.jdit.domain.entity.Player;
 import com.github.arteam.jdit.domain.entity.Team;
-import org.joda.time.format.ISODateTimeFormat;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -41,6 +44,6 @@ public class DBIComplexSqlObjectTest {
     }
 
     private static Date date(String textDate) {
-        return ISODateTimeFormat.date().parseDateTime(textDate).toDate();
+        return Date.from(LocalDate.parse(textDate, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 }
