@@ -20,7 +20,7 @@
         <h2.version>2.2.224</h2.version>
         <junit.version>5.9.1</junit.version>
         <slf4j.version>2.0.13</slf4j.version>
-        <testcontainers.version>1.19.7</testcontainers.version>
+        <testcontainers.version>1.19.8</testcontainers.version>
     </properties>
 
     <scm>
