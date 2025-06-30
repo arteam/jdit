@@ -13,7 +13,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jdbi.version>3.34.0</jdbi.version>
+        <jdbi.version>3.49.5</jdbi.version>
         <hsqldb.version>2.7.2</hsqldb.version>
         <postgresql.version>42.7.3</postgresql.version>
         <mysql.version>8.0.33</mysql.version>
